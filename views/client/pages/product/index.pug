@@ -1,0 +1,23 @@
+extends ../../layouts/default.pug
+
+block main
+
+	div(class=`p-[10px]`)
+		div(class=`container`)
+			div(class=`font-bold text-[30px] text-center`) SẢN PHẨM
+			div(class=`flex gap-[20px] grid grid-cols-4 py-[20px]`)
+				each it in product
+					div(class=`relative rounded-[10px] border-[1px] border-[black]/30 truncate`)
+						a(href="") 
+							img(
+								src=it.thumbnail,
+								alt=it.title
+								class=`w-auto aspect-[1/1] object-cover`
+							)
+						div(class=`px-[10px] flex text-wrap flex-col`)
+							a(href="") 
+								div(class=`font-bold text-[red] text-[13px]`) #{it.title}
+							div(class=`absolute top-[0px] text-[6px] bg-[red] text-[white] font-bold rounded-[10px] p-[3px] top-[5px] left-[10px]`) -#{it.discountPercentage}%
+							div(class=`flex justify-between items-center`)
+								div(class=`text-[#1977F8] text-[14px] font-bold`) #{it.priceNew}$
+								del(class=`text-[black]/50 text-[12px] font-bold`) #{it.price}$

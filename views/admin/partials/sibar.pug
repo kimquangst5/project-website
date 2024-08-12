@@ -1,0 +1,16 @@
+aside(
+	class=`w-[200px] h-screen overflow-y-auto scoll-auto bg-[#263238] text-[white] px-[10px] flex flex-col gap-[10px] scrollbar` 
+)
+	div(class=`mt-[10px] relative`)
+		a(href=`/` class=`w-full font-bold text-[20px] mt-[10px]`)
+			img(
+				src=`/media/logo/logo.svg`, alt="Logo"
+				class=`w-auto max-h-[60px] text-center`
+			)
+	ul(class=`flex gap-[10px] flex-col w-max`)
+		li
+			a(href=`/${admin}` class=`inline-block`) Tổng quan
+		li
+			a(href=`/${admin}/product` class=`inline-block`) Sản phẩm
+		li
+			a(href=`/${admin}/product/trash` class=`inline-block`) Thùng rác

@@ -1,0 +1,15 @@
+mixin box-actions(link, list)
+	div(
+		class=`rounded-[10px] h-[50px] truncate border-[1px] border-[black]/30 mx-[10px] flex outline-none w-1/2 mx-auto my-[20px]`
+		box-actions = link
+	)
+		select(
+			name=""
+			class=`flex-1 outline-none pl-[10px]`
+		)
+			each it in list
+				option(value=it.value) #{it.lable}
+		button(
+			type="button"
+			class=`bg-[#FA6B04] text-[white] h-full px-[10px]`
+		) Cập nhật

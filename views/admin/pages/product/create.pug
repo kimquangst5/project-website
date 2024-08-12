@@ -1,0 +1,120 @@
+extends ../../layouts/default.pug
+
+block main
+	div(class=`p-[10px]`)
+		form(
+			action=`/${admin}/product/create`
+			method="POST"
+			target=''
+			autocomplete = "on"
+			enctype="multipart/form-data"
+		)
+			div(class=`flex flex-col gap-y-[10px]`)
+				div(class=`flex flex-col gap-y-[10px]`)
+					label(
+						for="title"
+						class=`font-bold text-[20px]`
+					) Tiêu đề
+					input(
+						type="text", name="title" id="title"
+						class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
+						placeholder="Nhập tiêu đề sản phẩm..."
+						required
+					)
+				div(class=`flex flex-col gap-y-[10px]`)
+					label(
+						for="description"
+						class=`font-bold text-[20px]`
+					) Mô tả
+					textarea(
+						id="description" name="description" cols="3" rows="3"
+						class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
+						placeholder="Nhập mô tả sản phẩm..."
+					)
+				div(class=`flex flex-col gap-y-[10px]`)
+					label(
+						for="price"
+						class=`font-bold text-[20px]`
+					) Giá
+					input(
+						type="number", name="price" id="price"
+						class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
+						min='0'
+						placeholder="Nhập giá sản phẩm..."
+						required
+					)
+				div(class=`flex flex-col gap-y-[10px]`)
+					label(
+						for="discountPercentage"
+						class=`font-bold text-[20px] capitalize`
+					) % giảm giá
+					input(
+						type="number", name="discountPercentage" id="discountPercentage"
+						class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
+						min='0'
+						max='100'
+						placeholder="Nhập phần trăm giảm giá..."
+					)
+				div(class=`flex flex-col gap-y-[10px]`)
+					label(
+						for="stock"
+						class=`font-bold text-[20px]`
+					) Số lượng
+					input(
+						type="number", name="stock" id="stock"
+						class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
+						min='1'
+						placeholder="Nhập số lượng sản phẩm..."
+						required
+					)
+				div(class=`flex flex-col gap-y-[10px]` upload-image)
+					label(
+						for="thumbnail"
+						class=`font-bold text-[20px]`
+					) Ảnh
+					input(
+						type="file", name="thumbnail" id="thumbnail"
+						class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
+						placeholder="Nhập ảnh sản phẩm..."
+						accept='image/*'
+						upload-image-input
+					)
+					img(src="", alt=""
+						class=`w-[25%] h-auto rounded-[10px] cursor-pointer`
+						upload-image-preview)
+				div(class=`flex flex-col gap-y-[20px]`)
+					label(
+						for="position"
+						class=`font-bold text-[20px] capitalize`
+					) vị trí
+					input(
+						type="number", name="position" id="position"
+						class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
+						placeholder="Tự động tăng..."
+					)
+				div(class=`flex justify-center gap-[20px]`)
+					div(class=`flex flex-row gap-[10px]`)
+						input(
+							type="radio", name='status' value="active" id="active"
+							class=``
+							required
+							checked
+						)
+						label(
+							for="active"
+							class=`font-bold text-[20px] capitalize`
+						) Hoạt động
+					div(class=`flex flex-row gap-[10px]`)
+						input(
+							type="radio", name='status' value="inactive" id="inactive"
+							required
+						)
+						label(
+							for="inactive"
+							class=`font-bold text-[20px] capitalize`
+						) dừng Hoạt động
+			button(type="submit"
+						class=`text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto`
+					) Tạo mới
+		
+						

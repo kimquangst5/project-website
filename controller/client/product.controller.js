@@ -1,0 +1,24 @@
+const Product = require('../../models/product.model');
+
+module.exports.index = async (req, res)=> {
+	
+
+	const product = await Product
+	.find({
+		deleted: false
+	})
+	.sort({
+		position: 'desc'
+	});
+	
+	for (const it of product) {
+		it.priceNew = it.price - (it.price * it.discountPercentage) / 100
+		it.priceNew = it.priceNew.toFixed(2);
+	}
+	
+	res.render('client/pages/product/index.pug', {
+		pageTitle: 'Trang sản phẩm',
+		product: product
+
+	})
+};

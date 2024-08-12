@@ -1,0 +1,8 @@
+mixin fillter-status(item)
+	div(class=`flex flex-wrap items-center gap-[10px]`)
+		each it in item
+			button(
+				type="button"
+				class=`border-[1px] border-[#FA6B04] text-[#FA6B04] h-full p-[10px] rounded-[10px]`
+				button-status = it.lable
+			) #{it.value}
