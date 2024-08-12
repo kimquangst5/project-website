@@ -15,7 +15,7 @@ block main
 								class=`w-auto aspect-[1/1] object-cover`
 							)
 						div(class=`px-[10px] flex text-wrap flex-col`)
-							a(href="") 
+							a(href=`/product/detail/${it.slug}`) 
 								div(class=`font-bold text-[red] text-[13px]`) #{it.title}
 							div(class=`absolute top-[0px] text-[6px] bg-[red] text-[white] font-bold rounded-[10px] p-[3px] top-[5px] left-[10px]`) -#{it.discountPercentage}%
 							div(class=`flex justify-between items-center`)

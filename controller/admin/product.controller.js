@@ -401,6 +401,7 @@ module.exports.edit = async (req, res) => {
 	}
 }
 
+// [PATCH] /admin/product/edit/:id
 module.exports.editPatch = async (req, res) => {
 	try {
 		if (req.file && req.file.filename) {
@@ -427,6 +428,32 @@ module.exports.editPatch = async (req, res) => {
 		req.flash('success', 'Cập nhật thành công!')
 
 		res.redirect('back');
+	} catch (error) {
+		res.redirect(`/${process.env.admin}/product`)
+	}
+}
+
+
+// [GET] /admin/product/detail/:id
+module.exports.detail = async (req, res) => {
+	const id = req.params.id;
+
+	try {
+		const product = await Product.findOne({
+			_id: id,
+			deleted: false
+		})
+		if(product){
+
+			res.render('admin/pages/product/detail.pug', {
+				pageTitle: 'Trang chi tiết sản phẩm',
+				header: 'Chi tiết sản phẩm',
+				product: product
+			})
+		}
+		else{
+			res.redirect(`/${process.env.admin}/product`)
+		}
 	} catch (error) {
 		res.redirect(`/${process.env.admin}/product`)
 	}

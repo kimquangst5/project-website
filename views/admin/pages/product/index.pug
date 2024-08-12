@@ -82,14 +82,19 @@ block main
 									class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px]`
 								) Dừng hoạt động
 						td
-							a(
-								href=`/${admin}/product/edit/${it.id}`
-								type="button" class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px] mr-[10px]`
-							) Sửa
-							button(
-								type="button" 
-								class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px]`
-								button-delete = `/${admin}/product/delete/${it.id}`
-							) Xóa
+							div(class="flex justify-center flex-wrap gap-[10px]") 
+								a(
+									href=`/${admin}/product/detail/${it.id}`
+									type="button" class=`bg-[#3288BD]/80 text-[white] text-[12px] rounded-[10px] p-[5px] `
+								) Chi tiết
+								a(
+									href=`/${admin}/product/edit/${it.id}`
+									type="button" class=`bg-[#F77F00]/80 text-[white] text-[12px] rounded-[10px] p-[5px] `
+								) Sửa
+								button(
+									type="button" 
+									class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px]`
+									button-delete = `/${admin}/product/delete/${it.id}`
+								) Xóa
 
 	+pagination(pagination)
