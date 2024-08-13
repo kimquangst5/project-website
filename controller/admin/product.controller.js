@@ -357,11 +357,6 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/product/create
 module.exports.createPost = async (req, res) => {
-
-	if (req.file && req.file.filename) {
-		req.body.thumbnail = `/uploads/${req.file.filename}`
-	}
-
 	req.body.price = parseInt(req.body.price);
 	req.body.discountPercentage = parseInt(req.body.discountPercentage);
 	req.body.stock = parseInt(req.body.stock);
@@ -381,7 +376,7 @@ module.exports.createPost = async (req, res) => {
 
 }
 
-// [GET] /admin/product/create
+// [GET] /admin/product/edit
 module.exports.edit = async (req, res) => {
 	const id = req.params.id;
 
@@ -404,10 +399,6 @@ module.exports.edit = async (req, res) => {
 // [PATCH] /admin/product/edit/:id
 module.exports.editPatch = async (req, res) => {
 	try {
-		if (req.file && req.file.filename) {
-			req.body.thumbnail = `/uploads/${req.file.filename}`
-		}
-
 		req.body.price = parseInt(req.body.price);
 		req.body.discountPercentage = parseInt(req.body.discountPercentage);
 		req.body.stock = parseInt(req.body.stock);

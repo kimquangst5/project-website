@@ -340,12 +340,13 @@ if(upploadImage){
 	const images = upploadImage.querySelector(`img`);
 	input.addEventListener('change', () => {
 		const file = input.files[0];
+		
 		if(file){
 			images.src = URL.createObjectURL(file)
 		}
 	});
-	images.addEventListener('click', () => {
-		const link = images.src;
-		window.open(link, '_blank');
-	});
+	// images.addEventListener('click', () => {
+	// 	const link = images.src;
+	// 	window.open(link, '_blank');
+	// });
 }
