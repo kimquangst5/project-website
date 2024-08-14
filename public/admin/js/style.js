@@ -345,8 +345,8 @@ if(upploadImage){
 			images.src = URL.createObjectURL(file)
 		}
 	});
-	// images.addEventListener('click', () => {
-	// 	const link = images.src;
-	// 	window.open(link, '_blank');
-	// });
+	images.addEventListener('click', () => {
+		const link = images.src;
+		window.open(link, '_blank');
+	});
 }
