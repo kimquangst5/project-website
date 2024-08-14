@@ -191,18 +191,32 @@ if(boxActions){
 	if(button){
 		button.addEventListener('click', () => {
 			const select = boxActions.querySelector('select');
-			const value = select.value;
+			const value = select.value; 
 			let itemChecked = document.querySelectorAll(`input[name="checkItem"]:checked`);
+			// let listNameImages = document.querySelectorAll(`[nameImageImg]`);
+			
 			let ids = [];
+			let nameImages = [];
 			if(value && itemChecked.length > 0){
 				itemChecked.forEach(input => {
 					ids.push(input.value);
+					const parent = input.parentElement;
+					const cha = parent.parentElement;
+					const image = cha.querySelector('img');
+					const tenImage = image.getAttribute('nameImageImg');
+					if(tenImage){
+						nameImages.push(tenImage);
+					}
+					
 				});
+
 				const data = {
 					status: value,
-					ids: ids
+					ids: ids,
+					nameImages: nameImages
 				};
-				
+
+
 				const link = boxActions.getAttribute('box-actions');
 				fetch(link, {
 					method: "PATCH",
@@ -274,7 +288,8 @@ if(permanentlyDelete.length > 0){
 	permanentlyDelete.forEach(button => {
 		button.addEventListener('click', () => {
 			const id = button.getAttribute('permanently-delete');
-			fetch(`/admin/product/trash/${id}`, {
+			const nameImage = button.getAttribute('nameImage');
+			fetch(`/admin/product/trash/${id}/${nameImage}`, {
 				method: 'DELETE',
 				headers: {
 					"Content-Type": "application/json",

@@ -1,9 +1,10 @@
 const Product = require('../../models/product.model');
 require('dotenv').config();
+const uploadCloudMiddlewares = require('../../middlewares/admin/uploadCloud.middlewares');
+
 
 // [GET] /admin/product/
 module.exports.index = async (req, res) => {
-
 	let find = {
 		deleted: false
 	}
@@ -123,12 +124,12 @@ module.exports.changeStatus = async (req, res) => {
 
 // [PATCH] /admin/product/change-multi
 module.exports.changeMulti = async (req, res) => {
-
+	
 	const { status, ids } = req.body;
 	if (status == 'active') {
 		req.flash('success', `Thanks! Cập nhật trạng thái thành Hoạt động thành công!`);
 	}
-	else {
+	if (status == 'inactive') {
 		req.flash('success', `Thanks! Cập nhật trạng thái thành Dừng hoạt động thành công!`);
 	}
 
@@ -138,6 +139,7 @@ module.exports.changeMulti = async (req, res) => {
 		}, {
 			deleted: true
 		});
+		req.flash('success', `Thanks! Xóa các sản phẩm thành công!`);
 	}
 	await Product.updateMany({
 		_id: ids
@@ -284,12 +286,13 @@ module.exports.trashRestore = async (req, res) => {
 
 // [DELETE] /admin/product/trash/:id
 module.exports.trashPermanentlyDelete = async (req, res) => {
-
-	const { id } = req.params;
+	const { id, nameImage} = req.params;
 
 	await Product.deleteOne({
 		_id: id
 	})
+
+	await uploadCloudMiddlewares.deleteSingle(nameImage);
 
 	res.json({
 		code: 200
@@ -299,8 +302,9 @@ module.exports.trashPermanentlyDelete = async (req, res) => {
 // [PATCH] /admin/product/change-multi-restore
 module.exports.changeMultiRestore = async (req, res) => {
 	try {
+		const status = req.body.status;
+		const ids = req.body.ids;
 
-		const { status, ids } = req.body;
 		if (status == 'restore') {
 			await Product.updateMany({
 				_id: ids
@@ -311,9 +315,11 @@ module.exports.changeMultiRestore = async (req, res) => {
 		}
 
 		if (status == 'permanentlyDelete') {
+			
 			await Product.deleteMany({
 				_id: ids
 			})
+			await uploadCloudMiddlewares.deleteMulti(req.body.nameImages)
 			req.flash('success', 'Xóa vĩnh viễn sản phẩm thành công!')
 		}
 
@@ -347,8 +353,6 @@ module.exports.changePosition = async (req, res) => {
 
 // [GET] /admin/product/create
 module.exports.create = async (req, res) => {
-
-
 	res.render('admin/pages/product/create.pug', {
 		pageTitle: 'Trang tạo mới sản phẩm',
 		header: 'Tạo mới sản phẩm',
@@ -366,14 +370,13 @@ module.exports.createPost = async (req, res) => {
 		const totalProduct = await Product.countDocuments({})
 		req.body.position = totalProduct + 1
 	}
-
+	
 	const newProduct = new Product(req.body);
 	await newProduct.save();
 
 	req.flash('success', 'Thêm mới sản phẩm thành công!')
 
 	res.redirect(`/${process.env.admin}/product`)
-
 }
 
 // [GET] /admin/product/edit
@@ -434,7 +437,7 @@ module.exports.detail = async (req, res) => {
 			_id: id,
 			deleted: false
 		})
-		if(product){
+		if (product) {
 
 			res.render('admin/pages/product/detail.pug', {
 				pageTitle: 'Trang chi tiết sản phẩm',
@@ -442,7 +445,7 @@ module.exports.detail = async (req, res) => {
 				product: product
 			})
 		}
-		else{
+		else {
 			res.redirect(`/${process.env.admin}/product`)
 		}
 	} catch (error) {

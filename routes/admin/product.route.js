@@ -22,7 +22,7 @@ router.get('/trash', controller.trash);
 
 router.patch('/trash/:id', controller.trashRestore);
 
-router.delete('/trash/:id', controller.trashPermanentlyDelete);
+router.delete('/trash/:id/:nameImage', controller.trashPermanentlyDelete);
 
 router.patch('/change-multi-restore', controller.changeMultiRestore);
 

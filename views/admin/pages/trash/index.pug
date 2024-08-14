@@ -45,6 +45,7 @@ block main
 								src=it.thumbnail, 
 								alt=it.title 
 								class=`h-[50px] mx-auto`
+								nameImageImg = it.nameImage
 							)
 						td #{it.title}
 						td #{it.priceNew}
@@ -57,6 +58,6 @@ block main
 								type="button" 
 								class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px]`
 								permanently-delete = it.id
+								nameImage = it.nameImage
 							) Xóa vĩnh viễn
-
 	+pagination(pagination)

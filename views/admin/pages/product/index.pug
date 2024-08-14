@@ -54,6 +54,7 @@ block main
 								src=it.thumbnail, 
 								alt=it.title 
 								class=`h-[50px] mx-auto`
+								nameImageImg = it.nameImage
 							)
 						td(
 							class=``
@@ -90,11 +91,12 @@ block main
 								a(
 									href=`/${admin}/product/edit/${it.id}`
 									type="button" class=`bg-[#F77F00]/80 text-[white] text-[12px] rounded-[10px] p-[5px] `
-								) Sửa
+								) Chỉnh Sửa
 								button(
 									type="button" 
 									class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px]`
 									button-delete = `/${admin}/product/delete/${it.id}`
 								) Xóa
+								
 
 	+pagination(pagination)

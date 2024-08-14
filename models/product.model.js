@@ -10,6 +10,7 @@ const productShema = new Schema({
 	price: Number,
 	discountPercentage: Number,
 	stock: Number,
+	nameImage: String,
 	thumbnail: String,
 	status: String,
 	position: Number,
@@ -21,7 +22,7 @@ const productShema = new Schema({
 		type: String,
 		slug: "title",
 		unique: true
-	}
+	},
 }, {
 	timestamps: true
 });
