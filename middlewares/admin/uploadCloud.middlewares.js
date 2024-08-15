@@ -16,7 +16,9 @@ module.exports.deleteSingle = (nameImage) => {
 }
 
 module.exports.deleteMulti = (nameImage) => {
-	cloudinary.api.delete_resources(nameImage, function (result) { console.log(result) });
+	cloudinary.api.delete_resources(nameImage, function (result) {
+		
+	});
 }
 
 

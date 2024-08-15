@@ -365,3 +365,33 @@ if(upploadImage){
 		window.open(link, '_blank');
 	});
 }
+
+// SORT Sắp xếp
+const sort = document.querySelector(`[sort]`);
+if(sort){
+	const select = sort.querySelector('select');
+	const button = sort.querySelector('button');
+	if(select){
+		const url = new URL(window.location.href);
+		select.addEventListener('change', () => {
+			const [sortKey, sortValue] = select.value.split('-');
+			if(sortKey && sortValue){
+				url.searchParams.set('sortKey', sortKey);
+				url.searchParams.set('sortValue', sortValue);
+			}
+			window.location.href = url.href;
+		});
+		const sortKeyCurrent = url.searchParams.get('sortKey');
+		const sortValueCurrent = url.searchParams.get('sortValue');
+		const option = select.querySelector(`option[value='${sortKeyCurrent}-${sortValueCurrent}']`);
+		option.selected = true
+		if(button){
+			button.addEventListener('click', () => {
+				url.searchParams.delete('sortKey')
+				url.searchParams.delete('sortValue');
+				window.location.href = url.href;
+			});
+		}
+	}
+}
+// HẾT SORT Sắp xếp

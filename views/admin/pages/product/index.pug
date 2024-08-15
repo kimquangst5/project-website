@@ -5,98 +5,116 @@ include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 
 block main
-	div(class=`rounded-[10px] truncate border-[1px] border-[black]/30 mx-[10px]`)
-		div(class=`bg-[black]/30 text-[20px] font-bold p-[10px] capitalize`) Lọc theo trạng thái
-		div(class=`flex flex-wrap gap-[10px] justify-between p-[10px] items-center`)
-			+fillter-status(fillerStatus)
-			+search(key)
+	div(class="flex flex-col gap-[10px]") 
+		div(class=`rounded-[10px] truncate border-[1px] border-[black]/30 mx-[10px]`)
+			div(class=`bg-[black]/30 text-[20px] font-bold p-[10px] capitalize`) Lọc theo trạng thái
+			div(class=`flex flex-wrap gap-[10px] justify-between p-[10px] items-center`)
+				+fillter-status(fillerStatus)
+				+search(key)
 
-	+box-actions(`/${admin}/product/change-multi`, statusOption)
+		div(class=`rounded-[10px] truncate border-[1px] border-[black]/30 mx-[10px]`)
+			div(class=`bg-[black]/30 text-[20px] font-bold p-[10px] capitalize select-all`) Hành động
+			+box-actions(`/${admin}/product/change-multi`, statusOption)
+		div(class=`rounded-[10px] truncate border-[1px] border-[black]/30 mx-[10px]`)
+			div(class=`bg-[black]/30 text-[20px] font-bold p-[10px] capitalize`) Sắp xếp
+			div(class="flex gap-[10px] items-center my-[20px] justify-center" sort) 
+				select(name="" class="outline-[#1C404C] outline-[1px] pl-[10px] rounded-[10px] border-[1px] border-[black]/30 py-[10px] text-[18px]")
+					option(value="position-desc")  Vị trí giảm dần
+					option(value="position-asc")  Vị trí tăng dần
+					option(value="title-asc")  Tên sản phẩm tăng dần
+					option(value="title-desc")  Tên sản phẩm giảm dần
+					option(value="price-asc")  Giá tăng dần
+					option(value="price-desc")  Giá giảm dần
+					option(value="updatedAt-asc")  Ngày sửa đổi tăng dần
+					option(value="updatedAt-desc")  Ngày sửa đổi giảm dần
+					option(value="stock-asc")  Số lượng tăng dần
+					option(value="stock-desc")  Số lượng giảm dần
+				button(type="button" class="rounded-[10px] bg-[#1C404C] text-[white] text-[18px] p-[10px]") Reset
 
-	div(class=`rounded-[10px] truncate border-[1px] border-[black]/30 mx-[10px]`)
-		div(class=`flex justify-between items-center flex-wrap bg-[black]/30 font-bold p-[10px] capitalize`)
-			div(class=`text-[20px]`) Danh sách sản phẩm
-			a(
-				href=`/${admin}/product/create`
-				class=`text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[white] hover:bg-[#FA6B04] text-[#FA6B04] hover:text-[white] rounded-[10px] py-[10px]`
-			) + Thêm mới
-		table(class=`w-full text-center mt-[5px]`)
-			thead(class=`h-[50px]`)
-				tr
-					th(class=`h-full`)
-						input(
-							type="checkbox", 
-							name="checkAll"
-							class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#263238] hover:cursor-pointer`
-						)
-					th STT
-					th Hình ảnh
-					th Sản phẩm
-					th Giá
-					th Vị trí
-					th Trạng thái
-					th Hành động
-			tbody
-				each it, i in product
-					tr(
-						class=`hover:cursor-pointer border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20`
-					)
-						td(class=`relative z-[50]`)
+		div(class=`rounded-[10px] truncate border-[1px] border-[black]/30 mx-[10px]`)
+			div(class=`flex justify-between items-center flex-wrap bg-[black]/30 font-bold p-[10px] capitalize`)
+				div(class=`text-[20px]`) Danh sách sản phẩm
+				a(
+					href=`/${admin}/product/create`
+					class=`text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[white] hover:bg-[#FA6B04] text-[#FA6B04] hover:text-[white] rounded-[10px] py-[10px]`
+				) + Thêm mới
+			table(class=`w-full text-center mt-[5px]`)
+				thead(class=`h-[50px]`)
+					tr
+						th(class=`h-full`)
 							input(
 								type="checkbox", 
-								name="checkItem"
-								class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer relative z-[50]`
-								value = it.id
+								name="checkAll"
+								class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#263238] hover:cursor-pointer`
 							)
-						td(class=`relative z-[5]`) #{pagination.limit * (pagination.current - 1) + i + 1}
-						td(class=``)
-							img(
-								src=it.thumbnail, 
-								alt=it.title 
-								class=`h-[50px] mx-auto`
-								nameImageImg = it.nameImage
-							)
-						td(
-							class=``
-							tickItem
-						) #{it.title}
-						td #{it.priceNew}
-						td(class=`w-min`)
-							input(
-								link=`/${admin}/product/change-position/${it.id}`
-								type="number"
-								name="position"
-								value=it.position
-								class=`max-w-[70px] mx-auto outline-[#FA6B04]`
-								min='1'
-							)
-						td
-							- if(it.status == 'active')
-								button(
-									link=`/${admin}/product/change-status/inactive/${it.id}`
-									type="button"
-									class=`bg-[green] text-[white] text-[12px] rounded-[10px] p-[5px]`) Hoạt động
-							- else
-								button(
-									link=`/${admin}/product/change-status/active/${it.id}`
-									type="button"
-									class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px]`
-								) Dừng hoạt động
-						td
-							div(class="flex justify-center flex-wrap gap-[10px]") 
-								a(
-									href=`/${admin}/product/detail/${it.id}`
-									type="button" class=`bg-[#3288BD]/80 text-[white] text-[12px] rounded-[10px] p-[5px] `
-								) Chi tiết
-								a(
-									href=`/${admin}/product/edit/${it.id}`
-									type="button" class=`bg-[#F77F00]/80 text-[white] text-[12px] rounded-[10px] p-[5px] `
-								) Chỉnh Sửa
-								button(
-									type="button" 
-									class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px]`
-									button-delete = `/${admin}/product/delete/${it.id}`
-								) Xóa
-								
+						th STT
+						th Hình ảnh
+						th Sản phẩm
+						th Giá
+						th Vị trí
+						th Trạng thái
+						th Hành động
+				tbody
+					each it, i in product
+						tr(
+							class=`hover:cursor-pointer border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20`
+						)
+							td(class=`relative z-[50]`)
+								input(
+									type="checkbox", 
+									name="checkItem"
+									class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer relative z-[50]`
+									value = it.id
+								)
+							td(class=`relative z-[5]`) #{pagination.limit * (pagination.current - 1) + i + 1}
+							td(class=``)
+								img(
+									src=it.thumbnail, 
+									alt=it.title 
+									class=`h-[50px] mx-auto`
+									nameImageImg = it.nameImage
+								)
+							td(
+								class=``
+								tickItem
+							) #{it.title}
+							td #{it.priceNew}
+							td(class=`w-min`)
+								input(
+									link=`/${admin}/product/change-position/${it.id}`
+									type="number"
+									name="position"
+									value=it.position
+									class=`max-w-[70px] mx-auto outline-[#FA6B04]`
+									min='1'
+								)
+							td
+								- if(it.status == 'active')
+									button(
+										link=`/${admin}/product/change-status/inactive/${it.id}`
+										type="button"
+										class=`bg-[green] text-[white] text-[12px] rounded-[10px] p-[5px]`) Hoạt động
+								- else
+									button(
+										link=`/${admin}/product/change-status/active/${it.id}`
+										type="button"
+										class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px]`
+									) Dừng hoạt động
+							td
+								div(class="flex justify-center flex-wrap gap-[10px]") 
+									a(
+										href=`/${admin}/product/detail/${it.id}`
+										type="button" class=`bg-[#3288BD]/80 text-[white] text-[12px] rounded-[10px] p-[5px] `
+									) Chi tiết
+									a(
+										href=`/${admin}/product/edit/${it.id}`
+										type="button" class=`bg-[#F77F00]/80 text-[white] text-[12px] rounded-[10px] p-[5px] `
+									) Chỉnh Sửa
+									button(
+										type="button" 
+										class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px]`
+										button-delete = `/${admin}/product/delete/${it.id}`
+									) Xóa
+									
 
-	+pagination(pagination)
+		+pagination(pagination)

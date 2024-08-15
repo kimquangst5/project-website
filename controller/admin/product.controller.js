@@ -78,19 +78,26 @@ module.exports.index = async (req, res) => {
 		}
 	];
 
+	let sort = {
+		
+	};
+
+	if(req.query.sortKey && req.query.sortValue){
+		sort[req.query.sortKey] = req.query.sortValue
+	}
+	else{
+		sort.position = 'desc'
+	}
 
 	const product = await Product
 		.find(find)
 		.limit(pagination.limit)
 		.skip(pagination.skip)
-		.sort({
-			position: 'desc',
-			// updatedAt: 'desc'
-		})
+		.sort(sort)
 
 	for (const it of product) {
 		it.priceNew = it.price - (it.price * it.discountPercentage) / 100
-		it.priceNew = it.priceNew.toFixed(2);
+		it.priceNew = it.priceNew.toFixed(0);
 	}
 
 	res.render('admin/pages/product/index.pug', {

@@ -31,7 +31,8 @@ block main
 						id="description" name="description" cols="3" rows="3"
 						class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
 						placeholder="Nhập mô tả sản phẩm..."
-					) #{product.description}
+						textarea-mce 
+					) !{product.description}
 				div(class=`flex flex-col gap-y-[10px]`)
 					label(
 						for="price"
