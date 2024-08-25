@@ -1,7 +1,8 @@
 const Product = require('../../models/product.model');
 require('dotenv').config();
 const uploadCloudMiddlewares = require('../../middlewares/admin/uploadCloud.middlewares');
-
+const ProductCategory = require('../../models/product-category.model')
+const createTreeUtil = require('../../utils/creeteTree.util');
 
 // [GET] /admin/product/
 module.exports.index = async (req, res) => {
@@ -42,8 +43,7 @@ module.exports.index = async (req, res) => {
 	// End Pagination
 
 	// Fillter Status
-	const fillerStatus = [
-		{
+	const fillerStatus = [{
 			lable: '',
 			value: 'Tất cả'
 		},
@@ -59,8 +59,7 @@ module.exports.index = async (req, res) => {
 	// Hết Fillter Status
 
 	// Status
-	const statusOption = [
-		{
+	const statusOption = [{
 			lable: 'Chọn hành động...',
 			value: ''
 		},
@@ -79,13 +78,12 @@ module.exports.index = async (req, res) => {
 	];
 
 	let sort = {
-		
+
 	};
 
-	if(req.query.sortKey && req.query.sortValue){
+	if (req.query.sortKey && req.query.sortValue) {
 		sort[req.query.sortKey] = req.query.sortValue
-	}
-	else{
+	} else {
 		sort.position = 'desc'
 	}
 
@@ -108,31 +106,42 @@ module.exports.index = async (req, res) => {
 		pagination: pagination,
 		fillerStatus: fillerStatus,
 		statusOption: statusOption,
+		buttonTitle: "+ Thêm mới sản phẩm",
+		buttonLink: `/${process.env.admin}/product/create`
 	})
 };
 
 // [PATCH] /admin/product/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
 	const { status, id } = req.params;
+	try {
+		
+		await Product.updateOne({
+			_id: id
+		}, {
+			status: status
+		});
+		req.flash('success', 'Thanks! Cập nhật trạng thái thành công!');
 
-	req.flash('success', 'Thanks! Cập nhật trạng thái thành công!');
+		res.json({
+			code: 200
+		})
+	} catch (error) {
+		req.flash('error', "Bạn cố tình nhập sai Id sản phẩm!!!")
+		res.json({
+			code: 400
+		})
+	}
 
-	await Product.updateOne({
-		_id: id
-	}, {
-		status: status
-	});
-	// res.redirect('back')
-
-	res.json({
-		code: 200
-	})
 }
 
 // [PATCH] /admin/product/change-multi
 module.exports.changeMulti = async (req, res) => {
-	
-	const { status, ids } = req.body;
+
+	const {
+		status,
+		ids
+	} = req.body;
 	if (status == 'active') {
 		req.flash('success', `Thanks! Cập nhật trạng thái thành Hoạt động thành công!`);
 	}
@@ -162,7 +171,7 @@ module.exports.changeMulti = async (req, res) => {
 // [PATCH] /admin/product/delete/:id
 module.exports.delete = async (req, res) => {
 	try {
-		const { id } = req.params;
+		const id = req.params.id;
 		await Product.updateOne({
 			_id: id
 		}, {
@@ -175,7 +184,10 @@ module.exports.delete = async (req, res) => {
 			code: 200
 		})
 	} catch (error) {
-		req.flash('error', 'Bạn nhập sai ID!')
+		req.flash('error', 'Xóa sản phẩm thất bại!!!');
+		res.json({
+			code: 400
+		})
 	}
 
 }
@@ -220,8 +232,7 @@ module.exports.trash = async (req, res) => {
 	// End Pagination
 
 	// Fillter Status
-	const fillerStatus = [
-		{
+	const fillerStatus = [{
 			lable: '',
 			value: 'Tất cả'
 		},
@@ -247,8 +258,7 @@ module.exports.trash = async (req, res) => {
 		it.priceNew = it.priceNew.toFixed(2);
 	}
 
-	const deleteOption = [
-		{
+	const deleteOption = [{
 			lable: 'Chọn hành động ... ',
 			value: ''
 		},
@@ -276,7 +286,9 @@ module.exports.trash = async (req, res) => {
 // [PATCH] /admin/product/trash/:id
 module.exports.trashRestore = async (req, res) => {
 
-	const { id } = req.params;
+	const {
+		id
+	} = req.params;
 
 	await Product.updateOne({
 		_id: id
@@ -293,7 +305,10 @@ module.exports.trashRestore = async (req, res) => {
 
 // [DELETE] /admin/product/trash/:id
 module.exports.trashPermanentlyDelete = async (req, res) => {
-	const { id, nameImage} = req.params;
+	const {
+		id,
+		nameImage
+	} = req.params;
 
 	await Product.deleteOne({
 		_id: id
@@ -322,7 +337,7 @@ module.exports.changeMultiRestore = async (req, res) => {
 		}
 
 		if (status == 'permanentlyDelete') {
-			
+
 			await Product.deleteMany({
 				_id: ids
 			})
@@ -360,9 +375,18 @@ module.exports.changePosition = async (req, res) => {
 
 // [GET] /admin/product/create
 module.exports.create = async (req, res) => {
+	const category = await ProductCategory.find({
+		deleted: false
+	});
+
+
+	const newCategories = createTreeUtil(category);
 	res.render('admin/pages/product/create.pug', {
 		pageTitle: 'Trang tạo mới sản phẩm',
 		header: 'Tạo mới sản phẩm',
+		category: newCategories,
+		buttonTitle: "Quay lại danh sách",
+		buttonLink: `/${process.env.admin}/product`
 	})
 };
 
@@ -377,7 +401,7 @@ module.exports.createPost = async (req, res) => {
 		const totalProduct = await Product.countDocuments({})
 		req.body.position = totalProduct + 1
 	}
-	
+
 	const newProduct = new Product(req.body);
 	await newProduct.save();
 
@@ -396,10 +420,19 @@ module.exports.edit = async (req, res) => {
 			deleted: false
 		})
 
+		const category = await ProductCategory.find({
+			deleted: false
+		});
+
+		const newCategories = createTreeUtil(category);
+
 		res.render('admin/pages/product/edit.pug', {
 			pageTitle: 'Trang chỉnh sửa sản phẩm',
 			header: 'Chỉnh sửa sản phẩm',
-			product: product
+			product: product,
+			category: newCategories,
+			buttonTitle: "Quay lại danh sách",
+			buttonLink: `/${process.env.admin}/product`
 		})
 	} catch (error) {
 		res.redirect(`/${process.env.admin}/product`)
@@ -426,10 +459,11 @@ module.exports.editPatch = async (req, res) => {
 			deleted: false
 		}, req.body)
 
-		req.flash('success', 'Cập nhật thành công!')
+		req.flash('success', 'Cập nhật sản phẩm thành công!')
 
 		res.redirect('back');
 	} catch (error) {
+		req.flash("error", "Đừng cố sửa ID sản phẩm nhé!!!")
 		res.redirect(`/${process.env.admin}/product`)
 	}
 }
@@ -437,9 +471,9 @@ module.exports.editPatch = async (req, res) => {
 
 // [GET] /admin/product/detail/:id
 module.exports.detail = async (req, res) => {
-	const id = req.params.id;
 
 	try {
+		const id = req.params.id;
 		const product = await Product.findOne({
 			_id: id,
 			deleted: false
@@ -451,8 +485,7 @@ module.exports.detail = async (req, res) => {
 				header: 'Chi tiết sản phẩm',
 				product: product
 			})
-		}
-		else {
+		} else {
 			res.redirect(`/${process.env.admin}/product`)
 		}
 	} catch (error) {

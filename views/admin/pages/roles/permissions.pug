@@ -1,0 +1,49 @@
+extends ../../layouts/default.pug
+include ../../mixins/pagination.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/permission-mixin.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/them-moi.pug
+include ../../mixins/box-permission.pug
+
+
+block header
+	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
+	+them-moi("Cập nhật", ``, roles)
+
+block main
+	+khung-table("Danh sách phân quyền")
+		table(class="w-full text-center" table-permissions = `/${admin}/roles/permissions`)
+			thead
+				tr()
+					th(class="py-[15px]") Tính năng
+					each it in records
+						th(class="font-normal" role-id = it.id) #{it.title}
+				tr 
+					th Tất cả
+					each it in records
+						th
+							input(type="checkbox", class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer relative z-[50]`)
+			tbody
+				+permission("Quản lí sản phẩm")
+				+box-permission("Xem", "products", "view")
+				+box-permission("Thêm", "products", "create")
+				+box-permission("Sửa", "products", "edit")
+				+box-permission("Xóa", "products", "delete")
+				+box-permission("Lọc và tìm kiếm", "products", "fillterandsearch")
+				+box-permission("Menu thao tác nhanh", "products", "quickActionMenu")
+				+box-permission("Sắp xếp", "products", "sort")
+				+box-permission("Thay đổi trạng thái 1 sản phẩm", "products", "changeProductStatus")
+
+				+permission("Danh mục sản phẩm")
+				+box-permission("Xem", "product-category", "view")
+				+box-permission("Sửa", "product-category", "create")
+				+box-permission("Xóa", "product-category", "delete")
+
+				+permission("Cài đặt chung")
+				+box-permission("Xem", "dashboard", "view")
+				+box-permission("Sửa", "dashboard", "create")
+				+box-permission("Xóa", "dashboard", "delete")
+				//- +permission("", "product-category")
+				//- +permission("Cài đặt chung", "dashboard")
+				

@@ -4,14 +4,13 @@ mongoose.plugin(slug)
 
 const { Schema } = mongoose
 
-const productShema = new Schema({
+const productCategoryShema = new Schema({
 	title: String,
-	product_category_id: String,
+	parent_id: {
+		type: String,
+		default: ''
+	},
 	description: String,
-	price: Number,
-	discountPercentage: Number,
-	stock: Number,
-	nameImage: String,
 	thumbnail: String,
 	status: String,
 	position: Number,
@@ -28,6 +27,6 @@ const productShema = new Schema({
 	timestamps: true
 });
 
-const Product = mongoose.model('Product', productShema, 'products');
+const ProductCategory = mongoose.model('ProductCategory', productCategoryShema, 'product-category');
 
-module.exports = Product
+module.exports = ProductCategory

@@ -10,19 +10,21 @@ html(lang="en")
 		script(src="/tailwind.config.js")
 		link(href="/media/logo/logo.svg", rel="icon", type="image/x-icon")
 		link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css")
-
+		link(rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css")
 		title #{pageTitle}
 	body(class=`font-font2`)
 
 		+alert-success(2000)
 		+alert-error(2000)
 
-		div(class=`flex`)
+		div(class=`flex bg-[#F2F1F6]` )
 			include ../partials/sibar.pug					
-			main(class=`h-screen overflow-y-auto scoll-auto w-full scrollbarmain`)
+			main(class=`h-screen overflow-y-auto scoll-auto w-full scrollbarmain `)
 				include ../partials/header.pug
-				block main
+				div(class="py-[30px] bg-[#F2F1F6] [&>*]:bg-white flex flex-col gap-[20px]") 
+					block main
 
+	script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11") 
 	script(src="/tinymce/tinymce.min.js") 
 	script(src="/admin/js/style.js")
 	script(src="/admin/js/tinymce-config.js")

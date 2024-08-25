@@ -1,0 +1,25 @@
+doctype html
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(name="author", content="Trần Kim Quang")
+		script(src="https://cdn.tailwindcss.com/")
+		script(src="/tailwind.config.js")
+		link(href="/media/logo/logo.svg", rel="icon", type="image/x-icon")
+		link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css")
+		link(rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css")
+		title #{pageTitle}
+	body(class=`font-font2 bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-screen h-screen`)
+		form(class="flex flex-col justify-center items-center bg-transparent w-full  h-full my-auto gap-[20px]" login-admin)
+			div(class="text-[white] font-bold text-[30px] mb-[50px]") ĐĂNG NHẬP QUẢN TRỊ
+			div(class="flex items-center w-[40%]")
+				input(type="text", name="" class="bg-[black]/30 rounded-[15px] w-full text-[14px] outline-none px-[20px] py-[5px] text-[white] placeholder-[white]/70" placeholder="Tài khoản" required)
+			div(class="flex items-center w-[40%]")
+				input(type="password", name="" class="bg-[black]/30 rounded-[15px] h-1/8 w-full  text-[14px] outline-none px-[20px] py-[5px] text-[white] placeholder-[white]/70" placeholder="Mật khẩu" required)
+			button(type="submit" class="bg-gradient-to-r from-pink-500 to-orange-500 rounded-[10px] hover:rounded-[20px] px-[20px] py-[10px] text-[white]" button-login-admin) Đăng nhập
+	
+	
+	
+	script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11") 
+	script(src="/admin/js/style.js")

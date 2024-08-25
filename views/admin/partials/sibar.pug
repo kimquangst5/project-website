@@ -1,16 +1,30 @@
 aside(
-	class=`w-[200px] h-screen overflow-y-auto scoll-auto bg-[#263238] text-[white] px-[10px] flex flex-col gap-[10px] scrollbar` 
+	class=`w-[300px] h-screen overflow-y-auto scoll-auto bg-[#1F1E2E] text-[white] px-[30px] flex flex-col gap-[10px] scrollbar` 
 )
 	div(class=`mt-[10px] relative`)
-		a(href=`/` class=`w-full font-bold text-[20px] mt-[10px]`)
-			img(
-				src=`/media/logo/logo.svg`, alt="Logo"
-				class=`w-auto max-h-[60px] text-center`
-			)
-	ul(class=`flex gap-[10px] flex-col w-max`)
-		li
-			a(href=`/${admin}` class=`inline-block`) Tổng quan
-		li
-			a(href=`/${admin}/product` class=`inline-block`) Sản phẩm
-		li
-			a(href=`/${admin}/product/trash` class=`inline-block`) Thùng rác
+		a(href=`/` class=`w-full text-[25px] mt-[10px] font-[800]`) KIM QUANG
+			//- img(
+			//- 	src=`/media/logo/logo.svg`, alt="Logo"
+			//- 	class=`w-auto max-h-[60px] text-center`
+			//- )
+	ul(class=`flex flex-wrap gap-y-[15px] flex-col text-[white]/50 [&>li:hover]:text-[white]`)
+		li(class="" sidebar-li)
+			i(class="fa-solid fa-gauge fa-spin mr-[10px]")
+			a(href=`/${admin}/main` class=``) Tổng quan
+		- if(role.permisstion.includes("products_view"))
+			li(class="" sidebar-li)
+				i(class="fa-solid fa-box-open fa-beat-fade mr-[10px]")
+				a(href=`/${admin}/product` class=``) Quản lí sản phẩm
+		- if(role.permisstion.includes('product-category_view'))
+			li(class="" sidebar-li)
+				a(href=`/${admin}/product-category` class=``) Danh mục sản phẩm
+		- if(role.permisstion.includes('dashboard_view'))
+			li(class="" sidebar-li)
+				i(class="fa-solid fa-screwdriver-wrench fa-shake mr-[10px]")
+				a(href=`/${admin}/dashboard` class=``) Cài đặt chung
+		li(class="" sidebar-li)
+			i(class="fa-solid fa-trash-can-list mr-[10px]")
+			a(href=`/${admin}/product/trash` class=``) Thùng rác
+		li(class="mt-auto" sidebar-li)
+			i(class="fa-solid fa-arrow-left-from-bracket mr-[10px]")
+			a(href=`/${admin}` class=`` log-out) Đăng xuất

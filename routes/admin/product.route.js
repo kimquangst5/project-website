@@ -4,13 +4,13 @@ const controller = require('../../controller/admin/product.controller');
 
 const multer = require('multer')
 const upload = multer()
-
 const uploadCloudMiddleWares = require('../../middlewares/admin/uploadCloud.middlewares');
-
 const validate = require('../../validate/admin/product.validate')
-
-
-router.get('/', controller.index);
+const checkLogInMiddleWares = require('../../middlewares/admin/checklogin.middlewares')
+router.get(
+	'/',
+	checkLogInMiddleWares,
+	controller.index);
 
 router.patch('/change-status/:status/:id', controller.changeStatus);
 

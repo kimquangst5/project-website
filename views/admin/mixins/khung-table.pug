@@ -1,0 +1,6 @@
+mixin khung-table(title)
+	div(class=`rounded-[10px] truncate mx-[20px] px-[30px]`)
+		div(class="flex items-center justify-between border-b-[0.1px] border-b-[black]/5 ") 
+			div(class=`text-[18px] font-bold py-[10px] capitalize select-all text-[#1A1A26]`) #{title}
+		if(block)
+			block

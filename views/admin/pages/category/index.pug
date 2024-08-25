@@ -1,0 +1,96 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-actions.pug
+include ../../mixins/fillter-status.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/them-moi.pug
+
+
+block header
+	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
+	if(role.permisstion.includes('product-category_create'))
+		+them-moi("+ Thêm mới", `/${admin}/product-category/create`)
+
+
+block main
+	if(role.permisstion.includes('product-category_view'))
+		div(class=`rounded-[10px] truncate mx-[10px]`)
+			div(class=`flex justify-between items-center flex-wrap border-b-[0.1px] border-b-[black]/5 font-bold p-[10px] capitalize`)
+				div(class=`text-[20px]`) Danh sách sản phẩm
+			table(class=`w-full text-center mt-[5px]`)
+					thead(class=`h-[50px]`)
+						tr
+							th(class=`h-full`)
+								input(
+									type="checkbox", 
+									name="checkAll"
+									class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#263238] hover:cursor-pointer`
+								)
+							th STT
+							th Hình ảnh
+							th Sản phẩm
+							th Vị trí
+							th Trạng thái
+							th Hành động
+					tbody
+						each it, i in records
+							tr(
+								class=`hover:cursor-pointer border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20`
+							)
+								td(class=`relative z-[50]`)
+									input(
+										type="checkbox", 
+										name="checkItem"
+										class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer relative z-[50]`
+										value = it.id
+									)
+								td(class=`relative z-[5]`) #{i + 1}
+								td(class=``)
+									img(
+										src=it.thumbnail, 
+										alt=it.title 
+										class=`h-[50px] mx-auto`
+										nameImageImg = it.nameImage
+									)
+								td(
+									class=``
+									tickItem
+								) #{it.title}
+								td(class=`w-min`)
+									input(
+										link=`/${admin}/product/change-position/${it.id}`
+										type="number"
+										name="position"
+										value=it.position
+										class=`max-w-[70px] mx-auto outline-[#FA6B04]`
+										min='1'
+									)
+								td
+									- if(it.status == 'active')
+										button(
+											link=`/${admin}/product/change-status/inactive/${it.id}`
+											type="button"
+											class=`bg-[green] text-[white] text-[12px] rounded-[10px] p-[5px]`) Hoạt động
+									- else
+										button(
+											link=`/${admin}/product/change-status/active/${it.id}`
+											type="button"
+											class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px]`
+										) Dừng hoạt động
+								td
+									div(class="flex justify-center flex-wrap gap-[10px]") 
+										a(
+											href=`/${admin}/product-category/detail/${it.id}`
+											type="button" class=`bg-[#3288BD]/80 text-[white] text-[12px] rounded-[10px] p-[5px] `
+										) Chi tiết
+										a(
+											href=`/${admin}/product-category/edit/${it.id}`
+											type="button" class=`bg-[#F77F00]/80 text-[white] text-[12px] rounded-[10px] p-[5px] `
+										) Chỉnh Sửa
+										button(
+											type="button" 
+											class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px]`
+											button-delete = `/${admin}/product-category/delete/${it.id}`
+										) Xóa
+		+pagination(records)

@@ -4,7 +4,7 @@ mixin pagination(pagination)
 		phanTrang = pagination.totalProduct
 		totalPage = pagination.totalPage
 	)
-		- if(pagination.current != 1)
+		- if(pagination.current != 1 && pagination.totalPage > 1)
 			li(
 				class=`aspect-square w-auto h-auto min-w-[35px] rounded-[50%] border-[2px] border-[#FA6B04] flex items-center justify-center cursor-pointer`
 				button-angles-left

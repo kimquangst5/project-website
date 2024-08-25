@@ -1,4 +1,17 @@
 extends ../../layouts/default.pug
+include ../../mixins/pagination.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/permission-mixin.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/them-moi.pug
+
+
+block header
+	+quay-lai("Đi đến cài đặt chung", `/${admin}/dashboard`)
 
 block main
-	
+	+khung-table("Thông tin của bạn")
+		div(class="") 
+			h1 #{account.fullName}
+			div(class="") #{role.title}
+			div(class="text-wrap") #{role.permisstion}
