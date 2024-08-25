@@ -124,8 +124,15 @@ if (buttonChangeStatus.length > 0) {
 					},
 				})
 				.then(res => res.json())
-				.then(data => {
+				.then(async data => {
 					if (data.code == 200) {
+						await Swal.fire({
+							position: "top-end",
+							icon: "success",
+							title: "Cập nhật thành công!",
+							showConfirmButton: false,
+							timer: 1500
+						   });
 						window.location.reload();
 					}
 					if (data.code == 400) {
