@@ -22,9 +22,10 @@ aside(
 			li(class="" sidebar-li)
 				i(class="fa-solid fa-screwdriver-wrench fa-shake mr-[10px]")
 				a(href=`/${admin}/dashboard` class=``) Cài đặt chung
-		li(class="" sidebar-li)
-			i(class="fa-solid fa-trash-can-list mr-[10px]")
-			a(href=`/${admin}/product/trash` class=``) Thùng rác
+		- if(role.permisstion.includes('trash_view'))
+			li(class="" sidebar-li)
+				i(class="fa-solid fa-trash-can-list mr-[10px]")
+				a(href=`/${admin}/product/trash` class=``) Thùng rác
 		li(class="mt-auto" sidebar-li)
 			i(class="fa-solid fa-arrow-left-from-bracket mr-[10px]")
 			a(href=`/${admin}` class=`` log-out) Đăng xuất
