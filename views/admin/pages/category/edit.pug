@@ -1,14 +1,24 @@
 extends ../../layouts/default.pug
 include ../../mixins/select-tree.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/them-moi.pug
+include ../../mixins/cap-nhat.pug
+
+block header
+	+quay-lai("Quay lại danh sách danh mục", `/${admin}/product-category`)
+	+cap-nhat("Cập nhật")(buttonUpdateCategory="")
+
 
 block main
-	div(class=`p-[10px]`)
+	+khung-table("Danh mục sản phẩm")
 		form(
 			action=`/${admin}/product-category/edit/${product.id}?_method=PATCH`
 			method="POST"
 			target=''
 			autocomplete = "on"
 			enctype="multipart/form-data"
+			formUpdateCategory
 		)
 			div(class=`flex flex-col gap-y-[10px]`)
 				div(class=`flex flex-col gap-y-[10px]`)
@@ -53,7 +63,7 @@ block main
 					) Ảnh
 					input(
 						type="file", name="thumbnail" id="thumbnail"
-						class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
+						class=`p-[5px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2 file:bg-[#06BC84] file:border-[0] file:rounded-[10px] file:px-[10px] file:py-[5px] file:hover:cursor-pointer hover:cursor-pointer file:hover:rounded-[20px] file:text-[white]`
 						placeholder="Nhập ảnh sản phẩm..."
 						accept='image/*'
 						upload-image-input
@@ -95,5 +105,5 @@ block main
 							class=`font-bold text-[20px] capitalize`
 						) Dừng Hoạt động
 			button(type="submit"
-						class=`text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto`
-					) Cập nhật danh mục
+				class=`hidden text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto`
+			) Cập nhật danh mục

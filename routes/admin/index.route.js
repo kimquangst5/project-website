@@ -14,6 +14,6 @@ module.exports.index = (app) => {
 	app.use(`/${admin}/product-category`, checkLogInMiddleWares, categoryRoute);
 	app.use(`/${admin}/roles`, checkLogInMiddleWares, rolesRoute);
 	app.use(`/${admin}/main`, checkLogInMiddleWares, dashboardRoute);
-	app.use(`/${admin}/accounts`, checkLogInMiddleWares, accountRoute);
+	app.use(`/${admin}/accounts`, accountRoute);
 	app.use(`/${admin}`, authRoute);
 };

@@ -31,7 +31,6 @@ block main
 						th Sản phẩm
 						th Giá
 						th Hành động
-						th Xóa bởi
 				tbody
 					each it, i in product
 						tr(class=`border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20`)
@@ -63,9 +62,6 @@ block main
 									permanently-delete = it.id
 									nameImage = it.nameImage
 								) Xóa vĩnh viễn
-							td
-								div(class="text-[10px]") #{it.deletedBy}
-								div(class="text-[10px]") #{it.updatedAtFormat}
 		+pagination(pagination)
 	- else
 		div(class="my-auto text-[red] text-[50px] text-center bg-transparent") Bạn không được phân quyền để xem nội dung này!

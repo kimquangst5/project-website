@@ -46,4 +46,4 @@ block main
 				+box-setting('fa-solid fa-user-shield', `/${admin}/roles`, 'Khách hàng', 'Thiết lập cấu hình khách hàng')
 				+box-setting('fa-solid fa-shield-keyhole', `/${admin}/roles`, 'reCAPTCH v3', 'Chống span và bảo mật thông tin dữ liệu')
 	- else
-		div(class="my-auto text-[red] text-[50px] text-center bg-transparent") Bạn không được phân quyền để xem nội dung này!
+		div(no-view-permission)

@@ -11,7 +11,7 @@ block header
 
 block main
 	+khung-table("Thông tin của bạn")
-		div(class="") 
-			h1 #{account.fullName}
-			div(class="") #{role.title}
-			div(class="text-wrap") #{role.permisstion}
+		h1 #{account.fullName}
+		div(class="text-wrap") #{role.title}
+		each it in role.permisstion
+			div(class="") #{it}

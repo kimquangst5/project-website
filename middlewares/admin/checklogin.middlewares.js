@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
 			const accounts = await Account.findOne({
 				token: token,
 				deleted: false
-			}).select('useName fullName email role_id phone status')
+			})
 			const roles = await Role.find({
 				deleted: false
 			})

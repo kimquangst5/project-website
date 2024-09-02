@@ -1,5 +1,5 @@
 mixin permission(title)
-	tr(class="text-left bg-[#EBEEF3] ")
+	tr(class="text-left bg-[#EBEEF3] m-[10px]")
 		td(colspan=records.length + 1 class="p-[10px] font-bold rounded-[10px]") #{title}
-	if(block)
-		block
+		if(block)
+			block

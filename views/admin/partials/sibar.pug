@@ -1,31 +1,56 @@
+include ../mixins/box-sidebar.pug
+
 aside(
-	class=`w-[300px] h-screen overflow-y-auto scoll-auto bg-[#1F1E2E] text-[white] px-[30px] flex flex-col gap-[10px] scrollbar` 
+	class=`w-1/4 h-screen overflow-y-auto invisible scoll-auto bg-[#1F1E2E] text-[white] flex flex-col gap-[10px] scrollbar duration-1000` 
 )
-	div(class=`mt-[10px] relative`)
-		a(href=`/` class=`w-full text-[25px] mt-[10px] font-[800]`) KIM QUANG
-			//- img(
-			//- 	src=`/media/logo/logo.svg`, alt="Logo"
-			//- 	class=`w-auto max-h-[60px] text-center`
-			//- )
-	ul(class=`flex flex-wrap gap-y-[15px] flex-col text-[white]/50 [&>li:hover]:text-[white]`)
-		li(class="" sidebar-li)
-			i(class="fa-solid fa-gauge fa-spin mr-[10px]")
-			a(href=`/${admin}/main` class=``) Tổng quan
-		- if(role.permisstion.includes("products_view"))
-			li(class="" sidebar-li)
-				i(class="fa-solid fa-box-open fa-beat-fade mr-[10px]")
-				a(href=`/${admin}/product` class=``) Quản lí sản phẩm
-		- if(role.permisstion.includes('product-category_view'))
-			li(class="" sidebar-li)
-				a(href=`/${admin}/product-category` class=``) Danh mục sản phẩm
-		- if(role.permisstion.includes('dashboard_view'))
-			li(class="" sidebar-li)
-				i(class="fa-solid fa-screwdriver-wrench fa-shake mr-[10px]")
-				a(href=`/${admin}/dashboard` class=``) Cài đặt chung
-		- if(role.permisstion.includes('trash_view'))
-			li(class="" sidebar-li)
-				i(class="fa-solid fa-trash-can-list mr-[10px]")
-				a(href=`/${admin}/product/trash` class=``) Thùng rác
-		li(class="mt-auto" sidebar-li)
-			i(class="fa-solid fa-arrow-left-from-bracket mr-[10px]")
-			a(href=`/${admin}` class=`` log-out) Đăng xuất
+	div(class=`sticky top-[0] bg-[#1F1E2E] select-none flex justify-between items-center text-center h-[65px]`)
+		a(href=`` class=`w-full text-[25px] font-[800] select-none`) KIM QUANG
+		i(class=`fa-duotone fa-solid fa-angles-left fa-fade hover:text-[20px] pl-[20px] duration-1000 hover:cursor-pointer` mui-ten-logo)
+	ul(class="flex gap-[10px] flex-col text-[white]/70 duartion-1000") 
+		+box-sidebar(`Tổng quan`, `/${admin}/main`, `fa-solid fa-grid-round-2`)
+
+		+box-sidebar(`Bài viết`, '',  `fa-solid fa-file-lines`)
+			+box-sidebar(`Thêm bài viết`, `/${admin}/article/create`)
+			+box-sidebar(`Danh sách`, `/${admin}/article`)
+			+box-sidebar(`Danh mục`, `/${admin}/article-category`)
+			+box-sidebar(`Thẻ tag`, `/${admin}/article-category`)
+
+		+box-sidebar(`Media`, '',  `fa-solid fa-images`)
+
+		+box-sidebar(`Sản phẩm`, '',  `fa-solid fa-box-open`)
+			- if(role.permisstion.includes('products_create'))
+				+box-sidebar(`Thêm sản phẩm`, `/${admin}/product/create`)
+			- if(role.permisstion.includes("products_view"))
+				+box-sidebar(`Danh sách`, `/${admin}/product`)
+			- if(role.permisstion.includes("product-category_view"))
+				+box-sidebar(`Danh mục`, `/${admin}/product-category`)
+
+		+box-sidebar(`Đơn hàng`, '',  `fa-solid fa-file-lines`)
+			+box-sidebar(`Đơn mới`, `/${admin}/article/create`)
+			+box-sidebar(`Danh sách`, `/${admin}/article`)
+			+box-sidebar(`Trạng thái`, `/${admin}/article-category`)
+			+box-sidebar(`Hoàn tiền/Đổi trả`, `/${admin}/article-category`)
+
+		+box-sidebar(`Báo cáo`, '',  `fa-solid fa-chart-pie-simple`)
+			+box-sidebar(`Doanh thu`, `/${admin}/reports/revenue`)
+			+box-sidebar(`Bán hàng`, `/${admin}/reports/sales`)
+			+box-sidebar(`Tồn kho`, `/${admin}/reports/inventory`)
+			+box-sidebar(`Khách hàng`, `/${admin}/reports/customers`)
+
+		+box-sidebar(`Khách hàng`, '',  `fa-solid fa-users`)
+			+box-sidebar(`Danh sách`, `/${admin}/customers`)
+			+box-sidebar(`Nhóm khách hàng`, `/${admin}/customers/group`)
+			+box-sidebar(`Khách hàng tiềm năng`, `/${admin}/customers/potential`)
+			+box-sidebar(`Phản hồi/Đánh giá`, `/${admin}/customers/feedback `)
+
+		+box-sidebar(`SEO`, '',  `fi fi-rr-discover`)
+			+box-sidebar(`Thẻ tiêu đề`, `/${admin}/customers`)
+			+box-sidebar(`Mô tả`, `/${admin}/customers/group`)
+			+box-sidebar(`Mục lục`, `/${admin}/customers/potential`)
+			+box-sidebar(`Heading và nội dung`, `/${admin}/customers/feedback `)
+
+		- if(role.permisstion.includes("dashboard_view"))
+			+box-sidebar(`Cài đặt chung`, `/${admin}/dashboard`, `fa-solid fa-screwdriver-wrench`)
+		+box-sidebar(`Thùng rác`, `/${admin}/product/trash`, 'fa-solid fa-trash-can')
+
+		+box-sidebar(`Đăng xuất`, ``, 'fa-solid fa-arrow-left-from-bracket')(log-out = "")

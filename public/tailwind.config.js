@@ -56,14 +56,14 @@ tailwind.config = {
 			const newUtilities = {
 			  '.scrollbar': {
 			    '&::-webkit-scrollbar': {
-				 'width': '10px',
+				 'width': '5px',
 			    },
 			    '&::-webkit-scrollbar-track': {
 				 'background': 'transparent',
 			    },
 			    '&::-webkit-scrollbar-thumb': {
 				 'background': '#FA6B04',
-				 'border-radius': '10px',
+				 'border-radius': '5px',
 			    },
 			    '&::-webkit-scrollbar-thumb:hover': {
 				 'background': '#FA6B04',
@@ -78,7 +78,7 @@ tailwind.config = {
 			    },
 			    '&::-webkit-scrollbar-thumb': {
 				 'background': '#FA6B04',
-				 'border-radius': '10px',
+				 'border-radius': '5px',
 			    },
 			    '&::-webkit-scrollbar-thumb:hover': {
 				 'background': '#FA6B04',

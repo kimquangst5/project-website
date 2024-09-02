@@ -1,6 +1,6 @@
-header(class=`sticky top-0 h-[50px] flex justify-between bg-[white]`)
+header(class=`sticky top-0 h-[50px] flex justify-between bg-gradient-to-r from-pink-500 to-orange-500 z-[100] transition-all  duration-1000 ease-in-out`)
 	div(class=`flex justify-between w-full items-center`)
 		div(class=`font-bold text-[20px] px-[10px]`)
-			div(class="select-none") #{header}
+			div(class="select-none text-[white] animate__animated animate__rubberBand") #{header}
 		div(class="flex gap-[10px] mr-[20px] items-center") 
 			block header

@@ -126,13 +126,6 @@ if (buttonChangeStatus.length > 0) {
 				.then(res => res.json())
 				.then(async data => {
 					if (data.code == 200) {
-						await Swal.fire({
-							position: "top-end",
-							icon: "success",
-							title: "Cập nhật thành công!",
-							showConfirmButton: false,
-							timer: 1500
-						   });
 						window.location.reload();
 					}
 					if (data.code == 400) {
@@ -419,19 +412,6 @@ if (sort) {
 }
 // HẾT SORT Sắp xếp
 
-const currentSidebarLi = window.location.pathname;
-const sidebarLi = document.querySelectorAll(`li[sidebar-li]`);
-if (sidebarLi.length > 0) {
-	sidebarLi.forEach(item => {
-		const taga = item.querySelector('a');
-		const link = taga.getAttribute('href');
-		if (currentSidebarLi == link) {
-			item.style.color = 'white'
-		}
-
-	});
-}
-
 // Permission Phân quyền
 const tablePermissions = document.querySelector(`table[table-permissions]`);
 if (tablePermissions) {
@@ -503,7 +483,6 @@ if (tablePermissions) {
 					}
 				});
 				const link = tablePermissions.getAttribute('table-permissions');
-				console.log(link)
 				fetch(link, {
 						method: "PATCH",
 						headers: {
@@ -565,7 +544,14 @@ if (loginAdmin) {
 							timer: 1500
 						});
 						location.href = "/admin/dashboard"
-						
+						await Swal.fire({
+							position: "top-center",
+							icon: "success",
+							title: "Hello Kim Quang",
+							showConfirmButton: false,
+							timer: 5000
+						});
+
 					}
 					if (data.code == 400) {
 						await Swal.fire({
@@ -585,18 +571,17 @@ if (loginAdmin) {
 
 // ĐĂNG XUẤT
 const logOut = document.querySelector(`[log-out]`);
-if(logOut){
-	logOut.addEventListener('click', (event) => {
-		event.preventDefault();
+if (logOut) {
+	logOut.addEventListener('click', () => {
 		fetch(`/admin/auth/logout`, {
-			method: "PATCH",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
+				method: "PATCH",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
 			.then(res => res.json())
 			.then(async (data) => {
-				if(data.code == 200){
+				if (data.code == 200) {
 					await Swal.fire({
 						position: "top-end",
 						icon: "success",
@@ -610,9 +595,336 @@ if(logOut){
 	});
 }
 
-console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
+// HEADER
+const main = document.querySelector('main');
+const header = document.querySelector('header');
+let last = 0;
+main.addEventListener('scroll', (event) => {
+	let scrollTop = main.scrollTop;
+	if (scrollTop > last) {
+		header.style.top = `-50px`;
+	} else header.style.top = `0px`;
+	last = scrollTop;
+});
+// HẾT HEADER
 
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// buttonSubmitEditProduct
+const buttonSubmitEdit = document.querySelector(`[buttonSubmitEditProduct]`);
+if (buttonSubmitEdit) {
+	buttonSubmitEdit.addEventListener('click', (async) => {
+		const form = document.querySelector('form[formsSubmitEditProduct]');
+		if (form) {
+			const button2 = form.querySelector('button[type="submit"]');
+			if (button2) {
+				button2.click();
+
+			}
+		}
+
+	});
+}
+
+// buttonSubmitCreateProduct
+const buttonSubmitCreate = document.querySelector(`[buttonSubmitCreateProduct]`);
+if (buttonSubmitCreate) {
+	buttonSubmitCreate.addEventListener('click', () => {
+		const form = document.querySelector('form[formsSubmitCreateProduct]');
+		if (form) {
+			const button2 = form.querySelector('button[type="submit"]');
+			if (button2) {
+				button2.click();
+			}
+		}
+	});
+}
+
+const Success = document.querySelector('[update]');
+if (Success) {
+	const value = Success.getAttribute('update');
+	const title = JSON.parse(value)[0]
+
+	Swal.fire({
+		position: "top-end",
+		icon: "success",
+		title: title,
+		showConfirmButton: false,
+		timer: 2000
+	});
+}
+
+const error = document.querySelector('[error]');
+if (error) {
+	const value = error.getAttribute('error');
+	const title = JSON.parse(value)[0]
+
+	Swal.fire({
+		position: "top-end",
+		icon: "error",
+		title: title,
+		showConfirmButton: false,
+		timer: 3000
+	});
+}
+
+const buttonUpdateCategory = document.querySelector('[buttonUpdateCategory]');
+if (buttonUpdateCategory) {
+	const form = document.querySelector('[formUpdateCategory]')
+	if (form) {
+		const button = form.querySelector(`button[type="submit"]`);
+		if (button) {
+			buttonUpdateCategory.addEventListener('click', () => {
+				button.click();
+			});
+		}
+	}
+}
+
+const noViewPermission = document.querySelector(`[no-view-permission]`);
+if (noViewPermission) {
+	Swal.fire({
+		position: "top-center",
+		icon: "error",
+		title: "Bạn không xem được nội dung này",
+		showConfirmButton: true,
+		// timer: 1500
+	});
+}
+
+// XỬ LÍ ẢNH LỖI
+const imgs = document.querySelectorAll('img');
+const emptyImgs = Array.from(imgs).filter(img => {
+	return !img.src || img.src === window.location.href || img.src.endsWith('placeholder.jpg');
+});
+emptyImgs.forEach(img => {
+	img.src = '/admin/images/photo.png';
+	img.alt = 'Ảnh lỗi';
+});
+// HẾT LÍ ẢNH LỖI
+
+// buttonRoleCreate
+const buttonRoleCreate = document.querySelector(`[button-role-create]`);
+if (buttonRoleCreate) {
+	buttonRoleCreate.addEventListener('click', () => {
+		const form = document.querySelector(`[form-role-create]`);
+		if (form) {
+			const button = form.querySelector(`button[type='submit']`);
+			if (button) {
+				button.click();
+
+			}
+		}
+	});
+
+}
+
+// category-product-trash
+const showBox = document.querySelectorAll('[show-box]');
+// console.log(showBox.length)
+if (showBox.length > 0) {
+	showBox.forEach(box => {
+		box.addEventListener("click", () => {
+			const cha = box.parentElement;
+			const contentBox = cha.querySelector('[content-box]');
+			if (contentBox) {
+				if (contentBox.className.includes('h')) {
+					contentBox.classList.remove("h-0", "hidden")
+					const icon = box.querySelector('i');
+					if (icon) {
+						icon.classList.remove("rotate-90")
+					}
+				} else {
+					contentBox.classList.add('h-0', "hidden")
+					const icon = box.querySelector('i');
+					if (icon) {
+						icon.classList.add("rotate-90")
+					}
+				}
+			}
+		});
+	});
+}
+
+
+
+// SIDEBAR
+const findParentLi = (element) => {
+	let currentElement = element.parentElement;
+	while (currentElement) {
+		if (currentElement.tagName.toLowerCase() === 'li') {
+			return currentElement;
+		}
+		currentElement = currentElement.parentElement;
+	}
+	return null; // Trả về null nếu không tìm thấy li cha
+};
+
+const Aside = document.querySelector('aside');
+const path = window.location.pathname;
+if (Aside) {
+	// const xuLi = (tagCurrent) => {
+	const ul = document.querySelector('ul');
+	if (ul) {
+		const div = ul.querySelectorAll('div');
+		if (div.length > 0) {
+			div.forEach(async div => {
+				const li = div.querySelector('li');
+				if (li) {
+					const link = li.getAttribute('link');
+					if (link) {
+						li.addEventListener('click', () => {
+							window.location.href = link
+						});
+						if (path == link) {
+							li.style.color = "white"
+							const iCha = li.parentElement.querySelector('i');
+							if (iCha) {
+								iCha.style.color = "white"
+							} else {
+								// findParentLi(li);
+								const litag = findParentLi(li).parentElement.querySelector('li');
+								const allLi = findParentLi(li).parentElement
+								
+								if (allLi) {
+									const divParent = li.parentElement.parentElement.parentElement.parentElement;
+									divParent.classList.toggle("hover:bg-[#5A5866]")
+									if (divParent) {
+										const muiTenCurrent = divParent.querySelector("[mui-ten]");
+										if (muiTenCurrent) {
+											muiTenCurrent.classList.toggle("rotate-90")
+										}
+									}
+									allLi.style.color = "white"
+									const ul = allLi.querySelector('ul');
+									if (ul) {
+										ul.classList.add("text-[white]/70")
+									}
+								}
+							}
+						}
+						const divCha = li.parentElement;
+						if (divCha) {
+							divCha.classList.add("hover:text-[white]", "hover:bg-[#5A5866]")
+						}
+					} else {
+						const div = li.parentElement;
+						div.classList.add("hover:text-[white]");
+
+						const ulCon = div.querySelector('ul');
+						if (ulCon) {
+							const listDiv = ulCon.querySelectorAll('div');
+							if (listDiv.length > 0) {
+								ulCon.classList.add("truncate");
+								listDiv.forEach(it => {
+									const h = it.clientHeight;
+									it.classList.add(`mt-[-${h}px]`)
+									it.classList.add("duration-1000")
+
+								});
+								setTimeout(() => {
+									const pathname = window.location.pathname;
+									listDiv.forEach(it => {
+										const url = it.querySelector(`[link]`);
+										if (url) {
+											const link = url.getAttribute("link");
+											if (link) {
+												if (link == pathname) {
+													let ulCHA = it.parentNode;
+													const divLIST = ulCHA.querySelectorAll('div');
+													if (divLIST.length > 0) {
+														divLIST.forEach(div => {
+															const h = div.clientHeight;
+															div.classList.toggle(`mt-[-${h}px]`)
+															it.classList.add("duration-1000")
+														});
+													}
+												}
+											}
+										}
+									});
+								}, 1500);
+							}
+						}
+
+						div.addEventListener("click", () => {
+							div.classList.toggle("hover:bg-[#5A5866]")
+
+							const ulParent = div.querySelector('[mui-ten]');
+							if (ulParent) {
+								ulParent.classList.toggle("rotate-90")
+							}
+							const ul = div.querySelector('ul');
+							const h = ul.clientHeight
+							if (ul) {
+								const listDiv = ul.querySelectorAll('div');
+								if (listDiv.length > 0) {
+									ul.classList.add("truncate");
+									listDiv.forEach(it => {
+										const h = it.clientHeight;
+										it.classList.toggle(`mt-[-${h}px]`)
+										it.classList.add("duration-1000")
+									});
+								}
+							}
+						});
+						const ul = div.querySelector('ul');
+						if (ul) {
+							ul.classList.add("text-[white]/70")
+							const itdiv = ul.querySelectorAll('div');
+							if (itdiv.length > 0) {
+								itdiv.forEach(it => {
+									it.classList.add("hover:text-[white]", "hover:bg-[#5A5866]")
+								});
+							}
+						}
+					}
+				}
+			});
+		}
+	}
+
+	const muiTenLogo = Aside.querySelector('[mui-ten-logo]');
+	if (muiTenLogo) {
+		muiTenLogo.addEventListener('click', () => {
+			const allLi = Aside.querySelectorAll('li');
+			if (allLi.length > 0) {
+				allLi.forEach(it => {
+					it.classList.toggle("hidden")
+				});
+			}
+			const allMuiTen = Aside.querySelectorAll('[mui-ten]');
+			if (allMuiTen.length > 0) {
+				allMuiTen.forEach(it => {
+					it.classList.toggle("hidden")
+				});
+			}
+			const allIcon = Aside.querySelectorAll('i');
+			if (allIcon.length > 0) {
+				allIcon.forEach(it => {
+					// it.classList.toggle("text-[25px]", "w-full")
+					it.classList.toggle("pl-[20px]")
+					it.classList.toggle("w-full")
+					it.classList.toggle("text-[17px]")
+				});
+			}
+			const logo = Aside.querySelector('a');
+			if (logo) {
+				logo.classList.toggle("hidden")
+			}
+			Aside.classList.toggle("w-[80px]")
+			muiTenLogo.classList.toggle("rotate-180")
+		});
+	}
+}
+// HẾT SIDEBAR
+
+
+
+
+
+
+// console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
+
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');

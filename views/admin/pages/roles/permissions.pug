@@ -25,6 +25,16 @@ block main
 						th
 							input(type="checkbox", class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer relative z-[50]`)
 			tbody
+				+permission("Cài đặt chung")
+				+box-permission("Xem", "dashboard", "view")
+				
+				+permission("Nhóm quyền")
+				+box-permission("Xem", "roles", "view")
+				+box-permission("Sửa", "roles", "edit")
+				+box-permission("Xóa", "roles", "deleted")
+				+box-permission("Xem phân quyền", "permissions", "views")
+				+box-permission("Cập nhật phân quyền", "permissions", "update")
+
 				+permission("Quản lí sản phẩm")
 				+box-permission("Xem", "products", "view")
 				+box-permission("Thêm", "products", "create")
@@ -37,13 +47,10 @@ block main
 
 				+permission("Danh mục sản phẩm")
 				+box-permission("Xem", "product-category", "view")
-				+box-permission("Sửa", "product-category", "create")
+				+box-permission("Thêm", "product-category", "create")
+				+box-permission("Sửa", "product-category", "edit")
 				+box-permission("Xóa", "product-category", "delete")
 
-				+permission("Cài đặt chung")
-				+box-permission("Xem", "dashboard", "view")
-				+box-permission("Sửa", "dashboard", "create")
-				+box-permission("Xóa", "dashboard", "delete")
 
 				+permission("Thùng rác")
 				+box-permission("Xem", "trash", "view")

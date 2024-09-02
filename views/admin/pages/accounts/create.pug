@@ -1,7 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/pagination.pug
 include ../../mixins/khung-table.pug
-include ../../mixins/click-button.pug
 include ../../mixins/setting-box.pug
 
 block main
@@ -95,6 +94,7 @@ block main
 						class=`p-[5px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
 						placeholder="Nhập số điện thoại..."
 						required
+						min="10" max="10"
 					)
 				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 					label(
