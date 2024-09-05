@@ -1,13 +1,14 @@
 include ../mixins/box-sidebar.pug
 
 aside(
-	class=`w-1/4 h-screen overflow-y-auto invisible scoll-auto bg-[#1F1E2E] text-[white] flex flex-col gap-[10px] scrollbar duration-1000` 
+	class=`w-1/4 h-screen overflow-y-auto invisible scoll-auto bg-adminColorHeadline text-adminColorMain flex flex-col gap-[10px] scrollbar duration-1000` 
 )
-	div(class=`sticky top-[0] bg-[#1F1E2E] select-none flex justify-between items-center text-center h-[65px]`)
+	div(class=`sticky top-[0] bg-adminColorHeadline select-none flex justify-between items-center text-center h-[65px]`)
 		a(href=`` class=`w-full text-[25px] font-[800] select-none`) KIM QUANG
 		i(class=`fa-duotone fa-solid fa-angles-left fa-fade hover:text-[20px] pl-[20px] duration-1000 hover:cursor-pointer` mui-ten-logo)
-	ul(class="flex gap-[10px] flex-col text-[white]/70 duartion-1000") 
-		+box-sidebar(`Tổng quan`, `/${admin}/main`, `fa-solid fa-grid-round-2`)
+	ul(class="flex gap-[10px] flex-col text-adminColorMain/70 duartion-1000") 
+		//- <i class="fa-solid fa-grid-round-2"></i> //trang 12
+		+box-sidebar(`Tổng quan`, `/${admin}/main`, `fa-solid fa-objects-column`)
 
 		+box-sidebar(`Bài viết`, '',  `fa-solid fa-file-lines`)
 			+box-sidebar(`Thêm bài viết`, `/${admin}/article/create`)
@@ -17,14 +18,15 @@ aside(
 
 		+box-sidebar(`Media`, '',  `fa-solid fa-images`)
 
-		+box-sidebar(`Sản phẩm`, '',  `fa-solid fa-box-open`)
-			- if(role.permisstion.includes('products_create'))
-				+box-sidebar(`Thêm sản phẩm`, `/${admin}/product/create`)
-			- if(role.permisstion.includes("products_view"))
-				+box-sidebar(`Danh sách`, `/${admin}/product`)
-			- if(role.permisstion.includes("product-category_view"))
-				+box-sidebar(`Danh mục`, `/${admin}/product-category`)
-
+		- if(role.permisstion.includes(`products_create`) || role.permisstion.includes(`products_view`) || role.permisstion.includes(`product-category_view`))
+			+box-sidebar(`Sản phẩm`, '',  `fa-solid fa-box-open`)
+				- if(role.permisstion.includes("products_create"))
+					+box-sidebar(`Thêm sản phẩm`, `/${admin}/product/create`)
+				- if(role.permisstion.includes("products_view"))
+					+box-sidebar(`Danh sách`, `/${admin}/product`)
+				- if(role.permisstion.includes("product-category_view"))
+					+box-sidebar(`Danh mục`, `/${admin}/product-category`)
+		
 		+box-sidebar(`Đơn hàng`, '',  `fa-solid fa-file-lines`)
 			+box-sidebar(`Đơn mới`, `/${admin}/article/create`)
 			+box-sidebar(`Danh sách`, `/${admin}/article`)
@@ -51,6 +53,17 @@ aside(
 
 		- if(role.permisstion.includes("dashboard_view"))
 			+box-sidebar(`Cài đặt chung`, `/${admin}/dashboard`, `fa-solid fa-screwdriver-wrench`)
-		+box-sidebar(`Thùng rác`, `/${admin}/product/trash`, 'fa-solid fa-trash-can')
+		
+		- if(role.permisstion.includes(`trash_view`))
+			+box-sidebar(`Thùng rác`, ``,  `fa-solid fa-trash-can`)
+				+box-sidebar(`Chung`, `/${admin}/trash`)
+				- if(role.permisstion.includes(`trash_view_product`))
+					+box-sidebar(`Sản phẩm`, `/${admin}/trash/product`)
+				+box-sidebar(`Bài viết`, ``)
+				+box-sidebar(`Tài khoản`, `/${admin}/trash/accounts`)
+				+box-sidebar(`Nhóm quyền`, `/${admin}/trash/roles`)
+
+		//- +box-sidebar(`Thùng rác`, `/${admin}/trash`, 'fa-solid fa-trash-can')
+		//- 	+box-sidebar(`Sản phẩm`, `/${admin}/trash/product`, '')
 
 		+box-sidebar(`Đăng xuất`, ``, 'fa-solid fa-arrow-left-from-bracket')(log-out = "")

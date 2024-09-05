@@ -5,6 +5,7 @@ const rolesRoute = require('./roles.route');
 const settingRoute = require('./setting.route');
 const accountRoute = require('./account.route');
 const authRoute = require('./auth.route');
+const trashRoute = require('./trash.route')
 const checkLogInMiddleWares = require('../../middlewares/admin/checklogin.middlewares')
 
 module.exports.index = (app) => {
@@ -14,6 +15,7 @@ module.exports.index = (app) => {
 	app.use(`/${admin}/product-category`, checkLogInMiddleWares, categoryRoute);
 	app.use(`/${admin}/roles`, checkLogInMiddleWares, rolesRoute);
 	app.use(`/${admin}/main`, checkLogInMiddleWares, dashboardRoute);
-	app.use(`/${admin}/accounts`, accountRoute);
+	app.use(`/${admin}/accounts`, checkLogInMiddleWares, accountRoute);
+	app.use(`/${admin}/trash`, checkLogInMiddleWares, trashRoute);
 	app.use(`/${admin}`, authRoute);
 };

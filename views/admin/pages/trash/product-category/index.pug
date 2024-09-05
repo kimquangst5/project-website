@@ -1,14 +1,13 @@
 extends ../../../layouts/default.pug
-include ../../../mixins/quay-lai.pug
 include ../../../mixins/khung-table.pug
-
+include ../../../mixins/quay-lai.pug
 
 block header
-	+quay-lai("Trở về trang thùng rác", `/${admin}/trash`)
+	+quay-lai("Quay về thùng rác", `/${admin}/trash`)
 
 block main
 	- if(role.permisstion.includes(`trash_view_product`))
-		+khung-table("Danh sách sản phẩm đã xóa")
+		+khung-table("Danh mục sản phẩm đã xóa")
 			table(class=`w-full text-center mt-[5px]`)
 				thead(class=`h-[50px]`)
 					tr
@@ -22,7 +21,7 @@ block main
 						th Sản phẩm
 						th Xóa bởi
 				tbody
-					each it, i in product
+					each it, i in categoryProduct
 						tr(class=`border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20`)
 							td(class=``)
 								input(
@@ -43,15 +42,15 @@ block main
 									button(
 										type="button" class=`fa-solid fa-trash-can-undo rounded-[10px] text-[20px] text-[#5A5866]`
 										restore = it.id
-										linkRestore = `/${admin}/trash/product/${it.id}`
-										title="Khôi phục sản phẩm"
+										linkRestore = `/${admin}/trash/product-category/${it.id}`
+										title="Khôi phục danh mục sản phẩm"
 									)
 									button(
 										type="button" 
 										class=`fa-solid fa-trash-xmark rounded-[10px] text-[20px] text-[red]/40`
 										nameImage = it.nameImage
-										permanently-delete = `/${admin}/trash/product/${it.id}`
-										title="Xóa vĩnh viễn sản phẩm"
+										permanently-delete = `/${admin}/trash/product-category/${it.id}`
+										title="Xóa vĩnh viễn danh mục"
 									)
 							td
 								div(class="text-[10px]") #{it.deletedBy}

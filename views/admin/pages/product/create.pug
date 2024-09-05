@@ -23,29 +23,29 @@ block main
 					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 						label(
 							for="title"
-							class=`text-[16px]`
+							class=`text-[12px]`
 						) Tiêu đề
 							span(class="text-[red]")  *
 						input(
 							type="text", name="title" id="title"
-							class=`p-[5px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
+							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
 							placeholder="Nhập tiêu đề sản phẩm..."
 							required
 						)
 					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 						label(
 							for="product_category_id"
-							class=`text-[16px]`
+							class=`text-[12px]`
 						) Danh mục
 							span(class="text-[red]")  *
 						select(id='product_category_id' name='product_category_id' 
-						class=`p-[5px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`)
+						class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`)
 							option(value='') --- Chọn danh mục ---
 							+select-tree(category, '')
 					div(class=`flex flex-col items-left gap-y-[10px] w-full`)
 						label(
 							for="description"
-							class=`text-[16px]`
+							class=`text-[12px]`
 						) Mô tả
 						textarea(
 							id="description" name="description" cols="3" rows="3"
@@ -56,12 +56,12 @@ block main
 					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 						label(
 							for="price"
-							class=`text-[16px]`
+							class=`text-[12px]`
 						) Giá
 							span(class="text-[red]")  *
 						input(
 							type="number", name="price" id="price"
-							class=`p-[5px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
+							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
 							min='0'
 							placeholder="Nhập giá sản phẩm..."
 							required
@@ -69,12 +69,12 @@ block main
 					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 						label(
 							for="discountPercentage"
-							class=`font-bold text-[20px] capitalize`
-						) % giảm giá
+							class=`text-[12px]`
+						) % Giảm giá
 							span(class="text-[red]")  *
 						input(
 							type="number", name="discountPercentage" id="discountPercentage"
-							class=`p-[5px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
+							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
 							min='0'
 							max='100'
 							placeholder="Nhập phần trăm giảm giá..."
@@ -82,12 +82,12 @@ block main
 					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 						label(
 							for="stock"
-							class=`text-[16px]`
+							class=`text-[12px]`
 						) Số lượng
 							span(class="text-[red]")  *
 						input(
 							type="number", name="stock" id="stock"
-							class=`p-[5px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
+							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
 							min='1'
 							placeholder="Nhập số lượng sản phẩm..."
 							required
@@ -95,11 +95,11 @@ block main
 					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4` upload-image)
 						label(
 							for="thumbnail"
-							class=`text-[16px]`
+							class=`text-[12px]`
 						) Ảnh
 						input(
 							type="file", name="thumbnail" id="thumbnail"
-							class=`p-[5px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2 file:bg-[#06BC84] file:border-[0] file:rounded-[10px] file:px-[10px] file:py-[5px] file:hover:cursor-pointer hover:cursor-pointer file:hover:rounded-[20px] file:text-[white]`
+							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2 file:bg-[#06BC84] file:border-[0] file:rounded-[10px] file:px-[10px] file:py-[5px] file:hover:cursor-pointer hover:cursor-pointer file:hover:rounded-[20px] file:text-[white]`
 							placeholder="Nhập ảnh sản phẩm..."
 							accept='image/*'
 							upload-image-input
@@ -110,18 +110,18 @@ block main
 					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 						label(
 							for="position"
-							class=`text-[16px]`
+							class=`text-[12px]`
 						) Vị trí
 							span(class="text-[red]")  *
 						input(
 							type="number", name="position" id="position"
-							class=`p-[5px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
+							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
 							placeholder="Tự động tăng..."
 						)
 					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 						label(
 							for="status"
-							class=`text-[16px]`
+							class=`text-[12px]`
 						) Trạng thái
 							span(class="text-[red]")  *
 						div(class=`flex flex-row gap-[10px]`)

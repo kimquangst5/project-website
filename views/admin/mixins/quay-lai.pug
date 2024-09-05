@@ -1,5 +1,6 @@
 mixin quay-lai(title, link)
-	a(
-		href=link
-		class=`text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[white] hover:bg-[#FA6B04] text-[#FA6B04] hover:text-[white] hover:rounded-[15px] rounded-[10px] inline-flex py-[5px]`
-	) #{title}
+	div(class="flex items-center gap-[10px] text-[12px] rounded-[5px] py-[4px] px-[10px] bg-adminColorHighlight text-adminColorHeadline") 
+		i(class="fa-duotone fa-solid fa-backward fa-beat-fade ")
+		a(
+			href=link
+		) #{title}

@@ -1,4 +1,4 @@
-const Role= require('../../models/role.model');
+const Role = require('../../models/role.model');
 require('dotenv').config();
 
 module.exports.index = async (req, res) => {
@@ -70,6 +70,21 @@ module.exports.editPatch = async (req, res) => {
 	
 };
 
+// [PATCH] /admin/roles/delete/:id
+module.exports.deletePatch = async (req, res) => {
+	const { id } = req.params;
+	await Role.updateOne({
+		_id: id
+	}, {
+		deleted: true
+	})
+	req.flash('success', "Xóa nhóm quyền thành công!!!");
+	res.json({
+		code: 200
+	})
+}
+
+
 // [GET] /admin/roles/permissions
 module.exports.permissions = async (req, res) => {
 
@@ -81,9 +96,6 @@ module.exports.permissions = async (req, res) => {
 		pageTitle: "Trang thiết lập phân quyền",
 		header: 'Thiết lập phân quyền',
 		records: records,
-		buttonTitle: "Quay lại cài đặt",
-		buttonLink: `/${process.env.admin}/setting`,
-		buttonSubmit: 'Cập nhật'
 	})
 	
 };
@@ -100,7 +112,7 @@ module.exports.permissionsPatch = async (req, res) => {
 		})
 	});
 
-	// req.flash('success', "Cập nhật quyền thành công");
+	req.flash('success', "Cập nhật quyền thành công");
 	res.json({
 		code : 200,
 		message: "Trần Kim Quang"

@@ -1,0 +1,41 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/khung-table.pug
+include ../../../mixins/quay-lai.pug
+
+block header
+	+quay-lai("Quay về thùng rác", `/${admin}/trash`)
+
+block main
+	- if(role.permisstion.includes(`trash_view_product`))
+		+khung-table("Nhóm quyền đã xóa")
+			table(class=`w-full text-center mt-[5px]`)
+				thead(class=`h-[50px]`)
+					tr
+						th Nhóm quyền
+						th Mô tả
+						th Xóa bởi
+				tbody
+					each it, i in roles
+						tr(class=`border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20`)
+							td(class=`text-left py-[5px] text-[14px]`) #{it.title}
+								div(class="opacity-[0%] hover:opacity-100 flex gap-[10px]") 
+									button(
+										type="button" class=`fa-solid fa-trash-can-undo rounded-[10px] text-[12px] text-[#5A5866]`
+										restore = it.id
+										linkRestore = `/${admin}/trash/roles/${it.id}`
+										title="Khôi phục nhóm quyền"
+									)
+									button(
+										type="button" 
+										class=`fa-solid fa-trash-xmark rounded-[10px] text-[12px] text-[red]/40`
+										nameImage = it.nameImage
+										permanently-delete = `/${admin}/trash/roles/${it.id}`
+										title="Xóa vĩnh viễn nhóm quyền"
+									)
+							td
+								div(class="text-[10px]") #{it.description}
+							td
+								div(class="text-[10px]") #{it.deletedBy}
+								div(class="text-[10px]") #{it.updatedAtFormat}
+	- else
+		div(no-view-permission)

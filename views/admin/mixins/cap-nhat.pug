@@ -1,5 +1,7 @@
 mixin cap-nhat(title, attributes)
-	button(
-		type="submit"
-		class=`text-[15px] px-[10px] border-[0px] bg-[#41404E] hover:rounded-[15px] text-[white] rounded-[10px] py-[10px] inline-flex` 
-	)&attributes(attributes) #{title}
+	div(class="flex gap-[10px] text-[12px] px-[10px] py-[5px] border-[0px] bg-[#2463EB] text-[white] rounded-[5px] items-center")
+		i(class=`fa-light fa-arrows-rotate`)
+		button(
+			type="submit"
+			class=`inline-flex` 
+		)&attributes(attributes) #{title}

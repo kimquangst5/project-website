@@ -5,7 +5,10 @@ tailwind.config = {
 	plugins: [
 		// require('tailwind-scrollbar')({ nocompatible: true }),
 
-		 ({ addComponents, theme }) => {
+		({
+			addComponents,
+			theme
+		}) => {
 			const screens = theme("screens", {});
 			const maxWidths = {
 				sm: `max-width: ${screens.sm}`, // 576px
@@ -52,45 +55,47 @@ tailwind.config = {
 			addComponents(maxWidths);
 			addComponents(containers);
 		},
-		function({ addUtilities }) {
+		function ({
+			addUtilities
+		}) {
 			const newUtilities = {
-			  '.scrollbar': {
-			    '&::-webkit-scrollbar': {
-				 'width': '5px',
-			    },
-			    '&::-webkit-scrollbar-track': {
-				 'background': 'transparent',
-			    },
-			    '&::-webkit-scrollbar-thumb': {
-				 'background': '#FA6B04',
-				 'border-radius': '5px',
-			    },
-			    '&::-webkit-scrollbar-thumb:hover': {
-				 'background': '#FA6B04',
-			    },
-			  },
-			  '.scrollbarmain': {
-			    '&::-webkit-scrollbar': {
-				 'width': '5px',
-			    },
-			    '&::-webkit-scrollbar-track': {
-				 'background': 'transparent',
-			    },
-			    '&::-webkit-scrollbar-thumb': {
-				 'background': '#FA6B04',
-				 'border-radius': '5px',
-			    },
-			    '&::-webkit-scrollbar-thumb:hover': {
-				 'background': '#FA6B04',
-			    },
-			  },
+				'.scrollbar': {
+					'&::-webkit-scrollbar': {
+						'width': '5px',
+					},
+					'&::-webkit-scrollbar-track': {
+						'background': 'transparent',
+					},
+					'&::-webkit-scrollbar-thumb': {
+						'background': '#FA6B04',
+						'border-radius': '5px',
+					},
+					'&::-webkit-scrollbar-thumb:hover': {
+						'background': '#FA6B04',
+					},
+				},
+				'.scrollbarmain': {
+					'&::-webkit-scrollbar': {
+						'width': '5px',
+					},
+					'&::-webkit-scrollbar-track': {
+						'background': 'transparent',
+					},
+					'&::-webkit-scrollbar-thumb': {
+						'background': '#FA6B04',
+						'border-radius': '5px',
+					},
+					'&::-webkit-scrollbar-thumb:hover': {
+						'background': '#FA6B04',
+					},
+				},
 			}
 			addUtilities(newUtilities, ['responsive', 'hover']);
-		   }
+		}
 	],
 
 	theme: {
-		
+
 		container: {
 			center: true,
 		},
@@ -119,8 +124,12 @@ tailwind.config = {
 		},
 		extend: {
 			colors: {
-				color1: "#263238",
-				color2: "#BEC2C4",
+				adminColorTertiary: "#bae8e8",
+				adminColorMain: "#fffffe",
+				adminColorHeadline: "#272343", // text
+				adminColorHeadlineHover: "#5A5866", //button
+				adminColorHighlight: "#ffd803", //button
+
 				color3: "#FA6B04",
 			},
 			fontFamily: {
@@ -130,9 +139,16 @@ tailwind.config = {
 			backgroundImage: {
 				'section7': 'linear-gradient(to bottom, white 50%, #0000001A 50%)',
 			},
-			
+
 		},
-		
+
 	},
-	
+
 };
+// Kiểm tra xem 'module' có tồn tại không (Node.js environment)
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = tailwind.config;
+   } else {
+	// Trình duyệt environment
+	window.tailwind.config = tailwind.config;
+   }

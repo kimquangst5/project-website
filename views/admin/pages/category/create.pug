@@ -1,8 +1,16 @@
 extends ../../layouts/default.pug
 include ../../mixins/select-tree.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/them-moi.pug
+include ../../mixins/cap-nhat.pug
+
+block header
+	+quay-lai("Quay lại danh sách danh mục", `/${admin}/product-category`)
+	+cap-nhat("Thêm mới")(buttonSubmitCreateProductCategory="")
 
 block main
-	div(class=`p-[10px]`)
+	+khung-table("Thêm mới danh mục sản phẩm")
 		form(
 			action=`/${admin}/product-category/create`
 			method="POST"
@@ -11,45 +19,45 @@ block main
 			enctype="multipart/form-data"
 		)
 			div(class=`flex flex-col gap-y-[10px]`)
-				div(class=`flex flex-col gap-y-[10px]`)
+				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 					label(
 						for="title"
-						class=`font-bold text-[20px]`
+						class=`text-[12px]`
 					) Tên danh mục
 					input(
 						type="text", name="title" id="title"
-						class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
-						placeholder="Nhập tiêu đề sản phẩm..."
+						class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
+						placeholder="Nhập tên danh mục..."
 						required
 					)
-				div(class=`flex flex-col gap-y-[10px]`)
+				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 					label(
 						for="parent_id"
-						class=`font-bold text-[20px]`
+						class=`text-[12px]`
 					) Danh mục cha
 					select(id='parent_id' name='parent_id' 
-					class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`)
+					class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`)
 						option(value='') --- Chọn danh mục cha ---
 						+select-tree(category, '')
-				div(class=`flex flex-col gap-y-[10px]`)
+				div(class=`flex flex-col items-left gap-y-[10px] w-full`)
 					label(
 						for="description"
-						class=`font-bold text-[20px]`
+						class=`text-[12px]`
 					) Mô tả
 					textarea(
 						id="description" name="description" cols="3" rows="3"
-						class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
+						class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
 						placeholder="Nhập mô tả sản phẩm..."
 						textarea-mce
 					)
 				div(class=`flex flex-col gap-y-[10px]` upload-image)
 					label(
 						for="thumbnail"
-						class=`font-bold text-[20px]`
+						class=`text-[12px]`
 					) Ảnh
 					input(
 						type="file", name="thumbnail" id="thumbnail"
-						class=`p-[5px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2 file:bg-[#06BC84] file:border-[0] file:rounded-[10px] file:px-[10px] file:py-[5px] file:hover:cursor-pointer hover:cursor-pointer file:hover:rounded-[20px] file:text-[white]`
+						class=`rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2 file:bg-[#06BC84] file:border-[0] file:rounded-[10px] file:px-[10px] file:py-[5px] file:hover:cursor-pointer hover:cursor-pointer file:hover:rounded-[20px] file:text-[white]`
 						placeholder="Nhập ảnh sản phẩm..."
 						accept='image/*'
 						upload-image-input
@@ -64,10 +72,10 @@ block main
 					) vị trí
 					input(
 						type="number", name="position" id="position"
-						class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
+						class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
 						placeholder="Tự động tăng..."
 					)
-				div(class=`flex justify-center gap-[20px]`)
+				div(class=`flex justify-center gap-[20px] text-[12px]`)
 					div(class=`flex flex-row gap-[10px]`)
 						input(
 							type="radio", name='status' value="active" id="active"
@@ -77,7 +85,7 @@ block main
 						)
 						label(
 							for="active"
-							class=`font-bold text-[20px] capitalize`
+							class=`capitalize`
 						) Hoạt động
 					div(class=`flex flex-row gap-[10px]`)
 						input(
@@ -86,7 +94,7 @@ block main
 						)
 						label(
 							for="inactive"
-							class=`font-bold text-[20px] capitalize`
+							class=`capitalize`
 						) dừng Hoạt động
 			button(type="submit"
 						class=`text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto`

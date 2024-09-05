@@ -20,7 +20,7 @@ module.exports = async (req, res, next) => {
 			})
 			if(accounts){
 				res.locals.account = accounts
-				const role = roles.forEach(it => {
+				roles.forEach(it => {
 					if(it.id == accounts.role_id){
 						res.locals.role = it
 					}

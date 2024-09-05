@@ -104,7 +104,6 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/accounts/edit/:id
 module.exports.editPatch = async (req, res) => {
-	console.log(req.params);
 	const { id } = req.params
 	console.log(req.body);
 	await Account.updateOne({
@@ -113,4 +112,21 @@ module.exports.editPatch = async (req, res) => {
 
 
 	res.redirect('back');
+}
+
+// [PATCH] /admin/accounts/delete/:id
+module.exports.delete = async (req, res) => {
+	const { id } = req.params
+	await Account.updateOne({
+		_id: id
+	}, {
+		deleted: true
+	});
+
+
+	req.flash('success', "Xóa thành công!!!");
+
+	res.json({
+		code: 200
+	})
 }

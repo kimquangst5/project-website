@@ -38,17 +38,18 @@ block main
 									value = it.id
 								)
 							td(
-								class=`text-[20px]`
+								class=`text-[14px]`
 								tickItem
 							) #{it.title}
 								div(class="group-hover:flex group-hover:gap-x-[10px] group-hover:items-center hidden group-hover:block") 
 									a(
 										href=`/${admin}/roles/edit/${it.id}`
-										class=`text-[#00712D] text-[14px] inline-block`
+										class=`text-[#00712D] text-[10px] inline-block`
 									) Sửa
-									button(
-										type="button" 
-										class=`text-[red]/80 text-[14px]`
-										button-delete = `/${admin}/roles/delete/${it.id}`
-									) Xóa
-							td !{it.description}
+									if(it.title != "Quản trị viên")
+										button(
+											type="button" 
+											class=`text-[red]/80 text-[10px]`
+											button-delete = `/${admin}/roles/delete/${it.id}`
+										) Xóa
+							td(class=`text-[12px]`) !{it.description}

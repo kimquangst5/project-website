@@ -18,15 +18,15 @@ router.patch('/change-multi', controller.changeMulti);
 
 router.patch('/delete/:id', controller.delete);
 
-router.get('/trash', controller.trash);
+// router.get('/trash', controller.trash);
 
-router.patch('/trash/:id', controller.trashRestore);
+// router.patch('/trash/:id', controller.trashRestore);
 
-router.delete('/trash/:id/:nameImage', controller.trashPermanentlyDelete);
+// router.delete('/trash/:id/:nameImage', controller.trashPermanentlyDelete);
 
-router.patch('/change-multi-restore', controller.changeMultiRestore);
+// router.patch('/change-multi-restore', controller.changeMultiRestore);
 
-router.patch('/change-position/:id', controller.changePosition);
+// router.patch('/change-position/:id', controller.changePosition);
 
 router.get('/create', controller.create);
 

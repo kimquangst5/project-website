@@ -193,7 +193,7 @@ module.exports.delete = async (req, res) => {
 			deletedBy: res.locals.account.id
 		})
 
-		req.flash('success', 'Thanks! Xóa sản phẩm thành công!');
+		req.flash('success', 'Xóa sản phẩm thành công!');
 
 		res.json({
 			code: 200
@@ -207,173 +207,36 @@ module.exports.delete = async (req, res) => {
 
 }
 
-// [GET] /admin/product/trash
-module.exports.trash = async (req, res) => {
-
-	let find = {
-		deleted: true
-	}
-
-	// Fillter Status
-	if (req.query.status) {
-		find.status = req.query.status
-	}
-	// End Fillter Status
-
-	// Search
-	let key = ''
-	if (req.query.key) {
-		const regex = new RegExp(req.query.key, 'i') //regex expression
-		find.title = regex
-		key = req.query.key
-	}
-	// End  Search
-
-	// Pagination
-	let pagination = {
-		current: 1,
-		limit: 5
-	};
-
-	pagination.totalProduct = await Product.countDocuments(find)
-	if (req.query.page) {
-		pagination.current = parseInt(req.query.page)
-	}
-
-	if (pagination.totalProduct > 0) {
-		pagination.skip = (pagination.limit * (pagination.current - 1))
-		pagination.totalPage = Math.ceil(pagination.totalProduct / pagination.limit)
-	}
-	// End Pagination
-
-	// Fillter Status
-	const fillerStatus = [{
-			lable: '',
-			value: 'Tất cả'
-		},
-		{
-			lable: 'active',
-			value: 'Hoạt động'
-		},
-		{
-			lable: 'inactive',
-			value: 'Dừng hoạt động'
-		}
-	];
-	// Hết Fillter Status
-	const product = await Product
-		.find(find)
-		.limit(pagination.limit)
-		.skip(pagination.skip)
-
-	for (const it of product) {
-		const name = await Account.find({
-			_id: it.deletedBy
-		}).select("fullName")
-		name.forEach(item => {
-			it.deletedBy = item.fullName
-		});
-		it.updatedAtFormat = moment(it.updatedAt).format('DD/MM/YY hh:mm:ss a');
-	}
-
-	for (const it of product) {
-		it.priceNew = it.price - (it.price * it.discountPercentage) / 100
-		it.priceNew = it.priceNew.toFixed(2);
-	}
-
-	const deleteOption = [{
-			lable: 'Chọn hành động ... ',
-			value: ''
-		},
-		{
-			lable: 'Khôi phục các sản phẩm đã chọn',
-			value: 'restore'
-		},
-		{
-			lable: 'Xóa vĩnh viễn các sản phẩm đã chọn', //perma deleted
-			value: 'permanentlyDelete'
-		}
-	]
-
-	res.render('admin/pages/trash/index.pug', {
-		pageTitle: 'Trang Thùng rác',
-		header: 'Thùng rác',
-		product: product,
-		key: key,
-		pagination: pagination,
-		fillerStatus: fillerStatus,
-		deleteOption: deleteOption
-	})
-};
-
-// [PATCH] /admin/product/trash/:id
-module.exports.trashRestore = async (req, res) => {
-
-	const {
-		id
-	} = req.params;
-
-	await Product.updateOne({
-		_id: id
-	}, {
-		deleted: false
-	})
-
-	req.flash('success', 'Khôi phục sản phẩm thành công!')
-
-	res.json({
-		code: 200
-	})
-}
-
-// [DELETE] /admin/product/trash/:id
-module.exports.trashPermanentlyDelete = async (req, res) => {
-	const {
-		id,
-		nameImage
-	} = req.params;
-
-	await Product.deleteOne({
-		_id: id
-	})
-
-	await uploadCloudMiddlewares.deleteSingle(nameImage);
-
-	res.json({
-		code: 200
-	})
-}
-
 // [PATCH] /admin/product/change-multi-restore
 module.exports.changeMultiRestore = async (req, res) => {
 	try {
-		const status = req.body.status;
-		const ids = req.body.ids;
+		// const status = req.body.status;
+		// const ids = req.body.ids;
 
-		if (status == 'restore') {
-			await Product.updateMany({
-				_id: ids
-			}, {
-				deleted: false
-			})
-			req.flash('success', 'Khôi phục sản phẩm thành công!')
-		}
+		// if (status == 'restore') {
+		// 	await Product.updateMany({
+		// 		_id: ids
+		// 	}, {
+		// 		deleted: false
+		// 	})
+		// 	req.flash('success', 'Khôi phục sản phẩm thành công!')
+		// }
 
-		if (status == 'permanentlyDelete') {
+		// if (status == 'permanentlyDelete') {
 
-			await Product.deleteMany({
-				_id: ids
-			})
-			await uploadCloudMiddlewares.deleteMulti(req.body.nameImages)
-			req.flash('success', 'Xóa vĩnh viễn sản phẩm thành công!')
-		}
+		// 	await Product.deleteMany({
+		// 		_id: ids
+		// 	})
+		// 	await uploadCloudMiddlewares.deleteMulti(req.body.nameImages)
+		// 	req.flash('success', 'Xóa vĩnh viễn sản phẩm thành công!')
+		// }
 
 
-		res.json({
-			code: 200
-		})
+		// res.json({
+		// 	code: 200
+		// })
 	} catch (error) {
-		req.flash('error', 'Nhập sai!')
+		// req.flash('error', 'Nhập sai!')
 	}
 }
 
@@ -434,7 +297,7 @@ module.exports.createPost = async (req, res) => {
 
 			req.flash('success', 'Thêm mới sản phẩm thành công!')
 			res.redirect(`/${process.env.admin}/product`)
-		} else res.redirect("/admin/images/403 Error Forbidden-bro.svg")
+		}
 	} catch (error) {
 		res.redirect(`/${process.env.admin}/product`)
 	}

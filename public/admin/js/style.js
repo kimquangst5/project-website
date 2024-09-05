@@ -1,3 +1,12 @@
+// Trong file JavaScript của bạn (ví dụ: style.js)
+// Kiểm tra môi trường và sử dụng cấu hình phù hợp
+const config = typeof module !== 'undefined' && module.exports ?
+	require('../../tailwind.config.js') :
+	window.tailwind.config;
+
+const colors = config.theme.extend.colors
+const fonts = config.theme.extend.fontFamily
+
 // const prefixAdmin = require('../../../config/system')
 
 // Fillter Status
@@ -18,13 +27,29 @@ if (buttonStatus.length > 0) {
 	});
 	const statusCurrent = url.searchParams.get('status') || '';
 	const buttonStatusCurrent = document.querySelector(`button[button-status = '${statusCurrent}']`);
-	buttonStatusCurrent.classList.add('bg-[#FA6B04]', 'text-[white]')
+	buttonStatusCurrent.classList.add(`bg-[${colors.adminColorTertiary}]`, `text-[${colors.adminColorMain}]`)
 }
 // End Fillter Status
 
 // Search
 const formSearch = document.querySelector(`form[form-search]`);
 if (formSearch) {
+	const input = formSearch.querySelector('input')
+	const i = formSearch.querySelector('i')
+	const h = i.clientWidth
+	console.log(h)
+	i.classList.toggle(`mr-[-${h}px]`)
+	if (input) {
+		input.addEventListener("focus", () => {
+			i.classList.toggle(`mr-[-${h}px]`)
+			i.classList.toggle(`opacity-0`)
+		});
+		input.addEventListener("blur", () => {
+			i.classList.toggle(`mr-[-${h}px]`)
+			i.classList.toggle(`opacity-0`)
+		});
+	}
+
 	let url = new URL(window.location.href)
 	formSearch.addEventListener('submit', (event) => {
 		event.preventDefault();
@@ -131,6 +156,9 @@ if (buttonChangeStatus.length > 0) {
 					if (data.code == 400) {
 						window.location.reload();
 					}
+					if (data.code == 403) {
+						window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
+					}
 				})
 		});
 
@@ -235,6 +263,9 @@ if (boxActions) {
 						if (data.code == 200) {
 							window.location.reload();
 						}
+						if (data.code == 403) {
+							window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
+						}
 
 					})
 			}
@@ -264,6 +295,9 @@ if (buttonDelete.length > 0) {
 						if (data.code == 400) {
 							window.location.reload();
 						}
+						if (data.code == 403) {
+							window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
+						}
 					})
 			}
 
@@ -273,23 +307,40 @@ if (buttonDelete.length > 0) {
 // Xóa bản ghi
 
 // Khôi phục bản ghi
-const buttonRestore = document.querySelectorAll(`button[restore]`);
+const buttonRestore = document.querySelectorAll(`button[linkRestore]`);
 if (buttonRestore.length > 0) {
 	buttonRestore.forEach(button => {
+		console.log(button)
 		button.addEventListener('click', () => {
-			const id = button.getAttribute('restore');
-			fetch(`/admin/product/trash/${id}`, {
-					method: 'PATCH',
-					headers: {
-						"Content-Type": "application/json",
-					},
-				})
-				.then(res => res.json())
-				.then(data => {
-					if (data.code == 200) {
-						window.location.reload();
-					}
-				})
+			Swal.fire({
+				title: "Bạn có chắc muốn khôi phục?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Khôi phục ngay!"
+			   }).then((result) => {
+				if (result.isConfirmed) {
+					const link = button.getAttribute('linkRestore');
+					
+					fetch(link, {
+							method: "PATCH",
+							headers: {
+								"Content-Type": "application/json",
+							},
+						})
+						.then(res => res.json())
+						.then(data => {
+							if (data.code == 200) {
+								window.location.reload();
+							}
+							if (data.code == 403) {
+								window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
+							}
+						})
+				}
+			   });
+					
 
 		});
 	});
@@ -301,20 +352,52 @@ const permanentlyDelete = document.querySelectorAll(`button[permanently-delete]`
 if (permanentlyDelete.length > 0) {
 	permanentlyDelete.forEach(button => {
 		button.addEventListener('click', () => {
-			const id = button.getAttribute('permanently-delete');
-			const nameImage = button.getAttribute('nameImage');
-			fetch(`/admin/product/trash/${id}/${nameImage}`, {
-					method: 'DELETE',
-					headers: {
-						"Content-Type": "application/json",
-					},
-				})
-				.then(res => res.json())
-				.then(data => {
-					if (data.code == 200) {
-						window.location.reload();
+			Swal.fire({
+				title: "Bạn có chắc muốn xóa vĩnh viễn không?",
+				text: "Khi xóa sẽ không thể khôi phục lại!",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Xóa vĩnh viễn"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					const linkImage = button.getAttribute('nameImage');
+					let link = button.getAttribute('permanently-delete');
+					if (linkImage) {
+						link = link + linkImage
 					}
-				})
+					fetch(link, {
+							method: 'DELETE',
+							headers: {
+								"Content-Type": "application/json",
+							},
+						})
+						.then(res => res.json())
+						.then(data => {
+							if (data.code == 200) {
+								window.location.reload();
+							}
+							if (data.code == 400) {
+								Swal.fire({
+									position: "top-end",
+									icon: "error",
+									title: "Xóa thất bại. Vui lòng xóa lại",
+									showConfirmButton: false,
+									timer: 1500
+								});
+								setTimeout(() => {
+									window.location.reload();
+								}, 1500);
+
+							}
+							if (data.code == 403) {
+								window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
+							}
+						})
+				}
+			});
+
 
 		});
 	});
@@ -455,7 +538,7 @@ if (tablePermissions) {
 		});
 	}
 
-	const buttonSubmit = document.querySelector(`header a[roles]`);
+	const buttonSubmit = document.querySelector(`header[roles]`);
 	if (buttonSubmit) {
 		const roles = [];
 		buttonSubmit.addEventListener('click', (event) => {
@@ -493,13 +576,10 @@ if (tablePermissions) {
 					.then(res => res.json())
 					.then(data => {
 						if (data.code == 200) {
-							Swal.fire({
-								title: "Cập nhật thành công!",
-								text: data.message,
-								icon: "success",
-								showConfirmButton: false,
-								timer: 1500
-							});
+							window.location.reload();
+						}
+						if (data.code == 403) {
+							window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
 						}
 					})
 			}
@@ -534,34 +614,35 @@ if (loginAdmin) {
 					body: JSON.stringify(dataLogin),
 				})
 				.then(res => res.json())
-				.then(async (data) => {
+				.then((data) => {
 					if (data.code == 200) {
-						await Swal.fire({
+						Swal.fire({
 							position: "top-end",
 							icon: "success",
 							title: "Đăng nhập thành công!",
 							showConfirmButton: false,
 							timer: 1500
 						});
-						location.href = "/admin/dashboard"
-						await Swal.fire({
-							position: "top-center",
-							icon: "success",
-							title: "Hello Kim Quang",
-							showConfirmButton: false,
-							timer: 5000
-						});
+						setTimeout(() => {
+							location.href = "/admin/main"
+						}, 1000);
+						
 
 					}
 					if (data.code == 400) {
-						await Swal.fire({
+						Swal.fire({
 							position: "top-end",
 							icon: "error",
 							title: "Đăng nhập thất bại!",
 							showConfirmButton: false,
 							timer: 1500
 						});
-						location.href = "/admin"
+						setTimeout(() => {
+							location.href = "/admin/main"
+						}, 500);
+					}
+					if (data.code == 403) {
+						window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
 					}
 				})
 		});
@@ -580,16 +661,22 @@ if (logOut) {
 				},
 			})
 			.then(res => res.json())
-			.then(async (data) => {
+			.then((data) => {
 				if (data.code == 200) {
-					await Swal.fire({
+					Swal.fire({
 						position: "top-end",
 						icon: "success",
 						title: "Đăng xuất thành công!",
 						showConfirmButton: false,
 						timer: 1500
 					});
-					window.location.href = data.message
+					setTimeout(() => {
+						window.location.href = data.message
+					}, 500);
+					
+				}
+				if (data.code == 403) {
+					window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
 				}
 			})
 	});
@@ -684,10 +771,13 @@ if (noViewPermission) {
 	Swal.fire({
 		position: "top-center",
 		icon: "error",
-		title: "Bạn không xem được nội dung này",
-		showConfirmButton: true,
-		// timer: 1500
+		title: "Bạn không xem được nội dung này!",
+		showConfirmButton: false,
+		timer: 1500
 	});
+	setTimeout(() => {
+		history.back()
+	}, 1500);
 }
 
 // XỬ LÍ ẢNH LỖI
@@ -726,18 +816,15 @@ if (showBox.length > 0) {
 			const cha = box.parentElement;
 			const contentBox = cha.querySelector('[content-box]');
 			if (contentBox) {
-				if (contentBox.className.includes('h')) {
-					contentBox.classList.remove("h-0", "hidden")
-					const icon = box.querySelector('i');
-					if (icon) {
-						icon.classList.remove("rotate-90")
-					}
-				} else {
-					contentBox.classList.add('h-0', "hidden")
-					const icon = box.querySelector('i');
-					if (icon) {
-						icon.classList.add("rotate-90")
-					}
+				const icon = box.querySelector('i');
+				if (icon) {
+					icon.classList.toggle("rotate-90")
+				}
+				const con = contentBox.firstElementChild
+				if (con) {
+					const height = con.clientHeight
+					con.classList.toggle(`mt-[-${height}px]`)
+					con.classList.add(`duration-1000`)
 				}
 			}
 		});
@@ -775,39 +862,39 @@ if (Aside) {
 							window.location.href = link
 						});
 						if (path == link) {
-							li.style.color = "white"
+							li.style.color = `${colors.adminColorMain}`
 							const iCha = li.parentElement.querySelector('i');
 							if (iCha) {
-								iCha.style.color = "white"
+								iCha.style.color = `${colors.adminColorMain}`
 							} else {
 								// findParentLi(li);
 								const litag = findParentLi(li).parentElement.querySelector('li');
 								const allLi = findParentLi(li).parentElement
-								
+
 								if (allLi) {
 									const divParent = li.parentElement.parentElement.parentElement.parentElement;
-									divParent.classList.toggle("hover:bg-[#5A5866]")
+									divParent.classList.toggle(`hover:bg-[${colors.adminColorHeadlineHover}]`)
 									if (divParent) {
 										const muiTenCurrent = divParent.querySelector("[mui-ten]");
 										if (muiTenCurrent) {
 											muiTenCurrent.classList.toggle("rotate-90")
 										}
 									}
-									allLi.style.color = "white"
+									allLi.style.color = `${colors.adminColorMain}`
 									const ul = allLi.querySelector('ul');
 									if (ul) {
-										ul.classList.add("text-[white]/70")
+										ul.classList.add(`text-[${colors.adminColorMain}]/70`)
 									}
 								}
 							}
 						}
 						const divCha = li.parentElement;
 						if (divCha) {
-							divCha.classList.add("hover:text-[white]", "hover:bg-[#5A5866]")
+							divCha.classList.add(`hover:text-[${colors.adminColorMain}]`, `hover:bg-[${colors.adminColorHeadlineHover}]`)
 						}
 					} else {
 						const div = li.parentElement;
-						div.classList.add("hover:text-[white]");
+						div.classList.add(`hover:text-[${colors.adminColorMain}]`);
 
 						const ulCon = div.querySelector('ul');
 						if (ulCon) {
@@ -853,7 +940,6 @@ if (Aside) {
 								ulParent.classList.toggle("rotate-90")
 							}
 							const ul = div.querySelector('ul');
-							const h = ul.clientHeight
 							if (ul) {
 								const listDiv = ul.querySelectorAll('div');
 								if (listDiv.length > 0) {
@@ -868,11 +954,11 @@ if (Aside) {
 						});
 						const ul = div.querySelector('ul');
 						if (ul) {
-							ul.classList.add("text-[white]/70")
+							ul.classList.add(`text-[${colors.adminColorMain}]/70`)
 							const itdiv = ul.querySelectorAll('div');
 							if (itdiv.length > 0) {
 								itdiv.forEach(it => {
-									it.classList.add("hover:text-[white]", "hover:bg-[#5A5866]")
+									it.classList.add(`hover:text-[${colors.adminColorMain}]`, "hover:bg-[#5A5866]")
 								});
 							}
 						}

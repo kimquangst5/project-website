@@ -3,13 +3,13 @@ include ../../mixins/pagination.pug
 include ../../mixins/khung-table.pug
 include ../../mixins/permission-mixin.pug
 include ../../mixins/quay-lai.pug
-include ../../mixins/them-moi.pug
+include ../../mixins/cap-nhat.pug
 include ../../mixins/box-permission.pug
 
 
 block header
 	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
-	+them-moi("Cập nhật", ``, roles)
+	+cap-nhat("Cập nhật", ``)(roles = "")
 
 block main
 	+khung-table("Danh sách phân quyền")
@@ -53,7 +53,12 @@ block main
 
 
 				+permission("Thùng rác")
-				+box-permission("Xem", "trash", "view")
-				//- +permission("", "product-category")
-				//- +permission("Cài đặt chung", "dashboard")
+				+box-permission("Xem tất cả", "trash", "view")
+				+box-permission("Xem phần sản phẩm", "trash", "view_product")
+				+box-permission("Xem phần bài viết", "trash", "view_article")
+				+box-permission("Xem phần tài khoản quản trị", "trash", "views_account")
+				+box-permission("Xem phần nhóm quyền", "trash", "view_role")
+
+				+permission("Tài khoản quản trị")
+				+box-permission("Tạo", "account", "create")
 				

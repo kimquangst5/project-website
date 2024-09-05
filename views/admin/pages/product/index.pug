@@ -6,21 +6,22 @@ include ../../mixins/pagination.pug
 include ../../mixins/khung-table.pug
 include ../../mixins/quay-lai.pug
 include ../../mixins/them-moi.pug
+include ../../mixins/checkItem.pug
 
 block header
 	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
 	- if(role.permisstion.includes('products_create'))
-		+them-moi("+ Thêm mới", `/${admin}/product/create`)
+		+them-moi("Thêm sản phẩm", `/${admin}/product/create`)
 
 
 block main
 	- if(role.permisstion.includes('products_view'))
 		- if(role.permisstion.includes('products_fillterandsearch'))
-			- if(product.length > 0 && pagination.totalProduct > 1)
-				+khung-table("Lọc theo trang thái")
-					div(class=`flex flex-wrap gap-[10px] justify-between p-[10px] items-center`)
-						+fillter-status(fillerStatus)
-						+search(key)
+			
+			+khung-table("Lọc theo trang thái")
+				div(class=`flex flex-wrap gap-[10px] justify-between p-[10px] items-center`)
+					+fillter-status(fillerStatus)
+					+search(key)
 		- if(role.permisstion.includes('products_quickActionMenu'))
 			if(product.length > 0  && pagination.totalProduct > 1)
 				+khung-table("hành động")
@@ -30,7 +31,7 @@ block main
 			if(product.length > 0  && pagination.totalProduct > 1)
 				+khung-table("Sắp xếp")
 					div(class="flex gap-[10px] items-center my-[20px] justify-center" sort) 
-						select(name="" class="outline-[#1C404C] outline-[1px] pl-[10px] rounded-[10px] py-[10px] text-[18px]")
+						select(name="" class="outline-adminColorTertiary bg-transparent outline-[1px] pl-[10px] rounded-[10px] py-[5px] text-[12px]")
 							option(value="position-desc")  Vị trí giảm dần
 							option(value="position-asc")  Vị trí tăng dần
 							option(value="title-asc")  Tên sản phẩm tăng dần
@@ -41,7 +42,7 @@ block main
 							option(value="updatedAt-desc")  Ngày sửa đổi giảm dần
 							option(value="stock-asc")  Số lượng tăng dần
 							option(value="stock-desc")  Số lượng giảm dần
-						button(type="button" class="rounded-[10px] bg-[#1C404C] text-[white] text-[18px] p-[10px]") Reset
+						button(type="button" class="rounded-[10px] bg-adminColorHeadline text-adminColorMain text-[12px] px-[10px] py-[5px]") Reset
 
 		+khung-table("Danh sách sản phẩm")
 			if(product.length > 0)
@@ -59,7 +60,8 @@ block main
 							th(class=``) Hình ảnh
 							th(class="w-full") Sản phẩm
 							th Giá
-							th Vị trí
+							th(class=`w-max`)
+								div(class="w-max") Vị trí
 							th(class="") Trạng thái
 							th(class="") Tạo bởi
 					tbody
@@ -70,12 +72,7 @@ block main
 							)
 								if(pagination.totalProduct > 1)
 									td(class=`relative z-[50]`)
-										input(
-											type="checkbox", 
-											name="checkItem"
-											class=`appearance-none h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer relative z-[50] px-[10px]`
-											value = it.id
-										)
+										+checkItem(it.id)
 								td(class=`relative z-[5] class="px-[20px]"`) #{pagination.limit * (pagination.current - 1) + i + 1}
 								td(class=`w-1/6 px-[20px]`)
 									img(
@@ -92,23 +89,24 @@ block main
 									div(class="flex justify-between") 
 										div(class="flex flex-col") 
 											div(class="") #{it.title}
-											div(class="group-hover:flex group-hover:items-center hidden group-hover:block gap-[10px]")
-												- if(role.permisstion.includes("products_edit"))
-													a(
-														href=`/${admin}/product/edit/${it.id}`
-														type="button" class=`text-[#00712D] text-[10px]`
-														title="Chỉnh sửa sản phẩm"
-													) Sửa
-												- if(role.permisstion.includes("products_delete"))
-													button(
-														type="button" 
-														class=`text-[red]/80 text-[10px]`
-														button-delete = `/${admin}/product/delete/${it.id}
-														`
-														title="Xóa sản phẩm"
-													) Xóa
+											- if(role.permisstion.includes("products_edit") || role.permisstion.includes("products_delete"))
+												div(class="flex items-center opacity-0 group-hover:opacity-100 gap-[10px]")
+													- if(role.permisstion.includes("products_edit"))
+														a(
+															href=`/${admin}/product/edit/${it.id}`
+															type="button" class=`text-[#00712D] text-[10px]`
+															title="Chỉnh sửa sản phẩm"
+														) Sửa
+													- if(role.permisstion.includes("products_delete"))
+														button(
+															type="button" 
+															class=`text-[red]/80 text-[10px]`
+															button-delete = `/${admin}/product/delete/${it.id}
+															`
+															title="Xóa sản phẩm"
+														) Xóa
 										div(class="flex items-center") 
-											a(href=`/${admin}/product/detail/${it.id}` class="mr-[10px] text-[15px] fa-solid fa-eye flex hidden text-[#4C30A5] group-hover:flex z-[50] " title="Xem chi tiết sản phẩm")
+											a(href=`/${admin}/product/detail/${it.id}` class="mr-[10px] text-[15px] fa-solid fa-eye flex opacity-0 group-hover:opacity-100 text-[#4C30A5] " title="Xem chi tiết sản phẩm")
 
 								td(class=" px-[5px]") #{it.priceNew}.000đ
 								td(class=`w-min`)
@@ -118,7 +116,7 @@ block main
 											type="number"
 											name="position"
 											value=it.position
-											class=`max-w-[70px] mx-auto outline-[#FA6B04]`
+											class=`bg-transparent max-w-[70px] mx-auto outline-adminColorTertiary`
 											min='1'
 										)
 									- else
@@ -129,7 +127,7 @@ block main
 											button(
 												link=(`/${admin}/product/change-status/inactive/${it.id}`)
 												type="button"
-												class=`bg-[#06BC84] w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành dừng hoạt động") Hoạt động
+												class=`bg-[#06BC84] w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành dừng hoạt động") Đang hoạt động
 										- else
 											button(
 												link=`/${admin}/product/change-status/active/${it.id}`

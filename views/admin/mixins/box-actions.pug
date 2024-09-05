@@ -1,15 +1,15 @@
 mixin box-actions(link, list)
 	div(
-		class=`rounded-[10px] h-[50px] truncate border-[1px] border-[black]/30 mx-[10px] flex outline-none w-1/2 mx-auto my-[20px]`
+		class=`rounded-[10px] h-[50px] truncate border-[1px] border-[black]/30 mx-[10px] flex outline-none w-1/2 mx-auto my-[20px] bg-transparent`
 		box-actions = link
 	)
 		select(
 			name=""
-			class=`flex-1 outline-none pl-[10px]`
+			class=`flex-1 outline-none pl-[10px] text-adminColorHeadline bg-transparent`
 		)
 			each it in list
-				option(value=it.value) #{it.lable}
+				option(value=it.value class=`text-adminColorHeadline`) #{it.lable}
 		button(
 			type="button"
-			class=`bg-[#FA6B04] text-[white] h-full px-[10px]`
+			class=`bg-adminColorTertiary text-adminColorHeadline h-full px-[10px]`
 		) Cập nhật

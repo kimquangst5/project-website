@@ -7,8 +7,8 @@ include ../../mixins/them-moi.pug
 
 block header
 	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
-	if(role.permisstion.includes('account_create'))
-		+them-moi("+ Thêm mới", `/${admin}/accounts/create`)
+	- if(role.permisstion.includes('account_create'))
+		+them-moi("Thêm tài khoản", `/${admin}/accounts/create`)
 
 block main
 	//- if(roles.length > 0)
@@ -16,13 +16,6 @@ block main
 		table(class=`w-full text-left mt-[5px]`)
 			thead(class=`h-[50px] bg-[#F9FBFF]`)
 				tr
-					
-					th(class=`h-full`)
-						input(
-							type="checkbox", 
-							name="checkAll"
-							class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#263238] hover:cursor-pointer`
-						)
 					th Họ tên
 					th Nhóm quyền
 					th Email
@@ -33,43 +26,37 @@ block main
 						tr(
 							class=`group hover:cursor-pointer border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20 h-[50px]`
 						)
-							td(class=`relative z-[50]`)
-								input(
-									type="checkbox", 
-									name="checkItem"
-									class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer relative z-[50]`
-									value = it.id
-								)
 							td(
-								class=`text-[14px]`
+								class=`text-[12px]`
 								tickItem
 							) #{it.fullName}
 								div(class="group-hover:flex group-hover:gap-x-[10px] group-hover:items-center hidden group-hover:block") 
 									a(
 										href=`/${admin}/accounts/edit/${it.id}`
-										class=`text-[#00712D] text-[12px] inline-block`
+										class=`text-[#00712D] text-[10px] inline-block`
 									) Sửa
-									button(
-										type="button" 
-										class=`text-[red]/80 text-[12px]`
-										button-delete = `/${admin}/accounts/delete/${it.id}`
-									) Xóa
+									- if(it.role_id != '66d6e9cb88e0293ab309a69a')
+										button(
+											type="button" 
+											class=`text-[red]/80 text-[10px]`
+											button-delete = `/${admin}/accounts/delete/${it.id}`
+										) Xóa
 									a(
 										href=`/${admin}/accounts/change-password/${it.id}`
-										class=`text-[#1C404C] text-[12px] inline-block`
+										class=`text-[#1C404C] text-[10px] inline-block`
 									) Đổi mật khẩu
 							td(
-								class=`text-[14px]`
+								class=`text-[12px]`
 							) #{it.roleTitle}
 							td(
-								class=`text-[14px]`
+								class=`text-[12px]`
 								tickItem
 							) #{it.email}
 							td(
-								class=`text-[14px]`
+								class=`text-[12px]`
 							) #{it.phone}
 							td(class="text-center")
 								if(it.status == 'active')
-									button(type="button" class="text-[10px] px-[7px] py-[2px] bg-[#06BC84] text-[white] rounded-[10px]") Hoạt động
+									button(type="button" class="text-[10px] px-[7px] py-[2px] bg-[#06BC84] text-[white] rounded-[10px]") Đang hoạt động
 								else
 									button(type="button" class="text-[10px] px-[7px] py-[2px] bg-[red]/40 text-[white] rounded-[10px]") Dừng hoạt động

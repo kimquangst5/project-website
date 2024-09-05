@@ -1,14 +1,13 @@
-extends ../../../layouts/default.pug
-include ../../../mixins/quay-lai.pug
-include ../../../mixins/khung-table.pug
-
-
-block header
-	+quay-lai("Trở về trang thùng rác", `/${admin}/trash`)
+extends ../../layouts/default.pug
+include ../../mixins/box-actions.pug
+include ../../mixins/fillter-status.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/khung-table.pug
 
 block main
-	- if(role.permisstion.includes(`trash_view_product`))
-		+khung-table("Danh sách sản phẩm đã xóa")
+	- if(role.permisstion.includes('trash_view'))
+		+khung-table("Danh sách sản phẩm")
 			table(class=`w-full text-center mt-[5px]`)
 				thead(class=`h-[50px]`)
 					tr
@@ -18,8 +17,11 @@ block main
 								name="checkAll"
 								class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#263238] hover:cursor-pointer`
 							)
+						th STT
 						th Hình ảnh
 						th Sản phẩm
+						th Giá
+						th Hành động
 						th Xóa bởi
 				tbody
 					each it, i in product
@@ -31,6 +33,7 @@ block main
 									class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer`
 									value = it.id
 								)
+							td #{pagination.limit * (pagination.current - 1) + i + 1}
 							td(class=``)
 								img(
 									src=it.thumbnail, 
@@ -38,23 +41,23 @@ block main
 									class=`h-[50px] mx-auto`
 									nameImageImg = it.nameImage
 								)
-							td(class=`text-left py-[5px]`) #{it.title}
-								div(class="opacity-[0%] hover:opacity-100 flex gap-[40px]") 
-									button(
-										type="button" class=`fa-solid fa-trash-can-undo rounded-[10px] text-[20px] text-[#5A5866]`
-										restore = it.id
-										linkRestore = `/${admin}/trash/product/${it.id}`
-										title="Khôi phục sản phẩm"
-									)
-									button(
-										type="button" 
-										class=`fa-solid fa-trash-xmark rounded-[10px] text-[20px] text-[red]/40`
-										nameImage = it.nameImage
-										permanently-delete = `/${admin}/trash/product/${it.id}`
-										title="Xóa vĩnh viễn sản phẩm"
-									)
+							td #{it.title}
+							td #{it.priceNew}
+							td
+								button(
+									type="button" class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px] mr-[10px]`
+									restore = it.id
+								) Khôi khục
+								button(
+									type="button" 
+									class=`bg-[red]/80 text-[white] text-[12px] rounded-[10px] p-[5px]`
+									permanently-delete = it.id
+									nameImage = it.nameImage
+								) Xóa vĩnh viễn
 							td
 								div(class="text-[10px]") #{it.deletedBy}
 								div(class="text-[10px]") #{it.updatedAtFormat}
+		
+		+pagination(pagination)
 	- else
-		div(no-view-permission)
+		div(class="my-auto text-[red] text-[50px] text-center bg-transparent") Bạn không được phân quyền để xem nội dung này!

@@ -7,18 +7,19 @@ include ../../mixins/khung-table.pug
 include ../../mixins/quay-lai.pug
 include ../../mixins/them-moi.pug
 include ../../mixins/cap-nhat.pug
+include ../../mixins/checkItem.pug
 
 block header
 	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
 	- if(role.permisstion.includes('products_create'))
-		+them-moi("+ Thêm mới", `/${admin}/product-category/create`)
+		+them-moi("Thêm mới", `/${admin}/product-category/create`)
 
 
 
 block header
 	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
 	if(role.permisstion.includes('product-category_create'))
-		+them-moi("+ Thêm mới", `/${admin}/product-category/create`)
+		+them-moi("Thêm danh mục", `/${admin}/product-category/create`)
 
 
 block main
@@ -45,12 +46,7 @@ block main
 								title=`Danh mục ${it.title}`
 							)
 								td(class=`relative z-[50] px-[10px]`)
-									input(
-										type="checkbox", 
-										name="checkItem"
-										class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer relative z-[50]`
-										value = it.id
-									)
+									+checkItem(it.id)
 								td(class=`relative z-[5]`) #{i + 1}
 								td(class=`px-[20px]`)
 									img(

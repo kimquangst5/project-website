@@ -5,18 +5,20 @@ const checkLogInMiddleWares = require('../../middlewares/admin/checklogin.middle
 
 // const validate = require('../../validate/admin/roles.validate')
 
-router.get('/', checkLogInMiddleWares, controller.index);
+router.get('/', controller.index);
 
-router.get('/create', checkLogInMiddleWares, controller.create);
+router.get('/create', controller.create);
 
-router.post('/create', checkLogInMiddleWares, controller.createPost);
+router.post('/create', controller.createPost);
 
-router.get('/edit/:id', checkLogInMiddleWares, controller.edit);
+router.get('/edit/:id', controller.edit);
 
-router.patch('/edit/:id', checkLogInMiddleWares, controller.editPatch);
+router.patch('/edit/:id', controller.editPatch);
 
-router.get('/permissions', checkLogInMiddleWares, controller.permissions);
+router.patch('/delete/:id', controller.deletePatch);
 
-router.patch('/permissions', checkLogInMiddleWares, controller.permissionsPatch);
+router.get('/permissions', controller.permissions);
+
+router.patch('/permissions', controller.permissionsPatch);
 
 module.exports = router;
