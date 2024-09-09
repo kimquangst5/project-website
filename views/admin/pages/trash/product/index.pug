@@ -3,7 +3,7 @@ include ../../../mixins/quay-lai.pug
 include ../../../mixins/khung-table.pug
 
 
-block header
+//- block header
 	+quay-lai("Trở về trang thùng rác", `/${admin}/trash`)
 
 block main
@@ -38,7 +38,7 @@ block main
 									class=`h-[50px] mx-auto`
 									nameImageImg = it.nameImage
 								)
-							td(class=`text-left py-[5px]`) #{it.title}
+							td(class=`text-left py-[5px] hover:cursor-pointer` tickItem) #{it.title}
 								div(class="opacity-[0%] hover:opacity-100 flex gap-[40px]") 
 									button(
 										type="button" class=`fa-solid fa-trash-can-undo rounded-[10px] text-[20px] text-[#5A5866]`

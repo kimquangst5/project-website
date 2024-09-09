@@ -1,12 +1,12 @@
 include ../mixins/box-sidebar.pug
 
 aside(
-	class=`w-1/4 h-screen overflow-y-auto invisible scoll-auto bg-adminColorHeadline text-adminColorMain flex flex-col gap-[10px] scrollbar duration-1000` 
+	class=`w-1/4 h-screen overflow-y-auto invisible scoll-auto bg-adminColorMain text-adminColorMain flex flex-col gap-[10px] scrollbar duration-1000` 
 )
-	div(class=`sticky top-[0] bg-adminColorHeadline select-none flex justify-between items-center text-center h-[65px]`)
-		a(href=`` class=`w-full text-[25px] font-[800] select-none`) KIM QUANG
-		i(class=`fa-duotone fa-solid fa-angles-left fa-fade hover:text-[20px] pl-[20px] duration-1000 hover:cursor-pointer` mui-ten-logo)
-	ul(class="flex gap-[10px] flex-col text-adminColorMain/70 duartion-1000") 
+	div(class=`sticky top-[0] bg-adminColorMain select-none flex justify-between items-center text-center h-[70px]`)
+		a(href=`` class=`flex items-center justify-center w-full text-[25px] font-[800]  h-[70px] select-none`)
+			img(src=`/${admin}/images/logo 2.svg`, alt="" class=`h-[40px] w-auto`)
+	ul(class="flex gap-[10px] flex-col text-adminColorHeadline duartion-1000") 
 		//- <i class="fa-solid fa-grid-round-2"></i> //trang 12
 		+box-sidebar(`Tổng quan`, `/${admin}/main`, `fa-solid fa-objects-column`)
 
@@ -52,7 +52,7 @@ aside(
 			+box-sidebar(`Heading và nội dung`, `/${admin}/customers/feedback `)
 
 		- if(role.permisstion.includes("dashboard_view"))
-			+box-sidebar(`Cài đặt chung`, `/${admin}/dashboard`, `fa-solid fa-screwdriver-wrench`)
+			+box-sidebar(`Cấu hình`, `/${admin}/dashboard`, `fa-solid fa-screwdriver-wrench`)
 		
 		- if(role.permisstion.includes(`trash_view`))
 			+box-sidebar(`Thùng rác`, ``,  `fa-solid fa-trash-can`)

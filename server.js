@@ -8,10 +8,6 @@ const bodyParser = require('body-parser');
 // create application/json parser
 app.use(bodyParser.json());
 
-// Cookies session
-const cookieSession = require('cookie-session')
-// Thiết lập cookie-session
-
 // method-override
 const methodOverride = require('method-override')
 // override with POST having ?_method=DELETE
@@ -70,6 +66,12 @@ const path = require('path');
 /* New Route to the TinyMCE Node module */
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 // HẾT TinyMCE
+
+
+// Xử lý 404 - đặt ở cuối cùng
+// app.use((req, res) => {
+// 	res.status(404).redirect(`/${process.env.admin}/main`); // Chuyển hướng về trang chủ
+//    });
 
 app.listen(port, () => {
 	console.log(`Đang lắng nghe cổng ${port}`);

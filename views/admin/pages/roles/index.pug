@@ -3,17 +3,29 @@ include ../../mixins/pagination.pug
 include ../../mixins/khung-table.pug
 include ../../mixins/quay-lai.pug
 include ../../mixins/them-moi.pug
+include ../../mixins/dieu-huong.pug
 
 
-block header
+//- block header
 	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
 	+them-moi("+ Thêm mới", `/${admin}/roles/create`)
 
 
 block main
 	//- if(roles.length > 0)
+	-
+		let array = [
+			{
+				link: `/${admin}/dashboard`,
+				title: `Cấu hình`
+			}
+		]
+	+dieu-huong(`Nhóm quyền`, array)
+
+	+them-moi("Thêm mới", `/${admin}/roles/create`)
+	
 	+khung-table("Danh sách nhóm quyền")
-		table(class=`w-full text-left mt-[5px]`)
+		table(class=`w-full text-left mt-[5px] text-adminColorHeadline`)
 			thead(class=`h-[50px]`)
 				tr
 					

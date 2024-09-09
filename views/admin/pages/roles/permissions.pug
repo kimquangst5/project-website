@@ -5,13 +5,29 @@ include ../../mixins/permission-mixin.pug
 include ../../mixins/quay-lai.pug
 include ../../mixins/cap-nhat.pug
 include ../../mixins/box-permission.pug
+include ../../mixins/dieu-huong.pug
 
 
-block header
+//- block header
 	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
 	+cap-nhat("Cập nhật", ``)(roles = "")
 
 block main
+	-
+		let array = [
+			{
+				link: `/${admin}/dashboard`,
+				title: `Cấu hình`
+			},
+			{
+				link: `/${admin}/roles`,
+				title: `Nhóm quyền`
+			}
+		]
+	+dieu-huong(`Phân quyền`, array)
+
+	+cap-nhat("Cập nhật", ``)(roles = "")
+
 	+khung-table("Danh sách phân quyền")
 		table(class="w-full text-center" table-permissions = `/${admin}/roles/permissions`)
 			thead
@@ -61,4 +77,4 @@ block main
 
 				+permission("Tài khoản quản trị")
 				+box-permission("Tạo", "account", "create")
-				
+	

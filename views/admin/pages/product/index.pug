@@ -7,8 +7,9 @@ include ../../mixins/khung-table.pug
 include ../../mixins/quay-lai.pug
 include ../../mixins/them-moi.pug
 include ../../mixins/checkItem.pug
+include ../../mixins/dieu-huong.pug
 
-block header
+//- block header
 	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
 	- if(role.permisstion.includes('products_create'))
 		+them-moi("Thêm sản phẩm", `/${admin}/product/create`)
@@ -16,22 +17,24 @@ block header
 
 block main
 	- if(role.permisstion.includes('products_view'))
-		- if(role.permisstion.includes('products_fillterandsearch'))
-			
-			+khung-table("Lọc theo trang thái")
-				div(class=`flex flex-wrap gap-[10px] justify-between p-[10px] items-center`)
-					+fillter-status(fillerStatus)
-					+search(key)
-		- if(role.permisstion.includes('products_quickActionMenu'))
-			if(product.length > 0  && pagination.totalProduct > 1)
+		+dieu-huong(`Danh sách sản phẩm`)
+		+them-moi("Thêm sản phẩm (F1)", `/${admin}/product/create`)(button-create = "")
+		- if(product.length == 0)
+			+khung-table("Chưa có sản phẩm nào!!")
+		- else
+			- if(role.permisstion.includes('products_fillterandsearch'))
+				+khung-table("Lọc theo trạng thái và tìm sản phẩm")
+					div(class=`flex flex-wrap gap-[10px] justify-between p-[10px] items-center`)
+						+fillter-status(fillerStatus)
+						+search(key)
+			- if(role.permisstion.includes('products_quickActionMenu'))
 				+khung-table("hành động")
 					+box-actions(`/${admin}/product/change-multi`, statusOption)
-		
-		- if(role.permisstion.includes('products_sort'))
-			if(product.length > 0  && pagination.totalProduct > 1)
+			
+			- if(role.permisstion.includes('products_sort'))
 				+khung-table("Sắp xếp")
-					div(class="flex gap-[10px] items-center my-[20px] justify-center" sort) 
-						select(name="" class="outline-adminColorTertiary bg-transparent outline-[1px] pl-[10px] rounded-[10px] py-[5px] text-[12px]")
+					div(class="flex gap-[10px] items-center py-[10px] justify-center" sort) 
+						select(name="" class="outline-adminColorTertiary bg-transparent outline-[1px] text-adminColorHeadline pl-[10px] rounded-[10px] py-[5px] text-[12px]")
 							option(value="position-desc")  Vị trí giảm dần
 							option(value="position-asc")  Vị trí tăng dần
 							option(value="title-asc")  Tên sản phẩm tăng dần
@@ -44,114 +47,178 @@ block main
 							option(value="stock-desc")  Số lượng giảm dần
 						button(type="button" class="rounded-[10px] bg-adminColorHeadline text-adminColorMain text-[12px] px-[10px] py-[5px]") Reset
 
-		+khung-table("Danh sách sản phẩm")
-			if(product.length > 0)
-				table(class=`text-center mt-[5px] text-[14px]`)
-					thead(class=`h-[50px]`)
-						tr(class="")
-							if(pagination.totalProduct > 1)
-								th(class=`h-full`)
-									input(
-										type="checkbox", 
-										name="checkAll"
-										class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#263238] hover:cursor-pointer`
-									)
-							th STT
-							th(class=``) Hình ảnh
-							th(class="w-full") Sản phẩm
-							th Giá
-							th(class=`w-max`)
-								div(class="w-max") Vị trí
-							th(class="") Trạng thái
-							th(class="") Tạo bởi
-					tbody
-						each it, i in product
-							tr(
-								class=`group hover:transition-all hover:duration-700 hover:rounded-[10px] hover:cursor-pointer border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20`
-								title=`Sản phẩm ${it.title}`
-							)
-								if(pagination.totalProduct > 1)
-									td(class=`relative z-[50]`)
-										+checkItem(it.id)
-								td(class=`relative z-[5] class="px-[20px]"`) #{pagination.limit * (pagination.current - 1) + i + 1}
-								td(class=`w-1/6 px-[20px]`)
-									img(
-										src=it.thumbnail, 
-										onerror="this.src='/admin/images/photo.png'"
-										alt=it.title 
-										class=`rounded-[10px] w-full`
-										nameImageImg = it.nameImage
-									)
-								td(
-									class=`text-left px-[20px] grow`
-									tickItem
+			div(class="flex grid grid-cols-4 bg-transparent gap-[12px] relative")
+				input(
+					type="checkbox", 
+					name="checkAll"
+					class=`appearance-none w-[20px] h-[20px] border-[1px] border-do rounded-[10px] checked:bg-do hover:cursor-pointer absolute top-0 right-0`
+					title="Chọn tất cả"
+				)
+				each it, i in product
+					div(class="bg-box p-[24px] rounded-[5px] relative group")
+						input(
+							type="checkbox", 
+							name="checkItem"
+							class=`appearance-none h-[20px] w-[20px] aspect-[1/1] border-[1px] border-xanh rounded-[50%] checked:bg-xanh checked:border-[0px] hover:cursor-pointer  px-[10px] absolute top-[2px] left-0`
+							value = it.id
+						)
+							
+						div(class="bg-bgimage relative aspect-[224/224] truncate")
+							a(href=`/${admin}/product/edit/${it.id}`) 
+								img(src=it.thumbnail, alt="" class=`mx-auto my-auto w-full h-auto object-cover` nameImageImg = it.nameImage)
+							nav(class=`absolute top-0 right-0 duration-500 flex gap-[5px]` edit-delete)
+								a(
+									href=`/${admin}/product/edit/${it.id}`
+									type="button" class=`text-main bg-xanh hover:bg-xanhhover text-[7px] fa-solid fa-pen py-[5px] px-[10px] rounded-[3px]`
+									title="Chỉnh sửa sản phẩm"
 								)
-									div(class="flex justify-between") 
-										div(class="flex flex-col") 
-											div(class="") #{it.title}
-											- if(role.permisstion.includes("products_edit") || role.permisstion.includes("products_delete"))
-												div(class="flex items-center opacity-0 group-hover:opacity-100 gap-[10px]")
-													- if(role.permisstion.includes("products_edit"))
-														a(
-															href=`/${admin}/product/edit/${it.id}`
-															type="button" class=`text-[#00712D] text-[10px]`
-															title="Chỉnh sửa sản phẩm"
-														) Sửa
-													- if(role.permisstion.includes("products_delete"))
-														button(
-															type="button" 
-															class=`text-[red]/80 text-[10px]`
-															button-delete = `/${admin}/product/delete/${it.id}
-															`
-															title="Xóa sản phẩm"
-														) Xóa
-										div(class="flex items-center") 
-											a(href=`/${admin}/product/detail/${it.id}` class="mr-[10px] text-[15px] fa-solid fa-eye flex opacity-0 group-hover:opacity-100 text-[#4C30A5] " title="Xem chi tiết sản phẩm")
+								button(
+									type="button" 
+									class=`text-main bg-do hover:bg-dohover text-[7px] fa-solid fa-x py-[5px] px-[10px] rounded-[3px]`
+									button-delete = `/${admin}/product/delete/${it.id}`
+									title="Xóa sản phẩm"
+								)
+						div(class="pt-[24px] flex gap-[5px]")
+							div(class="flex flex-col gap-[10px]")
+								a(href=`/${admin}/product/detail/${it.id}` class=`text-main`) #{it.title}
+								div(class="flex justify-between items-center truncate gap-[10px]") 
+									- if(it.status == 'active')
+										button(
+											button-change-status=(`/${admin}/product/change-status/inactive/${it.id}`)
+											type="button"
+											class=`bg-xanh hover:bg-xanhhover w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành dừng hoạt động") Đang hoạt động
+									- else
+										button(
+											button-change-status=`/${admin}/product/change-status/active/${it.id}`
+											type="button"
+											class=`bg-do hover:bg-dohover w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành hoạt động"
+										) Dừng hoạt động
+									input(
+										link=`/${admin}/product/change-position/${it.id}`
+										type="number"
+										name="position"
+										value=it.position
+										class=`bg-transparent text-adminColorHeadline outline-adminColorTertiary `
+										min='1'
+									)
+								div(class="flex-1 grow flex items-center justify-left rounded-[10px]")
+									div(class="p-[10px] bg-[#323A46]  font-bold text-main") #{it.priceNew}đ
+									del(class="p-[10px] bg-[#323A46]  font-bold text-main text-adminColorHeadline opacity-50 text-[10px]") #{it.price}đ
+								div(class="flex text-adminColorHeadline text-[15px]") Số lượng: #{it.stock} cái 
+	- else
+		div(no-view-permission)
 
-								td(class=" px-[5px]") #{it.priceNew}.000đ
-								td(class=`w-min`)
-									- if(role.permisstion.includes('products_edit'))
-										input(
-											link=`/${admin}/product/change-position/${it.id}`
-											type="number"
-											name="position"
-											value=it.position
-											class=`bg-transparent max-w-[70px] mx-auto outline-adminColorTertiary`
-											min='1'
-										)
-									- else
-										div(class="") #{it.position}
-								td(class="px-[10px] w-max")
-									- if(role.permisstion.includes('products_changeProductStatus'))
-										- if(it.status == 'active')
-											button(
-												link=(`/${admin}/product/change-status/inactive/${it.id}`)
-												type="button"
-												class=`bg-[#06BC84] w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành dừng hoạt động") Đang hoạt động
-										- else
-											button(
-												link=`/${admin}/product/change-status/active/${it.id}`
-												type="button"
-												class=`bg-[red]/80 w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành hoạt động"
-											) Dừng hoạt động
-									- else
-										- if(it.status == 'active')
-											button(
-												type="button"
-												class=`bg-[#06BC84] w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]`) Hoạt động
-										- else
-											button(
-												type="button"
-												class=`bg-[red]/80 text-[white] w-max text-[10px] rounded-[10px] px-[10px] py-[2px]`
-											) Dừng hoạt động
-								td(class=`w-max`)
-									div(class="w-max text-[blue/40] text-[10px]")  #{it.createdBy}
-									div(class="w-max text-[10px]")  #{it.createdAtFormat}
-			else
-				div(class="text-center text-[20px]") Không có sản phẩm nào
+
+
+
+		//- +khung-table("Danh sách sản phẩm")
+		//- 	- if(product.length > 0)
+		//- 		table(class=`text-center text-[14px] h-auto`)
+		//- 			thead(class=``)
+		//- 				tr(class="")
+		//- 					if(pagination.totalProduct > 1)
+		//- 						th(class=``)
+		//- 							input(
+		//- 								type="checkbox", 
+		//- 								name="checkAll"
+		//- 								class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#263238] hover:cursor-pointer`
+		//- 							)
+		//- 					th STT
+		//- 					th(class=``) Hình ảnh
+		//- 					th(class="w-full") Sản phẩm
+		//- 					th Giá
+		//- 					th(class=`w-max`)
+		//- 						div(class="w-max") Vị trí
+		//- 					th(class="") Trạng thái
+		//- 					th(class="") Tạo bởi
+		//- 			tbody
+		//- 				each it, i in product
+		//- 					tr(
+		//- 						class=`transition-all rounded-[10px] group hover:cursor-pointer border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/10`
+		//- 						title=`Sản phẩm ${it.title}`
+		//- 					)
+		//- 						if(pagination.totalProduct > 1)
+		//- 							td(class=``)
+		//- 								+checkItem(it.id)
+		//- 						td(class=``) #{pagination.limit * (pagination.current - 1) + i + 1}
+		//- 						td(class=`w-1/6 px-[20px]`)
+		//- 							img(
+		//- 								src=it.thumbnail, 
+		//- 								onerror="this.src='/admin/images/photo.png'"
+		//- 								alt=it.title 
+		//- 								class=`rounded-[10px] w-full`
+		//- 								nameImageImg = it.nameImage
+		//- 							)
+		//- 						td(
+		//- 							class=`text-left px-[20px] grow`
+		//- 							tickItem
+		//- 						)
+		//- 							div(class="flex justify-between") 
+		//- 								div(class="flex flex-col") 
+		//- 									div(class="") #{it.title}
+		//- 									- if(role.permisstion.includes("products_edit") || role.permisstion.includes("products_delete"))
+		//- 										div(class="flex items-center opacity-0 group-hover:opacity-100 gap-[10px]")
+		//- 											- if(role.permisstion.includes("products_edit"))
+		//- 												a(
+		//- 													href=`/${admin}/product/edit/${it.id}`
+		//- 													type="button" class=`text-[#00712D] text-[10px]`
+		//- 													title="Chỉnh sửa sản phẩm"
+		//- 												) Sửa
+		//- 											- if(role.permisstion.includes("products_delete"))
+		//- 												button(
+		//- 													type="button" 
+		//- 													class=`text-[red]/80 text-[10px]`
+		//- 													button-delete = `/${admin}/product/delete/${it.id}
+		//- 													`
+		//- 													title="Xóa sản phẩm"
+		//- 												) Xóa
+		//- 								div(class="flex items-center") 
+		//- 									a(href=`/${admin}/product/detail/${it.id}` class="mr-[10px] text-[15px] fa-solid fa-eye flex opacity-0 group-hover:opacity-100 text-[#4C30A5] " title="Xem chi tiết sản phẩm")
+
+		//- 						td(class=" px-[5px]") #{it.priceNew}.000đ
+		//- 						td(class=`w-min`)
+		//- 							- if(role.permisstion.includes('products_edit'))
+		//- 								input(
+		//- 									link=`/${admin}/product/change-position/${it.id}`
+		//- 									type="number"
+		//- 									name="position"
+		//- 									value=it.position
+		//- 									class=`bg-transparent max-w-[70px] mx-auto outline-adminColorTertiary`
+		//- 									min='1'
+		//- 								)
+		//- 							- else
+		//- 								div(class="") #{it.position}
+		//- 						td(class="px-[10px] w-max")
+		//- 							- if(role.permisstion.includes('products_changeProductStatus'))
+		//- 								- if(it.status == 'active')
+		//- 									button(
+		//- 										link=(`/${admin}/product/change-status/inactive/${it.id}`)
+		//- 										type="button"
+		//- 										class=`bg-[#06BC84] w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành dừng hoạt động") Đang hoạt động
+		//- 								- else
+		//- 									button(
+		//- 										link=`/${admin}/product/change-status/active/${it.id}`
+		//- 										type="button"
+		//- 										class=`bg-[red]/80 w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành hoạt động"
+		//- 									) Dừng hoạt động
+		//- 							- else
+		//- 								- if(it.status == 'active')
+		//- 									button(
+		//- 										type="button"
+		//- 										class=`bg-[#06BC84] w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]`) Hoạt động
+		//- 								- else
+		//- 									button(
+		//- 										type="button"
+		//- 										class=`bg-[red]/80 text-[white] w-max text-[10px] rounded-[10px] px-[10px] py-[2px]`
+		//- 									) Dừng hoạt động
+		//- 						td(class=`w-max`)
+		//- 							div(class="w-max text-[blue/40] text-[10px]")  #{it.createdBy}
+		//- 							div(class="w-max text-[10px]")  #{it.createdAtFormat}
+		//- 	- else
+		//- 		div(class="text-center text-[20px]") Không có sản phẩm nào
 									
 
-			+pagination(pagination)
+		//- 	+pagination(pagination)
 	
-	- else
-		div(class="" no-view-permission) 
+	//- - else
+	//- 	div(class="" no-view-permission)

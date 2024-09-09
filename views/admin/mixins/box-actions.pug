@@ -1,6 +1,6 @@
 mixin box-actions(link, list)
 	div(
-		class=`rounded-[10px] h-[50px] truncate border-[1px] border-[black]/30 mx-[10px] flex outline-none w-1/2 mx-auto my-[20px] bg-transparent`
+		class=`flex justify-center py-[10px]`
 		box-actions = link
 	)
 		select(
@@ -11,5 +11,5 @@ mixin box-actions(link, list)
 				option(value=it.value class=`text-adminColorHeadline`) #{it.lable}
 		button(
 			type="button"
-			class=`bg-adminColorTertiary text-adminColorHeadline h-full px-[10px]`
+			class=`bg-adminColorTertiary text-adminColorHeadline text-[12px] rounded-[10px] px-[10px]`
 		) Cập nhật

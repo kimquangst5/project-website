@@ -4,12 +4,22 @@ include ../../mixins/khung-table.pug
 include ../../mixins/quay-lai.pug
 include ../../mixins/them-moi.pug
 include ../../mixins/cap-nhat.pug
+include ../../mixins/dieu-huong.pug
 
-block header
+//- block header
 	+quay-lai("Quay lại danh sách danh mục", `/${admin}/product-category`)
 	+cap-nhat("Thêm mới")(buttonSubmitCreateProductCategory="")
 
 block main
+	-
+		let array = [
+			{
+				link: `/${admin}/product-category`,
+				title: `Danh mục sản phẩm`
+			}
+		]
+	+dieu-huong('Thêm danh mục', array)
+	+cap-nhat("Thêm mới")(button-submit-form-create="")
 	+khung-table("Thêm mới danh mục sản phẩm")
 		form(
 			action=`/${admin}/product-category/create`
@@ -97,5 +107,5 @@ block main
 							class=`capitalize`
 						) dừng Hoạt động
 			button(type="submit"
-						class=`text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto`
+						class=`hidden text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto`
 					) Tạo mới

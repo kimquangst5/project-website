@@ -1,7 +1,7 @@
 include ../mixins/alear.pug
 
 doctype html
-html(lang="en")
+html(lang="vi")
 	head
 		meta(charset="UTF-8")
 		meta(name="viewport", content="width=device-width, initial-scale=1.0")
@@ -17,8 +17,9 @@ html(lang="en")
 		link(rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css")
 		link(rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.5.1/uicons-thin-rounded/css/uicons-thin-rounded.css")
 		link(rel="stylesheet", href="https://cdn-uicons.flaticon.com/2.5.1/uicons-regular-rounded/css/uicons-regular-rounded.css")
+		<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.5.1/uicons-thin-straight/css/uicons-thin-straight.css'>
 		title #{pageTitle}
-	body(class=`font-font2`)
+	body(class=`font-font_main`)
 
 		+alert-success(2000)
 		+alert-error(2000)
@@ -27,7 +28,7 @@ html(lang="en")
 			include ../partials/sibar.pug					
 			main(class=`h-screen overflow-y-auto scoll-auto w-full scrollbarmain`)
 				include ../partials/header.pug
-				div(class="py-[30px] bg-adminColorTertiary [&>*]:bg-adminColorMain flex flex-col gap-[20px]") 
+				div(class="py-[30px] bg-adminColorTertiary flex flex-col gap-[20px] mx-[20px]") 
 					block main
 
 	script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11") 

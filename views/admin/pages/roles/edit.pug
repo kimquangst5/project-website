@@ -4,14 +4,29 @@ include ../../mixins/khung-table.pug
 include ../../mixins/setting-box.pug
 include ../../mixins/quay-lai.pug
 include ../../mixins/them-moi.pug
+include ../../mixins/cap-nhat.pug
+include ../../mixins/dieu-huong.pug
 
 
-block header
+//- block header
 	+quay-lai("Quay lại danh sách nhóm quyền", `/${admin}/roles`)
+	+cap-nhat("Cập nhật")(button-submit-form = "")
 
 
 block main
-	+khung-table('Thông tin nhóm quyền')
+	-
+		let array = [
+			{
+				link: `/${admin}/dashboard`,
+				title: `Cấu hình`
+			},
+			{
+				link: `/${admin}/roles`,
+				title: `Nhóm quyền`
+			}
+		]
+	+dieu-huong(role.title, array)
+	+khung-table('Chỉnh sửa nhóm quyền')
 		form(
 			action=`/${admin}/roles/edit/${role.id}?_method=PATCH`
 			method="POST"
@@ -43,7 +58,7 @@ block main
 						placeholder="Nhập mô tả nhóm quyền..."
 					) #{role.description}
 			button(type="submit"
-						class=`text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto`
+						class=`select-none hidden text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto`
 					) Cập nhật
 		
 						

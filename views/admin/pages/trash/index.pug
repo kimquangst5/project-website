@@ -18,7 +18,7 @@ block main
 			+khung-table("Bài viết")
 				div(class="flex grid grid-cols-4")
 					+box-setting('fa-solid fa-newspaper', `/${admin}/trash/product`, 'Danh sách bài viết', 'Xóa bài viết')
-					+box-setting('fa-solid fa-sitemap', `/${admin}/trash/product-category`, 'Danh mục bài viết', 'Xóa danh mục bài viết')
+					+box-setting('fi fi-ts-box-open', `/${admin}/trash/product-category`, 'Danh mục bài viết', 'Xóa danh mục bài viết')
 
 		- if(role.permisstion.includes(`trash_views_account`))
 			+khung-table("Tài khoản quản trị")

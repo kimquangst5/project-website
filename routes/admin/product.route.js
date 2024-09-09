@@ -22,11 +22,11 @@ router.patch('/delete/:id', controller.delete);
 
 // router.patch('/trash/:id', controller.trashRestore);
 
-// router.delete('/trash/:id/:nameImage', controller.trashPermanentlyDelete);
+// router.delete('/trash/:id/:nameImage', controller.trashPermanetlyDelete);
 
-// router.patch('/change-multi-restore', controller.changeMultiRestore);
+router.patch('/change-multi-restore', controller.changeMultiRestore);
 
-// router.patch('/change-position/:id', controller.changePosition);
+router.patch('/change-position/:id', controller.changePosition);
 
 router.get('/create', controller.create);
 

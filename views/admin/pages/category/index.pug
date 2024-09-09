@@ -8,15 +8,9 @@ include ../../mixins/quay-lai.pug
 include ../../mixins/them-moi.pug
 include ../../mixins/cap-nhat.pug
 include ../../mixins/checkItem.pug
+include ../../mixins/dieu-huong.pug
 
-block header
-	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
-	- if(role.permisstion.includes('products_create'))
-		+them-moi("Thêm mới", `/${admin}/product-category/create`)
-
-
-
-block header
+//- block header
 	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
 	if(role.permisstion.includes('product-category_create'))
 		+them-moi("Thêm danh mục", `/${admin}/product-category/create`)
@@ -24,6 +18,8 @@ block header
 
 block main
 	if(role.permisstion.includes('product-category_view'))
+		+dieu-huong('Danh mục sản phẩm')
+		+them-moi("Thêm danh mục", `/${admin}/product-category/create`)
 		+khung-table("Danh mục sản phẩm")
 			table(class=`text-center mt-[5px] text-[14px]`)
 					thead(class=`h-[50px]`)
@@ -99,6 +95,6 @@ block main
 											type="button"
 											class=`bg-[red]/80 w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành hoạt động"
 										) Dừng hoạt động
-		+pagination(records)
+		//- +pagination(records)
 	else
 		div(class="" no-view-permission) 

@@ -6,7 +6,8 @@ const config = typeof module !== 'undefined' && module.exports ?
 
 const colors = config.theme.extend.colors
 const fonts = config.theme.extend.fontFamily
-
+// const system = require(`../../../config/system.js`)
+// 
 // const prefixAdmin = require('../../../config/system')
 
 // Fillter Status
@@ -27,7 +28,7 @@ if (buttonStatus.length > 0) {
 	});
 	const statusCurrent = url.searchParams.get('status') || '';
 	const buttonStatusCurrent = document.querySelector(`button[button-status = '${statusCurrent}']`);
-	buttonStatusCurrent.classList.add(`bg-[${colors.adminColorTertiary}]`, `text-[${colors.adminColorMain}]`)
+	buttonStatusCurrent.classList.add(`bg-[${colors.xanh}]`, `text-[${colors.main}]`)
 }
 // End Fillter Status
 
@@ -136,12 +137,12 @@ if (buttonAngleRight) {
 // Hết Pagination
 
 // Change Status
-const buttonChangeStatus = document.querySelectorAll(`button[link]`);
+const buttonChangeStatus = document.querySelectorAll(`button[button-change-status]`);
 
 if (buttonChangeStatus.length > 0) {
 	buttonChangeStatus.forEach(button => {
 		button.addEventListener('click', () => {
-			let link = button.getAttribute('link');
+			let link = button.getAttribute('button-change-status');
 			fetch(link, {
 					method: "PATCH",
 					headers: {
@@ -225,32 +226,33 @@ if (boxActions) {
 		button.addEventListener('click', () => {
 			const select = boxActions.querySelector('select');
 			const value = select.value;
+			console.log(value)
 			let itemChecked = document.querySelectorAll(`input[name="checkItem"]:checked`);
 			// let listNameImages = document.querySelectorAll(`[nameImageImg]`);
 
 			let ids = [];
-			let nameImages = [];
+			// let nameImages = [];
 			if (value && itemChecked.length > 0) {
 				itemChecked.forEach(input => {
 					ids.push(input.value);
-					const parent = input.parentElement;
-					const cha = parent.parentElement;
-					const image = cha.querySelector('img');
-					const tenImage = image.getAttribute('nameImageImg');
-					if (tenImage) {
-						nameImages.push(tenImage);
-					}
-
+					// const parent = input.parentElement
+					// const img = parent.querySelector(`img[nameImageImg]`)
+					// if (img) {
+					// 	const tenImage = img.getAttribute('nameImageImg');
+					// 	if (tenImage) {
+					// 		nameImages.push(tenImage);
+					// 	}
+					// }
 				});
-
 				const data = {
 					status: value,
 					ids: ids,
-					nameImages: nameImages
+					// nameImages: nameImages
 				};
-
-
 				const link = boxActions.getAttribute('box-actions');
+
+
+
 				fetch(link, {
 						method: "PATCH",
 						headers: {
@@ -310,7 +312,6 @@ if (buttonDelete.length > 0) {
 const buttonRestore = document.querySelectorAll(`button[linkRestore]`);
 if (buttonRestore.length > 0) {
 	buttonRestore.forEach(button => {
-		console.log(button)
 		button.addEventListener('click', () => {
 			Swal.fire({
 				title: "Bạn có chắc muốn khôi phục?",
@@ -319,10 +320,10 @@ if (buttonRestore.length > 0) {
 				confirmButtonColor: "#3085d6",
 				cancelButtonColor: "#d33",
 				confirmButtonText: "Khôi phục ngay!"
-			   }).then((result) => {
+			}).then((result) => {
 				if (result.isConfirmed) {
 					const link = button.getAttribute('linkRestore');
-					
+
 					fetch(link, {
 							method: "PATCH",
 							headers: {
@@ -339,8 +340,8 @@ if (buttonRestore.length > 0) {
 							}
 						})
 				}
-			   });
-					
+			});
+
 
 		});
 	});
@@ -409,11 +410,11 @@ const listPosition = document.querySelectorAll(`input[name="position"]`);
 
 if (listPosition.length > 0) {
 	listPosition.forEach(input => {
+		input.classList.add('w-full')
 		input.addEventListener('change', () => {
 			const link = input.getAttribute('link');
 			const position = parseInt(input.value);
-
-			const data = {
+			const datapos = {
 				position: position
 			}
 
@@ -422,11 +423,20 @@ if (listPosition.length > 0) {
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify(data)
+					body: JSON.stringify(datapos)
 				})
 				.then(res => res.json())
 				.then(data => {
-					location.reload();
+					if (data.code == 200) {
+
+						Swal.fire({
+							position: "top-end",
+							icon: "success",
+							title: "Cập nhật thành công!",
+							showConfirmButton: false,
+							timer: 1000
+						});
+					}
 				})
 		});
 	});
@@ -538,7 +548,7 @@ if (tablePermissions) {
 		});
 	}
 
-	const buttonSubmit = document.querySelector(`header[roles]`);
+	const buttonSubmit = document.querySelector(`[roles]`);
 	if (buttonSubmit) {
 		const roles = [];
 		buttonSubmit.addEventListener('click', (event) => {
@@ -626,7 +636,7 @@ if (loginAdmin) {
 						setTimeout(() => {
 							location.href = "/admin/main"
 						}, 1000);
-						
+
 
 					}
 					if (data.code == 400) {
@@ -673,7 +683,7 @@ if (logOut) {
 					setTimeout(() => {
 						window.location.href = data.message
 					}, 500);
-					
+
 				}
 				if (data.code == 403) {
 					window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
@@ -684,46 +694,60 @@ if (logOut) {
 
 // HEADER
 const main = document.querySelector('main');
-const header = document.querySelector('header');
-let last = 0;
-main.addEventListener('scroll', (event) => {
-	let scrollTop = main.scrollTop;
-	if (scrollTop > last) {
-		header.style.top = `-50px`;
-	} else header.style.top = `0px`;
-	last = scrollTop;
-});
+if (main) {
+	const header = document.querySelector('header');
+	let last = 0;
+	if (header) {
+		main.addEventListener('scroll', (event) => {
+			let scrollTop = main.scrollTop;
+			if (scrollTop > last) {
+				const height = header.getAttribute('height');
+				if (height) {
+					header.style.top = `-${height}`;
+					const myProfile = document.querySelector(`[my-profile]`);
+					if (myProfile) {
+						const box = document.querySelector(`[box-my-profile]`);
+						if (box) {
+							// myProfile.addEventListener('click', () => {
+								// box.classList.toggle(`mt-[-70px]`)
+								const child = box.querySelectorAll('div');
+								if (child.length > 0) {
+									// child.classList.toggle(`p-[5px]`)
+									child.forEach(it => {
+										const height = it.clientHeight;
+										it.classList.add(`mt-[-${height}px]`)
+										it.classList.add(`duration-1000`)
+									});
+								}
+							// });
+						}
+
+					}
+				}
+			} else{
+				header.style.top = `0px`;
+				
+			} 
+			last = scrollTop;
+		});
+	}
+}
+
 // HẾT HEADER
 
-// buttonSubmitEditProduct
-const buttonSubmitEdit = document.querySelector(`[buttonSubmitEditProduct]`);
-if (buttonSubmitEdit) {
-	buttonSubmitEdit.addEventListener('click', (async) => {
-		const form = document.querySelector('form[formsSubmitEditProduct]');
-		if (form) {
-			const button2 = form.querySelector('button[type="submit"]');
-			if (button2) {
-				button2.click();
-
-			}
-		}
-
-	});
-}
-
-// buttonSubmitCreateProduct
-const buttonSubmitCreate = document.querySelector(`[buttonSubmitCreateProduct]`);
-if (buttonSubmitCreate) {
-	buttonSubmitCreate.addEventListener('click', () => {
-		const form = document.querySelector('form[formsSubmitCreateProduct]');
-		if (form) {
-			const button2 = form.querySelector('button[type="submit"]');
-			if (button2) {
-				button2.click();
-			}
-		}
-	});
-}
+// // buttonSubmitCreateProduct
+// const buttonSubmitCreate = document.querySelector(`[buttonSubmitCreateProduct]`);
+// if (buttonSubmitCreate) {
+// 	buttonSubmitCreate.addEventListener('click', () => {
+// 		const form = document.querySelector('form[formsSubmitCreateProduct]');
+// 		if (form) {
+// 			const button2 = form.querySelector('button[type="submit"]');
+// 			if (button2) {
+// 				button2.click();
+// 			}
+// 		}
+// 	});
+// }
 
 const Success = document.querySelector('[update]');
 if (Success) {
@@ -742,28 +766,18 @@ if (Success) {
 const error = document.querySelector('[error]');
 if (error) {
 	const value = error.getAttribute('error');
-	const title = JSON.parse(value)[0]
+	if (value) {
+		const title = JSON.parse(value)[0]
 
-	Swal.fire({
-		position: "top-end",
-		icon: "error",
-		title: title,
-		showConfirmButton: false,
-		timer: 3000
-	});
-}
-
-const buttonUpdateCategory = document.querySelector('[buttonUpdateCategory]');
-if (buttonUpdateCategory) {
-	const form = document.querySelector('[formUpdateCategory]')
-	if (form) {
-		const button = form.querySelector(`button[type="submit"]`);
-		if (button) {
-			buttonUpdateCategory.addEventListener('click', () => {
-				button.click();
-			});
-		}
+		Swal.fire({
+			position: "top-end",
+			icon: "error",
+			title: title,
+			showConfirmButton: false,
+			timer: 3000
+		});
 	}
+
 }
 
 const noViewPermission = document.querySelector(`[no-view-permission]`);
@@ -791,21 +805,6 @@ emptyImgs.forEach(img => {
 });
 // HẾT LÍ ẢNH LỖI
 
-// buttonRoleCreate
-const buttonRoleCreate = document.querySelector(`[button-role-create]`);
-if (buttonRoleCreate) {
-	buttonRoleCreate.addEventListener('click', () => {
-		const form = document.querySelector(`[form-role-create]`);
-		if (form) {
-			const button = form.querySelector(`button[type='submit']`);
-			if (button) {
-				button.click();
-
-			}
-		}
-	});
-
-}
 
 // category-product-trash
 const showBox = document.querySelectorAll('[show-box]');
@@ -824,7 +823,7 @@ if (showBox.length > 0) {
 				if (con) {
 					const height = con.clientHeight
 					con.classList.toggle(`mt-[-${height}px]`)
-					con.classList.add(`duration-1000`)
+					con.classList.add(`duration-500`)
 				}
 			}
 		});
@@ -862,10 +861,10 @@ if (Aside) {
 							window.location.href = link
 						});
 						if (path == link) {
-							li.style.color = `${colors.adminColorMain}`
+							li.style.color = `${colors.xanh}`
 							const iCha = li.parentElement.querySelector('i');
 							if (iCha) {
-								iCha.style.color = `${colors.adminColorMain}`
+								iCha.style.color = `${colors.xanh}`
 							} else {
 								// findParentLi(li);
 								const litag = findParentLi(li).parentElement.querySelector('li');
@@ -873,28 +872,28 @@ if (Aside) {
 
 								if (allLi) {
 									const divParent = li.parentElement.parentElement.parentElement.parentElement;
-									divParent.classList.toggle(`hover:bg-[${colors.adminColorHeadlineHover}]`)
+									divParent.classList.toggle(`hover:bg-[transparent]`)
 									if (divParent) {
 										const muiTenCurrent = divParent.querySelector("[mui-ten]");
 										if (muiTenCurrent) {
 											muiTenCurrent.classList.toggle("rotate-90")
 										}
 									}
-									allLi.style.color = `${colors.adminColorMain}`
+									allLi.style.color = `${colors.xanh}`
 									const ul = allLi.querySelector('ul');
 									if (ul) {
-										ul.classList.add(`text-[${colors.adminColorMain}]/70`)
+										ul.classList.add(`text-[${colors.adminColorHeadline}]`)
 									}
 								}
 							}
 						}
 						const divCha = li.parentElement;
 						if (divCha) {
-							divCha.classList.add(`hover:text-[${colors.adminColorMain}]`, `hover:bg-[${colors.adminColorHeadlineHover}]`)
+							divCha.classList.add(`hover:text-[${colors.main}]`, `hover:bg-transparent]`)
 						}
 					} else {
 						const div = li.parentElement;
-						div.classList.add(`hover:text-[${colors.adminColorMain}]`);
+						div.classList.add(`hover:text-[${colors.main}]`);
 
 						const ulCon = div.querySelector('ul');
 						if (ulCon) {
@@ -904,7 +903,7 @@ if (Aside) {
 								listDiv.forEach(it => {
 									const h = it.clientHeight;
 									it.classList.add(`mt-[-${h}px]`)
-									it.classList.add("duration-1000")
+									it.classList.add("duration-500")
 
 								});
 								setTimeout(() => {
@@ -921,7 +920,7 @@ if (Aside) {
 														divLIST.forEach(div => {
 															const h = div.clientHeight;
 															div.classList.toggle(`mt-[-${h}px]`)
-															it.classList.add("duration-1000")
+															it.classList.add("duration-500")
 														});
 													}
 												}
@@ -933,7 +932,7 @@ if (Aside) {
 						}
 
 						div.addEventListener("click", () => {
-							div.classList.toggle("hover:bg-[#5A5866]")
+							div.classList.toggle(`hover:bg-[transparent]`)
 
 							const ulParent = div.querySelector('[mui-ten]');
 							if (ulParent) {
@@ -947,18 +946,18 @@ if (Aside) {
 									listDiv.forEach(it => {
 										const h = it.clientHeight;
 										it.classList.toggle(`mt-[-${h}px]`)
-										it.classList.add("duration-1000")
+										it.classList.add("duration-500")
 									});
 								}
 							}
 						});
 						const ul = div.querySelector('ul');
 						if (ul) {
-							ul.classList.add(`text-[${colors.adminColorMain}]/70`)
+							ul.classList.add(`text-[${colors.adminColorHeadline}]`)
 							const itdiv = ul.querySelectorAll('div');
 							if (itdiv.length > 0) {
 								itdiv.forEach(it => {
-									it.classList.add(`hover:text-[${colors.adminColorMain}]`, "hover:bg-[#5A5866]")
+									it.classList.add(`hover:text-[${colors.main}]`, `hover:bg-[${colors.adminColorHeadlineHover}]`)
 								});
 							}
 						}
@@ -968,7 +967,7 @@ if (Aside) {
 		}
 	}
 
-	const muiTenLogo = Aside.querySelector('[mui-ten-logo]');
+	const muiTenLogo = document.querySelector('[mui-ten-logo]');
 	if (muiTenLogo) {
 		muiTenLogo.addEventListener('click', () => {
 			const allLi = Aside.querySelectorAll('li');
@@ -1003,6 +1002,150 @@ if (Aside) {
 }
 // HẾT SIDEBAR
 
+
+// button-submit-form UPDATE CAP NHAT
+const buttonSubmitform = document.querySelector(`[button-submit-form]`);
+if (buttonSubmitform) {
+	const button = buttonSubmitform.parentElement;
+	if (button) {
+		document.addEventListener('keydown', (event) => {
+			event.preventDefault();
+			if (event.code == "F1") {
+				button.click();
+			}
+		}, true);
+		button.addEventListener('click', () => {
+			const body = button.closest(`body`);
+			if (body) {
+				const buttonSubmit = body.querySelector(`form button[type="submit"]`);
+				if (buttonSubmit) {
+					Swal.fire({
+						title: "Bạn có chắc muốn cập nhật?",
+						icon: "question",
+						showCancelButton: true,
+						confirmButtonColor: "#3085d6",
+						cancelButtonColor: "#d33",
+						confirmButtonText: "Cập nhật!",
+						cancelButtonText: "Hủy"
+					}).then((result) => {
+						if (result.isConfirmed) {
+							buttonSubmit.click();
+						}
+					});
+				}
+			}
+		});
+	}
+}
+
+// button-submit-form THEM MOI CREATE
+const buttonSubmitFormCreate = document.querySelector(`[button-submit-form-create]`);
+if (buttonSubmitFormCreate) {
+	document.addEventListener("keydown", (event) => {
+		if (event.code == "F1") {
+			event.preventDefault();
+			buttonSubmitFormCreate.click();
+		}
+	});
+	buttonSubmitFormCreate.addEventListener('click', () => {
+		const body = buttonSubmitFormCreate.closest(`body`);
+		if (body) {
+			const buttonSubmit = body.querySelector(`form button[type="submit"]`);
+			if (buttonSubmit) {
+				Swal.fire({
+						title: "Bạn có chắc muốn thêm mới?",
+						icon: "question",
+						showCancelButton: true,
+						confirmButtonColor: "#3085d6",
+						cancelButtonColor: "#d33",
+						confirmButtonText: "Thêm mới!",
+						cancelButtonText: "Hủy",
+					})
+					.then((result) => {
+						if (result.iConfirmed) {
+							buttonSubmit.click();
+						}
+					});
+			}
+		}
+	});
+}
+
+// expland
+const expland = document.querySelector(`[expland]`);
+if (expland) {
+	expland.addEventListener('click', () => {
+		if (document.documentElement.requestFullscreen) {
+			document.documentElement.requestFullscreen()
+			expland.classList.toggle(`fa-expand`)
+		}
+		if (document.documentElement.requestFullscreen) {
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+				expland.classList.toggle(`fa-compress`)
+			}
+		}
+	});
+}
+
+const editDelete = document.querySelectorAll(`[edit-delete]`);
+if (editDelete.length > 0) {
+	editDelete.forEach(it => {
+		const width = it.clientWidth;
+		it.classList.add(`mr-[-${width}px]`, `group-hover:mr-[0]`)
+	});
+}
+const deleteProduct = document.querySelector(`[delete-product]`);
+if (deleteProduct) {
+	deleteProduct.addEventListener('click', () => {
+		const link = deleteProduct.getAttribute('delete-product');
+		if (link) {
+			fetch(link, ({
+					method: "PATCH",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}))
+				.then(res => res.json())
+				.then(data => {
+					if (data.code == 200) {
+						window.location.href = `/${data.message}/product`
+					}
+				})
+		}
+	});
+
+}
+
+const myProfile = document.querySelector(`[my-profile]`);
+if (myProfile) {
+	const box = document.querySelector(`[box-my-profile]`);
+	if (box) {
+		myProfile.addEventListener('click', () => {
+			// box.classList.toggle(`mt-[-70px]`)
+			const child = box.querySelectorAll('div');
+			if (child.length > 0) {
+				// child.classList.toggle(`p-[5px]`)
+				child.forEach(it => {
+					const height = it.clientHeight;
+					it.classList.toggle(`mt-[-${height}px]`)
+					it.classList.add(`duration-1000`)
+				});
+			}
+		});
+	}
+
+}
+
+const buttonCreate = document.querySelector('[button-create]');
+if (buttonCreate) {
+	document.addEventListener('keydown', (event) => {
+		event.preventDefault();
+		if (event.code == "F1") {
+			buttonCreate.click();
+		}
+	}, true);
+}
 
 
 

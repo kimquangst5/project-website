@@ -6,12 +6,12 @@ include ../../mixins/quay-lai.pug
 include ../../mixins/them-moi.pug
 
 
-block header
+//- block header
 	+quay-lai("Đi đến cài đặt chung", `/${admin}/dashboard`)
 
 block main
 	+khung-table("Thông tin của bạn")
 		h1 #{account.fullName}
-		div(class="text-wrap") #{role.title}
-		each it in role.permisstion
-			div(class="") #{it}
+			div(class="text-wrap") #{role.title}
+			//- each it in role.permisstion
+			//- 	div(class="") #{it}

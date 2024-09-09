@@ -34,45 +34,65 @@ module.exports.createPost = async (req, res) => {
 
 // [POST] /admin/roles/edit/:id
 module.exports.edit = async (req, res) => {
-	try {
-		const { id } = req.params;
-		const role = await Role.findOne({
-			_id: id,
-			deleted: false
+	if (res.locals.role.permisstion.includes(`roles_edit`)) {
+		try {
+			const {
+				id
+			} = req.params;
+			const role = await Role.findOne({
+				_id: id,
+				deleted: false
+			})
+			res.render('admin/pages/roles/edit.pug', {
+				pageTitle: "Trang chỉnh sửa nhóm quyền",
+				header: 'Chỉnh sửa nhóm quyền',
+				role: role,
+			})
+		} catch (error) {
+			res.json({
+				code: 400
+			})
+		}
+	} else {
+		res.json({
+			code: 403
 		})
-		res.render('admin/pages/roles/edit.pug', {
-			pageTitle: "Trang chỉnh sửa nhóm quyền",
-			header: 'Chỉnh sửa nhóm quyền',
-			role: role,
-			buttonTitle: "Quay lại danh sách",
-			buttonLink: `/${process.env.admin}/roles`
-		})
-	} catch (error) {
-		req.flash("error", "Chỉnh sửa thất bại!!!");
-		res.redirect(`/${process.env.admin}/roles`);
 	}
-	
+
+
 };
 
 // [PATCH] /admin/roles/edit/:id
 module.exports.editPatch = async (req, res) => {
-	try {
-		const { id } = req.params;
-		console.log(req.body)
-		await Role.updateOne({
-			_id: id
-		}, req.body);
-		req.flash('success', "Cập nhật nhóm quyền thành công!!!");
-		res.redirect('back');
-	} catch (error) {
-		res.redirect(`/${process.env.admin}/roles`);
+	if (res.locals.role.permisstion.includes(`roles_edit`)) {
+		try {
+			const {
+				id
+			} = req.params;
+			console.log(req.body)
+			await Role.updateOne({
+				_id: id
+			}, req.body);
+			req.flash('success', "Cập nhật nhóm quyền thành công!!!");
+			res.redirect('back');
+		} catch (error) {
+			res.json({
+				code: 400
+			})
+		}
+	} else {
+		res.json({
+			code: 403
+		})
 	}
-	
+
 };
 
 // [PATCH] /admin/roles/delete/:id
 module.exports.deletePatch = async (req, res) => {
-	const { id } = req.params;
+	const {
+		id
+	} = req.params;
 	await Role.updateOne({
 		_id: id
 	}, {
@@ -97,9 +117,10 @@ module.exports.permissions = async (req, res) => {
 		header: 'Thiết lập phân quyền',
 		records: records,
 	})
-	
+
 };
 
+// [PATCH] /admin/roles/permissions
 module.exports.permissionsPatch = async (req, res) => {
 	const arr = req.body;
 	arr.forEach(async (ele) => {
@@ -114,7 +135,7 @@ module.exports.permissionsPatch = async (req, res) => {
 
 	req.flash('success', "Cập nhật quyền thành công");
 	res.json({
-		code : 200,
+		code: 200,
 		message: "Trần Kim Quang"
 	})
 }

@@ -5,6 +5,7 @@ const ProductCategory = require('../../models/product-category.model')
 const createTreeUtil = require('../../utils/creeteTree.util');
 const Account = require('../../models/account.model');
 const moment = require('moment');
+const system = require(`../../config/system`)
 
 // [GET] /admin/product/
 module.exports.index = async (req, res) => {
@@ -151,17 +152,11 @@ module.exports.changeStatus = async (req, res) => {
 
 // [PATCH] /admin/product/change-multi
 module.exports.changeMulti = async (req, res) => {
-
+	console.log(req.body)
 	const {
 		status,
 		ids
 	} = req.body;
-	if (status == 'active') {
-		req.flash('update', `Cập nhật trạng thái thành công!`);
-	}
-	if (status == 'inactive') {
-		req.flash('update', `Cập nhật trạng thái thành công!`);
-	}
 
 	if (status == 'deleted-product') {
 		await Product.updateMany({
@@ -169,17 +164,22 @@ module.exports.changeMulti = async (req, res) => {
 		}, {
 			deleted: true
 		});
-		req.flash('success', `Thanks! Xóa các sản phẩm thành công!`);
-	}
-	await Product.updateMany({
-		_id: ids
-	}, {
-		status: status
-	});
+		req.flash('success', `Xóa các sản phẩm thành công!`);
+		res.json({
+			code: 200
+		})
+	} else {
+		await Product.updateMany({
+			_id: ids
+		}, {
+			status: status
+		});
 
-	res.json({
-		code: 200
-	})
+		res.json({
+			code: 200
+		})
+	}
+
 }
 
 // [PATCH] /admin/product/delete/:id
@@ -196,7 +196,8 @@ module.exports.delete = async (req, res) => {
 		req.flash('success', 'Xóa sản phẩm thành công!');
 
 		res.json({
-			code: 200
+			code: 200,
+			message: system.admin
 		})
 	} catch (error) {
 		req.flash('error', 'Xóa sản phẩm thất bại!!!');
@@ -243,7 +244,6 @@ module.exports.changeMultiRestore = async (req, res) => {
 // [PATCH] /admin/product/change-position/:id
 module.exports.changePosition = async (req, res) => {
 
-	req.flash('update', 'Cập nhật vị trí thành công!');
 
 	const id = req.params.id
 	const position = req.body.position
@@ -253,9 +253,11 @@ module.exports.changePosition = async (req, res) => {
 	}, {
 		position: position
 	})
+	// req.flash('success', 'Cập nhật vị trí thành công!');
 
 	res.json({
-		code: 200
+		code: 200,
+
 	})
 }
 

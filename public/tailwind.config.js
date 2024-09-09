@@ -124,17 +124,26 @@ tailwind.config = {
 		},
 		extend: {
 			colors: {
-				adminColorTertiary: "#bae8e8",
-				adminColorMain: "#fffffe",
-				adminColorHeadline: "#272343", // text
-				adminColorHeadlineHover: "#5A5866", //button
+				adminColorTertiary: "#303841", //nền trong
+				adminColorMain: "#38414A",  //nền box
+				header: "#38414a", //button
+				adminColorHeadline: "#9097A7", // text
+				adminColorHeadlineHover: "#434A50", //button
 				adminColorHighlight: "#ffd803", //button
+				main: "#F0F0F0", //button,
+				xanh: `#22BC9A`,
+				do: `#EF556F`,
+				xanhhover: `#16A085`,
+				dohover: `#CD485C`,
+				bginput: `#464F5B`,
+				box: `#36404A`,
+				bgimage: `#424E5A`,
 
 				color3: "#FA6B04",
 			},
 			fontFamily: {
-				font1: ['source-sans-pro', 'sans-serif'],
-				font2: ['Be Vietnam Pro', 'sans-serif'],
+				font_main: ['Poppins', 'sans-serif'],
+				THAI_CONG: ['Montserrat', 'sans-serif'],
 			},
 			backgroundImage: {
 				'section7': 'linear-gradient(to bottom, white 50%, #0000001A 50%)',

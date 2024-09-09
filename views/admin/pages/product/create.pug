@@ -3,13 +3,24 @@ include ../../mixins/select-tree.pug
 include ../../mixins/khung-table.pug
 include ../../mixins/quay-lai.pug
 include ../../mixins/cap-nhat.pug
+include ../../mixins/dieu-huong.pug
 
-block header
+//- block header
 	+quay-lai("Quay lại danh sách sản phẩm", `/${admin}/product`)
 	+cap-nhat("Thêm mới")(buttonSubmitCreateProduct="")
 
 block main
+
 	- if(role.permisstion.includes('products_create'))
+		-
+			let array = [
+				{
+					link: `/${admin}/product`,
+					title: `Danh sách sản phẩm`
+				}
+			]
+		+dieu-huong(`Thêm mới sản phẩm`, array)
+		+cap-nhat("Thêm mới")(button-submit-form-create="")
 		+khung-table("Thêm mới sản phẩm")
 			form(
 				action=`/${admin}/product/create`
@@ -19,7 +30,7 @@ block main
 				enctype="multipart/form-data"
 				formsSubmitCreateProduct
 			)
-				div(class=`flex flex-col gap-y-[10px]`)
+				div(class=`flex flex-col gap-y-[10px] text-adminColorHeadline`)
 					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 						label(
 							for="title"
