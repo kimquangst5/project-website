@@ -1,0 +1,16 @@
+extends ../../layouts/default.pug
+include ../../mixins/dieu-huong.pug
+include ../../mixins/them-moi.pug
+include ../../mixins/khung-table.pug
+
+
+block main
+	-
+		let array = [
+			{
+				link: `/${admin}/articles`,
+				title: 'Bài viết'
+			}
+		]
+	+dieu-huong("Thêm bài viết", array)
+	+them-moi("Thêm mới", `/${admin}/articles/create`)

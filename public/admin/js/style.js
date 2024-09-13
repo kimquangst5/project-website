@@ -202,16 +202,19 @@ if (tickItem.length > 0) {
 		item.addEventListener('click', () => {
 			const parent = item.parentElement;
 			const input = parent.querySelector('input');
-			input.checked = !input.checked
-			let itemChecked = document.querySelectorAll(`input[name="checkItem"]:checked`);
-			if (itemChecked.length > 0) {
-				if (itemChecked.length == checkItem.length) {
-					checkAll.checked = true
-				} else {
-					checkAll.checked = false
-				}
+			if (input) {
+				input.checked = !input.checked
+				let itemChecked = document.querySelectorAll(`input[name="checkItem"]:checked`);
+				if (itemChecked.length > 0) {
+					if (itemChecked.length == checkItem.length) {
+						checkAll.checked = true
+					} else {
+						checkAll.checked = false
+					}
 
+				}
 			}
+
 			// input.checked = !input.checked
 		});
 	});
@@ -226,7 +229,6 @@ if (boxActions) {
 		button.addEventListener('click', () => {
 			const select = boxActions.querySelector('select');
 			const value = select.value;
-			console.log(value)
 			let itemChecked = document.querySelectorAll(`input[name="checkItem"]:checked`);
 			// let listNameImages = document.querySelectorAll(`[nameImageImg]`);
 
@@ -508,23 +510,24 @@ if (sort) {
 // Permission Phân quyền
 const tablePermissions = document.querySelector(`table[table-permissions]`);
 if (tablePermissions) {
-	const checkAll = tablePermissions.querySelectorAll(`thead input[type="checkbox"]`);
-	if (checkAll.length > 0) {
-		checkAll.forEach((button, index) => {
-			button.addEventListener('click', () => {
-				const checkItem = tablePermissions.querySelectorAll(`tbody input[type="checkbox"]`);
-				if (checkItem.length > 0) {
-					let dem = index;
-					checkItem.forEach((it, i) => {
-						if (i == dem) {
-							it.checked = button.checked;
-							dem += checkAll.length;
-						}
-					});
-				}
-			});
-		});
-	}
+	// const checkAll = tablePermissions.querySelectorAll(`thead input[type="checkbox"]`);
+	// if (checkAll.length > 0) {
+	// 	checkAll.forEach((button, index) => {
+	// 		button.addEventListener('click', () => {
+	// 			const checkItem = tablePermissions.querySelectorAll(`tbody input[type="checkbox"]`);
+	// 			if (checkItem.length > 0) {
+	// 				let dem = index;
+	// 				checkItem.forEach((it, i) => {
+	// 					if (i == dem) {
+	// 						it.checked = button.checked;
+	// 						dem += checkAll.length;
+	// 					}
+	// 				});
+	// 			}
+	// 		});
+	// 	});
+	// }
+	// 
 	const checkItem = tablePermissions.querySelectorAll(`tbody input[type="checkbox"]`);
 	if (checkItem.length > 0) {
 		checkItem.forEach((button, i) => {
@@ -548,6 +551,25 @@ if (tablePermissions) {
 		});
 	}
 
+	const checkAll = tablePermissions.querySelectorAll(`thead input[type="checkbox"]`);
+	if (checkAll.length > 0) {
+		checkAll.forEach(it => {
+			it.addEventListener('click', () => {
+				const id = it.getAttribute('value');
+				console.log(id)
+				const checkItem = tablePermissions.querySelectorAll(`tbody input[type="checkbox"]`);
+				if (checkItem.length > 0) {
+					checkItem.forEach(item => {
+						const idItem = item.getAttribute('data-id');
+						if (idItem == id) {
+							item.checked = it.checked
+						}
+					})
+				}
+			});
+
+		});
+	}
 	const buttonSubmit = document.querySelector(`[roles]`);
 	if (buttonSubmit) {
 		const roles = [];
@@ -661,35 +683,39 @@ if (loginAdmin) {
 }
 
 // ĐĂNG XUẤT
-const logOut = document.querySelector(`[log-out]`);
-if (logOut) {
-	logOut.addEventListener('click', () => {
-		fetch(`/admin/auth/logout`, {
-				method: "PATCH",
-				headers: {
-					"Content-Type": "application/json",
-				},
-			})
-			.then(res => res.json())
-			.then((data) => {
-				if (data.code == 200) {
-					Swal.fire({
-						position: "top-end",
-						icon: "success",
-						title: "Đăng xuất thành công!",
-						showConfirmButton: false,
-						timer: 1500
-					});
-					setTimeout(() => {
-						window.location.href = data.message
-					}, 500);
+const logOut = document.querySelectorAll(`[log-out]`);
+if (logOut.length > 0) {
+	logOut.forEach(it => {
+		it.addEventListener('click', () => {
+			const link = it.getAttribute(`log-out`);
+			fetch(link, {
+					method: "PATCH",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				})
+				.then(res => res.json())
+				.then((data) => {
+					if (data.code == 200) {
+						Swal.fire({
+							position: "top-end",
+							icon: "success",
+							title: "Đăng xuất thành công!",
+							showConfirmButton: false,
+							timer: 1500
+						});
+						setTimeout(() => {
+							window.location.href = data.message
+						}, 500);
 
-				}
-				if (data.code == 403) {
-					window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
-				}
-			})
+					}
+					if (data.code == 403) {
+						window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
+					}
+				})
+		});
 	});
+
 }
 
 // HEADER
@@ -709,45 +735,30 @@ if (main) {
 						const box = document.querySelector(`[box-my-profile]`);
 						if (box) {
 							// myProfile.addEventListener('click', () => {
-								// box.classList.toggle(`mt-[-70px]`)
-								const child = box.querySelectorAll('div');
-								if (child.length > 0) {
-									// child.classList.toggle(`p-[5px]`)
-									child.forEach(it => {
-										const height = it.clientHeight;
-										it.classList.add(`mt-[-${height}px]`)
-										it.classList.add(`duration-1000`)
-									});
-								}
+							// box.classList.toggle(`mt-[-70px]`)
+							const child = box.querySelectorAll(":scope > *");
+							if (child.length > 0) {
+								// child.classList.toggle(`p-[5px]`)
+								child.forEach(it => {
+									const height = it.clientHeight;
+									it.classList.add(`mt-[-${height}px]`)
+									it.classList.add(`duration-1000`)
+								});
+							}
 							// });
 						}
 
 					}
 				}
-			} else{
+			} else {
 				header.style.top = `0px`;
-				
-			} 
+			}
 			last = scrollTop;
 		});
 	}
 }
 
 // HẾT HEADER
-
-// // buttonSubmitCreateProduct
-// const buttonSubmitCreate = document.querySelector(`[buttonSubmitCreateProduct]`);
-// if (buttonSubmitCreate) {
-// 	buttonSubmitCreate.addEventListener('click', () => {
-// 		const form = document.querySelector('form[formsSubmitCreateProduct]');
-// 		if (form) {
-// 			const button2 = form.querySelector('button[type="submit"]');
-// 			if (button2) {
-// 				button2.click();
-// 			}
-// 		}
-// 	});
-// }
 
 const Success = document.querySelector('[update]');
 if (Success) {
@@ -1006,36 +1017,44 @@ if (Aside) {
 // button-submit-form UPDATE CAP NHAT
 const buttonSubmitform = document.querySelector(`[button-submit-form]`);
 if (buttonSubmitform) {
-	const button = buttonSubmitform.parentElement;
-	if (button) {
-		document.addEventListener('keydown', (event) => {
-			event.preventDefault();
-			if (event.code == "F1") {
-				button.click();
-			}
-		}, true);
-		button.addEventListener('click', () => {
-			const body = button.closest(`body`);
-			if (body) {
-				const buttonSubmit = body.querySelector(`form button[type="submit"]`);
-				if (buttonSubmit) {
-					Swal.fire({
-						title: "Bạn có chắc muốn cập nhật?",
-						icon: "question",
-						showCancelButton: true,
-						confirmButtonColor: "#3085d6",
-						cancelButtonColor: "#d33",
-						confirmButtonText: "Cập nhật!",
-						cancelButtonText: "Hủy"
-					}).then((result) => {
-						if (result.isConfirmed) {
-							buttonSubmit.click();
+	buttonSubmitform.addEventListener('click', () => {
+		const body = buttonSubmitform.closest(`body`);
+		if (body) {
+			const buttonSubmit = body.querySelector(`form button[type="submit"]`);
+			if (buttonSubmit) {
+				Swal.fire({
+					title: "Bạn có chắc muốn cập nhật?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "Cập nhật!",
+					cancelButtonText: "Hủy"
+
+				}).then((result) => {
+					if (result.isConfirmed) {
+						buttonSubmit.click();
+						const link = buttonSubmit.getAttribute('button-submit-form');
+						if (link) {
+							fetch(link, {
+									method: "PATCH"
+								})
+								.then(res => res.json())
+								.then(data => {
+									console.log(data)
+								})
 						}
-					});
-				}
+					}
+				});
 			}
-		});
-	}
+		}
+	});
+	document.addEventListener('keydown', (event) => {
+		if (event.code == "F1") {
+			event.preventDefault();
+			buttonSubmitform.click();
+		}
+	}, true);
 }
 
 // button-submit-form THEM MOI CREATE
@@ -1046,10 +1065,11 @@ if (buttonSubmitFormCreate) {
 			event.preventDefault();
 			buttonSubmitFormCreate.click();
 		}
-	});
+	}, true);
 	buttonSubmitFormCreate.addEventListener('click', () => {
-		const body = buttonSubmitFormCreate.closest(`body`);
+		let body = buttonSubmitFormCreate.closest("body")
 		if (body) {
+
 			const buttonSubmit = body.querySelector(`form button[type="submit"]`);
 			if (buttonSubmit) {
 				Swal.fire({
@@ -1062,8 +1082,8 @@ if (buttonSubmitFormCreate) {
 						cancelButtonText: "Hủy",
 					})
 					.then((result) => {
-						if (result.iConfirmed) {
-							buttonSubmit.click();
+						if (result.isConfirmed) {
+							buttonSubmit.click()
 						}
 					});
 			}
@@ -1121,9 +1141,17 @@ const myProfile = document.querySelector(`[my-profile]`);
 if (myProfile) {
 	const box = document.querySelector(`[box-my-profile]`);
 	if (box) {
+		const child = box.querySelectorAll(":scope > *");
+		if (child.length > 0) {
+			// child.classList.toggle(`p-[5px]`)
+			child.forEach(it => {
+				const height = it.clientHeight;
+				it.classList.toggle(`mt-[-${height}px]`)
+			});
+		}
 		myProfile.addEventListener('click', () => {
 			// box.classList.toggle(`mt-[-70px]`)
-			const child = box.querySelectorAll('div');
+			const child = box.querySelectorAll(':scope > *')
 			if (child.length > 0) {
 				// child.classList.toggle(`p-[5px]`)
 				child.forEach(it => {
@@ -1150,10 +1178,9 @@ if (buttonCreate) {
 
 
 
+console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
 
-// console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-// console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
-
-// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');

@@ -1,11 +1,23 @@
 const Role = require("../../../models/role.model")
 const Account = require("../../../models/account.model")
+const moment = require('moment')
 
 // [GET] /admin/trash/product-category
 module.exports.index = async (req, res) => {
 	const roles = await Role.find({
 		deleted: true
 	})
+
+	for (const item of roles) {
+		
+		const account = await Account.findOne({
+			_id: item.deletedBy
+		})
+		if(account){
+			item.deletedBy = account.fullName
+		}
+		item.updatedAtFormat = moment(item.updatedAt).format("DD/MM/YYYY - HH:mm:ss")
+	}
 	res.render('admin/pages/trash/role/index.pug', {
 		pageTitle: 'Trang thùng rác nhóm quyền',
 		header: 'Thùng rác nhóm quyền',

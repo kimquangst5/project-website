@@ -4,11 +4,10 @@ const Role = require('../../models//role.model');
 
 module.exports = async (req, res, next) => {
 	const admin = process.env.admin
-	if(!req.cookies.token){
+	if (!req.cookies.token) {
 		res.redirect(`/${admin}`);
 		return;
-	}
-	else{
+	} else {
 		try {
 			const token = req.cookies.token;
 			const accounts = await Account.findOne({
@@ -18,17 +17,21 @@ module.exports = async (req, res, next) => {
 			const roles = await Role.find({
 				deleted: false
 			})
-			if(accounts){
+			if (accounts) {
 				res.locals.account = accounts
 				roles.forEach(it => {
-					if(it.id == accounts.role_id){
+					if (it.id == accounts.role_id) {
 						res.locals.role = it
 					}
 
 				});
+				let cnt = 0;
+				roles.forEach(it => {
+					cnt = Math.max(it.permisstion.length, cnt)
+				});
+				res.locals.permisstionMax = cnt
 				next();
-			}
-			else{
+			} else {
 				res.redirect(`/${admin}`);
 				return;
 			}
@@ -36,6 +39,6 @@ module.exports = async (req, res, next) => {
 			res.redirect(`/${admin}`);
 			return;
 		}
-		
+
 	}
 };

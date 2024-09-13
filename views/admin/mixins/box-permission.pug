@@ -1,5 +1,5 @@
 mixin box-permission(title, name, CRUD)
-	tr(class="border-b-[1px] border-b-[black]/2 text-[10px]" data-name = `${name}_${CRUD}` )
+	tr(class="text-[14px]" data-name = `${name}_${CRUD}` )
 		td(class="text-left px-[15px] py-[10px]" ) #{title + '|||' + name + "_" + CRUD}
 		each it in records
 			td

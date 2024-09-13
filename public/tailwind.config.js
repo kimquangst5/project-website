@@ -138,8 +138,9 @@ tailwind.config = {
 				bginput: `#464F5B`,
 				box: `#36404A`,
 				bgimage: `#424E5A`,
-
+				textHover: `#B4C6DB`,
 				color3: "#FA6B04",
+				text: "#94A0aD",
 			},
 			fontFamily: {
 				font_main: ['Poppins', 'sans-serif'],

@@ -102,13 +102,11 @@ module.exports.index = async (req, res) => {
 	}
 
 	for (const it of product) {
-		const name = await Account.find({
+		const account = await Account.findOne({
 			_id: it.createdBy
 		}).select("fullName")
-		name.forEach(item => {
-			it.createdBy = item.fullName
-		});
-		it.createdAtFormat = moment(it.createdAt).format('DD/MM/YY hh:mm a');
+		it.createdBy = account.fullName
+		it.createdAtFormat = moment(it.createdAt).format('DD/MM HH:mm');
 	}
 	res.render('admin/pages/product/index.pug', {
 		pageTitle: 'Trang quản lí sản phẩm',
@@ -125,86 +123,105 @@ module.exports.index = async (req, res) => {
 
 // [PATCH] /admin/product/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
-	const {
-		status,
-		id
-	} = req.params;
-	try {
+	if (res.locals.role.permisstion.includes("products_edit")) {
+		const {
+			status,
+			id
+		} = req.params;
+		try {
 
-		await Product.updateOne({
-			_id: id
-		}, {
-			status: status
-		});
-		req.flash('update', 'Cập nhật trạng thái thành công!');
+			await Product.updateOne({
+				_id: id
+			}, {
+				status: status
+			});
+			req.flash('update', 'Cập nhật trạng thái thành công!');
 
+			res.json({
+				code: 200
+			})
+		} catch (error) {
+			req.flash('error', "Bạn cố tình nhập sai Id sản phẩm!!!")
+			res.json({
+				code: 400
+			})
+		}
+	} else {
 		res.json({
-			code: 200
-		})
-	} catch (error) {
-		req.flash('error', "Bạn cố tình nhập sai Id sản phẩm!!!")
-		res.json({
-			code: 400
+			code: 403
 		})
 	}
+
 
 }
 
 // [PATCH] /admin/product/change-multi
 module.exports.changeMulti = async (req, res) => {
-	console.log(req.body)
-	const {
-		status,
-		ids
-	} = req.body;
+	if (res.locals.role.permisstion.includes("products_edit")) {
+		const {
+			status,
+			ids
+		} = req.body;
 
-	if (status == 'deleted-product') {
-		await Product.updateMany({
-			_id: ids
-		}, {
-			deleted: true
-		});
-		req.flash('success', `Xóa các sản phẩm thành công!`);
-		res.json({
-			code: 200
-		})
+		if (status == 'deleted-product') {
+			await Product.updateMany({
+				_id: ids
+			}, {
+				deleted: true
+			});
+			req.flash('success', `Xóa các sản phẩm thành công!`);
+			res.json({
+				code: 200
+			})
+		} else {
+			await Product.updateMany({
+				_id: ids
+			}, {
+				status: status
+			});
+
+			res.json({
+				code: 200
+			})
+		}
+
 	} else {
-		await Product.updateMany({
-			_id: ids
-		}, {
-			status: status
-		});
-
 		res.json({
-			code: 200
+			code: 403
 		})
 	}
-
 }
 
 // [PATCH] /admin/product/delete/:id
 module.exports.delete = async (req, res) => {
-	try {
-		const id = req.params.id;
-		await Product.updateOne({
-			_id: id
-		}, {
-			deleted: true,
-			deletedBy: res.locals.account.id
-		})
+	if (res.locals.role.permisstion.includes("products_delete")) {
+		try {
+			const id = req.params.id;
+			await Product.updateOne({
+				_id: id
+			}, {
+				deleted: true,
+				deletedBy: res.locals.account.id
+			})
 
-		req.flash('success', 'Xóa sản phẩm thành công!');
+			req.flash('success', 'Xóa sản phẩm thành công!');
 
+			res.json({
+				code: 200,
+				message: system.admin
+			})
+		} catch (error) {
+			req.flash('error', 'Xóa sản phẩm thất bại!!!');
+			res.json({
+				code: 400
+			})
+		}
+	} else {
 		res.json({
-			code: 200,
-			message: system.admin
-		})
-	} catch (error) {
-		req.flash('error', 'Xóa sản phẩm thất bại!!!');
-		res.json({
-			code: 400
+			code: 403
 		})
 	}
+
 
 }
 
@@ -243,22 +260,29 @@ module.exports.changeMultiRestore = async (req, res) => {
 
 // [PATCH] /admin/product/change-position/:id
 module.exports.changePosition = async (req, res) => {
+	if (res.locals.role.permisstion.includes("products_edit")) {
+		const id = req.params.id
+		const position = req.body.position
+
+		await Product.updateOne({
+			_id: id
+		}, {
+			position: position
+		})
+		// req.flash('success', 'Cập nhật vị trí thành công!');
+
+		res.json({
+			code: 200,
+
+		})
+	} else {
+		res.json({
+			code: 403
+		})
+	}
 
 
-	const id = req.params.id
-	const position = req.body.position
 
-	await Product.updateOne({
-		_id: id
-	}, {
-		position: position
-	})
-	// req.flash('success', 'Cập nhật vị trí thành công!');
-
-	res.json({
-		code: 200,
-
-	})
 }
 
 // [GET] /admin/product/create
@@ -280,8 +304,8 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/product/create
 module.exports.createPost = async (req, res) => {
-	try {
-		if (res.locals.role.permisstion.includes("products_create")) {
+	if (res.locals.role.permisstion.includes("products_create")) {
+		try {
 			req.body.price = parseInt(req.body.price);
 			req.body.discountPercentage = parseInt(req.body.discountPercentage);
 			req.body.stock = parseInt(req.body.stock);
@@ -293,16 +317,16 @@ module.exports.createPost = async (req, res) => {
 			}
 
 			req.body.createdBy = res.locals.account.id
-
 			const newProduct = new Product(req.body);
 			await newProduct.save();
 
 			req.flash('success', 'Thêm mới sản phẩm thành công!')
 			res.redirect(`/${process.env.admin}/product`)
+		} catch (error) {
+			res.redirect(`/${process.env.admin}/product`)
 		}
-	} catch (error) {
-		res.redirect(`/${process.env.admin}/product`)
 	}
+
 
 }
 
@@ -337,8 +361,8 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/product/edit/:id
 module.exports.editPatch = async (req, res) => {
-	try {
-		if (res.locals.role.permisstion.includes("products_edit")) {
+	if (res.locals.role.permisstion.includes("products_edit")) {
+		try {
 			req.body.price = parseInt(req.body.price);
 			req.body.discountPercentage = parseInt(req.body.discountPercentage);
 			req.body.stock = parseInt(req.body.stock);
@@ -359,14 +383,15 @@ module.exports.editPatch = async (req, res) => {
 			req.flash('update', ('Cập nhật sản phẩm thành công!'))
 
 			res.redirect('back');
-		} else {
-			res.redirect("/admin/images/403 Error Forbidden-bro.svg")
+		} catch (error) {
+			res.json({
+				code: 400
+			})
 		}
-
-
-	} catch (error) {
-		req.flash("error", "Đừng cố sửa ID sản phẩm nhé!!!")
-		res.redirect(`/${process.env.admin}/product`)
+	} else {
+		res.json({
+			code: 403
+		})
 	}
 }
 

@@ -10,15 +10,16 @@ include ../../mixins/dieu-huong.pug
 //- 	+quay-lai("Quay lại danh sách sản phẩm", `/${admin}/product`)
 	+cap-nhat("Cập nhật")(button-submit-form="")
 block main
-	-
-		let array = [
-			{
-				link: `/${admin}/product`,
-				title: `Danh sách sản phẩm`
-			}
-		]
-	+dieu-huong(`${product.title}`, array)
 	- if(role.permisstion.includes('products_edit'))
+		-
+			let array = [
+				{
+					link: `/${admin}/product`,
+					title: `Danh sách sản phẩm`
+				}
+			]
+		+dieu-huong(`${product.title}`, array)
+		+cap-nhat("Cập nhật")(button-submit-form="")
 		+khung-table("Chỉnh sửa sản phẩm")
 			form(
 				action=`/${admin}/product/edit/${product.id}?_method=PATCH`
@@ -26,18 +27,17 @@ block main
 				target=''
 				autocomplete = "on"
 				enctype="multipart/form-data"
-				formsSubmitEditProduct
 			)
 				div(class=`flex flex-col gap-y-[10px]`)
 					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 						label(
 							for="title"
-							class=`text-[14px] text-adminColorHeadline`
+							class=`text-[14px]`
 						) Tiêu đề
 							span(class="text-[red]")  *
 						input(
 							type="text", name="title" id="title"
-							class=`bg-transparent p-[5px] rounded-[5px] text-adminColorHeadline border-[1px] border-adminColorHeadline outline-adminColorHeadline col-span-2`
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
 							placeholder="Nhập tiêu đề sản phẩm..."
 							required
 							value = product.title
@@ -49,7 +49,7 @@ block main
 						) Danh mục
 							span(class="text-[red]")  *
 						select(id='product_category_id' name='product_category_id' 
-						class=`bg-transparent p-[5px] rounded-[5px] text-adminColorHeadline border-[1px] border-adminColorHeadline outline-adminColorHeadline col-span-2`)
+						class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`)
 							option(value='') --- Chọn danh mục ---
 							+select-tree(category, '', product.product_category_id)
 					div(class=`flex flex-col items-left gap-y-[10px]`)
@@ -71,7 +71,7 @@ block main
 							span(class="text-[red]")  *
 						input(
 							type="number", name="price" id="price"
-							class=`bg-transparent p-[5px] rounded-[5px] text-adminColorHeadline border-[1px] border-adminColorHeadline outline-adminColorHeadline col-span-2`
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
 							min='0'
 							placeholder="Nhập giá sản phẩm..."
 							required
@@ -85,7 +85,7 @@ block main
 							span(class="text-[red]")  *
 						input(
 							type="number", name="discountPercentage" id="discountPercentage"
-							class=`bg-transparent p-[5px] rounded-[5px] text-adminColorHeadline border-[1px] border-adminColorHeadline outline-adminColorHeadline col-span-2`
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
 							min='0'
 							max='100'
 							placeholder="Nhập phần trăm giảm giá..."
@@ -99,7 +99,7 @@ block main
 							span(class="text-[red]")  *
 						input(
 							type="number", name="stock" id="stock"
-							class=`bg-transparent p-[5px] rounded-[5px] text-adminColorHeadline border-[1px] border-adminColorHeadline outline-adminColorHeadline col-span-2`
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
 							min='1'
 							placeholder="Nhập số lượng sản phẩm..."
 							required
@@ -112,7 +112,7 @@ block main
 						) Ảnh
 						input(
 							type="file", name="thumbnail" id="thumbnail"
-							class=`bg-transparent p-[5px] rounded-[5px] text-adminColorHeadline border-[1px] border-adminColorHeadline outline-adminColorHeadline col-span-2 file:bg-[#06BC84] file:border-[0] file:rounded-[10px] file:px-[10px] file:py-[5px] file:hover:cursor-pointer hover:cursor-pointer file:hover:rounded-[20px] file:text-[white]`
+							class=`text-[12px] bg-transparent p-[5px] rounded-[5px] text-adminColorHeadline border-[1px] border-adminColorHeadline outline-adminColorHeadline col-span-2 file:bg-[#06BC84] file:border-[0] file:rounded-[10px] file:px-[10px] file:py-[5px] file:hover:cursor-pointer hover:cursor-pointer file:hover:rounded-[10px] file:text-[white]`
 							placeholder="Nhập ảnh sản phẩm..."
 							accept='image/*'
 							upload-image-input
@@ -128,7 +128,7 @@ block main
 							span(class="text-[red]")  *
 						input(
 							type="number", name="position" id="position"
-							class=`bg-transparent p-[5px] rounded-[5px] text-adminColorHeadline border-[1px] border-adminColorHeadline outline-adminColorHeadline col-span-2`
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
 							placeholder="Tự động tăng..."
 							value = product.position
 						)
@@ -158,9 +158,9 @@ block main
 					class=`text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto hidden`
 				) Cập nhật
 
-		div(class="mx-auto flex gap-[10px]") 
+		div(class="mx-auto flex gap-[10px] items-center") 
 			+cap-nhat("Cập nhật")(button-submit-form="")
-			span(class="inline-flex gap-[10px] text-[12px] px-[10px] py-[5px] border-[0px] bg-do hover:bg-dohover text-main rounded-[5px] items-center w-max" delete-product = `/${admin}/product/delete/${product.id}`)
+			span(class="inline-flex gap-[10px] text-[12px] px-[10px] py-[5px] border-[0px] bg-do hover:bg-dohover text-main rounded-[5px] items-center w-max h-max" delete-product = `/${admin}/product/delete/${product.id}`)
 				i(class=`fa-solid fa-trash`)
 				button(
 					type="submit"

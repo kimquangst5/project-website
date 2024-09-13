@@ -39,7 +39,7 @@ block main
 							span(class="text-[red]")  *
 						input(
 							type="text", name="title" id="title"
-							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
 							placeholder="Nhập tiêu đề sản phẩm..."
 							required
 						)
@@ -50,12 +50,12 @@ block main
 						) Danh mục
 							span(class="text-[red]")  *
 						select(id='product_category_id' name='product_category_id' 
-						class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`)
+						class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`)
 							option(value='') --- Chọn danh mục ---
 							+select-tree(category, '')
 					div(class=`flex flex-col items-left gap-y-[10px] w-full`)
 						label(
-							for="description"
+							for="description_ifr"
 							class=`text-[12px]`
 						) Mô tả
 						textarea(
@@ -72,7 +72,7 @@ block main
 							span(class="text-[red]")  *
 						input(
 							type="number", name="price" id="price"
-							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
 							min='0'
 							placeholder="Nhập giá sản phẩm..."
 							required
@@ -85,7 +85,7 @@ block main
 							span(class="text-[red]")  *
 						input(
 							type="number", name="discountPercentage" id="discountPercentage"
-							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
 							min='0'
 							max='100'
 							placeholder="Nhập phần trăm giảm giá..."
@@ -98,7 +98,7 @@ block main
 							span(class="text-[red]")  *
 						input(
 							type="number", name="stock" id="stock"
-							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
 							min='1'
 							placeholder="Nhập số lượng sản phẩm..."
 							required
@@ -126,7 +126,7 @@ block main
 							span(class="text-[red]")  *
 						input(
 							type="number", name="position" id="position"
-							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
 							placeholder="Tự động tăng..."
 						)
 					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)

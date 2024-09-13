@@ -27,7 +27,7 @@ module.exports.login = async (req, res) => {
 		}
 	}
 	if(token != '' && check == true){
-		res.cookie('token', token)
+		res.cookie('token', token, { expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000)}) //số 1 là số ngày
 		res.json({
 			code: 200
 		})

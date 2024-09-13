@@ -6,8 +6,4 @@ tinymce.init({
 		'media', 'table', 'emoticons', 'help'
 	],
 	skin: 'oxide-dark',
-
-	content_css: "dark"
-
-
 });

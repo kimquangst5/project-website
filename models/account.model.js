@@ -14,6 +14,8 @@ const accountShema = new Schema({
 	token: String,
 	birthday: Date,
 	roleTitle: String,
+	createdBy: String,
+	deletedBy: String,
 	status: {
 		type: String,
 		default: "active"

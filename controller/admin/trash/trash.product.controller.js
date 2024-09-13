@@ -1,10 +1,22 @@
 const Product = require("../../../models/product.model")
+const Account = require("../../../models/account.model")
+const moment = require("moment")
 
 // [GET] /admin/trash/product
 module.exports.index = async (req, res) => {
 	const product = await Product.find({
 		deleted: true
 	})
+
+	for (const item of product) {
+		const account = await Account.findOne({
+			_id: item.deletedBy
+		})
+		if(account){
+			item.deletedBy = account.fullName
+		}
+		item.updatedAtFormat = moment(item.updatedAt).format("DD/MM/YYYY - HH:mm:ss")
+	}
 	res.render('admin/pages/trash/product/index.pug', {
 		pageTitle: 'Trang Thùng rác sản phẩm',
 		header: 'Thùng rác sản phẩm',

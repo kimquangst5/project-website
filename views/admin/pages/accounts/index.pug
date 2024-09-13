@@ -3,60 +3,79 @@ include ../../mixins/pagination.pug
 include ../../mixins/khung-table.pug
 include ../../mixins/quay-lai.pug
 include ../../mixins/them-moi.pug
+include ../../mixins/dieu-huong.pug
 
 
-block header
+
+//- block header
 	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
 	- if(role.permisstion.includes('account_create'))
 		+them-moi("Thêm tài khoản", `/${admin}/accounts/create`)
 
 block main
-	//- if(roles.length > 0)
-	+khung-table("Danh sách tài khoản")
-		table(class=`w-full text-left mt-[5px]`)
-			thead(class=`h-[50px] bg-[#F9FBFF]`)
-				tr
-					th Họ tên
-					th Nhóm quyền
-					th Email
-					th Số điện thoại
-					th(class="text-center") Trạng thái
-				tbody
-					each it, i in accounts
-						tr(
-							class=`group hover:cursor-pointer border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20 h-[50px]`
-						)
-							td(
-								class=`text-[12px]`
-								tickItem
-							) #{it.fullName}
-								div(class="group-hover:flex group-hover:gap-x-[10px] group-hover:items-center hidden group-hover:block") 
-									a(
-										href=`/${admin}/accounts/edit/${it.id}`
-										class=`text-[#00712D] text-[10px] inline-block`
-									) Sửa
-									- if(it.role_id != '66d6e9cb88e0293ab309a69a')
-										button(
-											type="button" 
-											class=`text-[red]/80 text-[10px]`
-											button-delete = `/${admin}/accounts/delete/${it.id}`
-										) Xóa
-									a(
-										href=`/${admin}/accounts/change-password/${it.id}`
-										class=`text-[#1C404C] text-[10px] inline-block`
-									) Đổi mật khẩu
-							td(
-								class=`text-[12px]`
-							) #{it.roleTitle}
-							td(
-								class=`text-[12px]`
-								tickItem
-							) #{it.email}
-							td(
-								class=`text-[12px]`
-							) #{it.phone}
-							td(class="text-center")
-								if(it.status == 'active')
-									button(type="button" class="text-[10px] px-[7px] py-[2px] bg-[#06BC84] text-[white] rounded-[10px]") Đang hoạt động
-								else
-									button(type="button" class="text-[10px] px-[7px] py-[2px] bg-[red]/40 text-[white] rounded-[10px]") Dừng hoạt động
+	- if(role.permisstion.includes(`account_view`))
+		+dieu-huong("Tài khoản quản trị")
+		- if(role.permisstion.includes(`account_create`))
+			+them-moi("Thêm tài khoản", `/${admin}/accounts/create`)
+		+khung-table("Danh sách tài khoản")
+			table(class=`w-full text-left mt-[5px]`)
+				thead(class=`h-[50px]`)
+					tr
+						th Họ tên
+						th Nhóm quyền
+						th Email
+						th Số điện thoại
+						th(class="text-center") Trạng thái
+						th(class="text-center") Tạo bởi
+					tbody
+						each it, i in accounts
+							tr(
+								class=`group hover:cursor-pointer border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20 h-[50px]`
+							)
+								td(
+									class=`text-[14px] group-hover:text-textHover`
+									tickItem
+								) #{it.fullName}
+									div(class="group-hover:opacity-100 opacity-0 flex gap-x-[10px] items-center")
+										- if(role.permisstion.includes(`account_edit`))
+											a(
+												href=`/${admin}/accounts/edit/${it.id}`
+												class=` text-[12px] text-xanh hover:text-xanhhover fa-solid fa-pen`
+											)
+										- if(role.permisstion.includes(`account_delete`))
+											button(
+												type="button" 
+												class=`text-[12px] text-do hover:text-dohover fa-solid fa-trash-can`
+												button-delete = `/${admin}/accounts/delete/${it.id}`
+											)
+										a(
+											href=`/${admin}/accounts/change-password/${it.id}`
+											class=`fa-solid fa-key text-[12px] text-textHover hover:text-adminColorHeadline`
+										)
+								td(
+									class=`text-[12px]`
+								) #{it.roleTitle}
+								td(
+									class=`text-[12px]`
+									tickItem
+								) #{it.email}
+								td(
+									class=`text-[12px]`
+								) #{it.phone}
+								td(class="text-center")
+									- if(role.permisstion.includes(`account_edit`))
+										- if(it.status == 'active')
+											button(button-change-status=`/${admin}/accounts/change-status/inactive/${it.id}` type="button" class="text-[10px] px-[7px] py-[2px] bg-[#06BC84] text-[white] rounded-[10px]") Đang hoạt động
+										- else
+											button(button-change-status=`/${admin}/accounts/change-status/active/${it.id}` type="button" class="text-[10px] px-[7px] py-[2px] bg-do hover:bg-dohover text-[white] rounded-[10px]") Dừng hoạt động
+									- else
+										- if(it.status == 'active')
+											button(type="button" class="text-[10px] px-[7px] py-[2px] bg-[#06BC84] text-[white] rounded-[10px]") Đang hoạt động
+										- else
+											button(type="button" class="text-[10px] px-[7px] py-[2px] bg-do hover:bg-dohover text-[white] rounded-[10px]") Dừng hoạt động
+								td(class=`text-[12px]`)
+									div(class="") #{it.createdBy}
+									div(class="") #{it.createdAtFormat}
+
+	- else
+		div(no-view-permission)

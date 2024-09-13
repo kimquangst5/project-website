@@ -29,7 +29,7 @@ const expiryDate = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
 app.use(session({
 	cookie: {
 		maxAge: 24 * 60 * 60 * 1000, // 24 hours
-		expires: expiryDate 
+		expires: expiryDate
 	}
 }));
 
@@ -71,7 +71,7 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 // Xử lý 404 - đặt ở cuối cùng
 // app.use((req, res) => {
 // 	res.status(404).redirect(`/${process.env.admin}/main`); // Chuyển hướng về trang chủ
-//    });
+// });
 
 app.listen(port, () => {
 	console.log(`Đang lắng nghe cổng ${port}`);

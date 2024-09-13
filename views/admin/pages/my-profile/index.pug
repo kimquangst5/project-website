@@ -1,4 +1,135 @@
 extends ../../layouts/default.pug
+include ../../mixins/dieu-huong.pug
 
 block main
-	h1 #{account.fullName}
+	+dieu-huong(`Profile`)
+
+	div(class="flex grid grid-cols-3 gap-[24px] select-none")
+		div(class="col-span-1 bg-adminColorHeadlineHover rounded-[7px] p-[24px] h-max hover:mt-[-20px] duration-1000")
+			div(class="flex gap-y-[12px] flex-col")
+				div(class="text-center") 
+					div(class="border-[1px] border-adminColorHeadline rounded-[100%] w-fit p-[5px] aspect-square truncate mx-auto")
+						div(class="w-[70px] aspect-square truncate") 
+							img(src=`/admin/images/ronaldo.png`, alt="" class=`aspect-square bg-main truncate rounded-[100%] w-full h-auto`)
+					div(class="mt-[10px] text-main text-[18px] font-[400]") #{account.fullName}
+					div(class="text-[14px] text-adminColorHeadline mb-[16px]") @fullstackdeveloper
+					div(class="text-[12px] [&>*]:text-main [&>*]:px-[15px] [&>*]:py-[5px] [&>*]:rounded-[4px] flex gap-[10px] justify-center items-center")
+						button(class=`bg-xanh hover:bg-xanhhover hover-mr-[10px] duration-1000`) Theo dõi
+						button(class=`bg-do hover:bg-dohover`) Nhắn tin
+				div(class="text-adminColorHeadline text-[13px] text-left")
+					div(class="text-main uppercase font-[500] py-[10px]") Giới thiệu về tôi:
+					div(class="text-justify line-clamp-3 mb-[24px]") Xin chào, tôi tên là #{account.fullName}, tôi đang là sinh viên năm 2, ngành công nghệ thông tin. Tôi đang theo theo học tại trường Học viện Hàng không Việt Nam. Hiện tôi đang theo học chuyên nghành lập trình web ở vị trí Full stack. Xin cảm ơn bạn đã xem!
+					div(class="flex grid grid-cols-3 gap-x-[10px]")
+						div(class="flex col-span-1 gap-y-[20px] grid grid-rows-4 [&>*]:line-clamp-1")
+							strong Họ và tên:
+							strong Email:
+							strong Số điện thoại:
+							strong Vai trò:
+							strong Quốc gia:
+						div(class="flex  col-span-2 gap-y-[20px] grid grid-rows-4 grow [&>*]:line-clamp-1 truncate")
+							//- - if(account.fullName)
+							div(class="") #{account.fullName || "Chưa có"}
+							div(class="") #{account.email || "Chưa có"}
+							div(class="") #{account.phone || "Chưa có"}
+							div(class="") #{role.title || "Chưa có"}
+							div(class="") Việt Nam
+				div(class="mt-[20px] flex gap-x-[10px] mx-auto")
+					a(href="" class="fa-brands fa-facebook text-[#0866FF]")
+					a(href="" class="fa-brands fa-google text-[#F1556A]")
+					a(href="https://github.com/kimquangst5" class="fa-brands fa-github ")
+					a(href="" class="fa-brands fa-telegram text-[#30ACE7]")
+					a(href="" class="fa-brands fa-twitter text-[#43BFE5]")
+					
+
+		div(class="col-span-2 bg-adminColorHeadlineHover rounded-[7px] p-[24px] hover:mt-[-20px] duration-1000")
+			div(class="hover:[&>*]:text-textHover [&>*]:text-[14px] [&>*]:px-[16px] [&>*]:py-[8px] [&>*]:bg-bgimage flex gap-x-auto w-full [&>*]:duration-1000 [&>*]:w-1/3 gap-[10px]") 
+				button(class=`rounded-[7px] text-main`) Giới thiệu
+				button(class=`rounded-[7px] text-main`) Dòng thời gian
+				button(class=`rounded-[7px] text-main`) Cài đặt
+			
+			form(class="" setting)
+				div(class="text-main flex items-center gap-[10px] py-[20px]")
+					i(class="fa-solid fa-user-tie-hair")
+					div(class="uppercase  font-[600]") Thông tin cá nhân
+				div(class="flex flex-col text-text w-full gap-y-[24px]") 
+					div(class="flex items-center grid grid-cols-2 gap-[30px]")
+						div(class="flex flex-col gap-y-[8px]") 
+							label(for="firstname") Họ
+							input(type="text", id="firstname" name="firstname" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` required placeholder="Nhập họ")
+						div(class="flex flex-col gap-y-[8px]") 
+							label(for="lastname") Tên
+							input(type="text", id="lastname" name="lastname" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` required placeholder="Nhập tên")
+					div(class="flex flex-col gap-y-[8px]") 
+						label(for="history") Tiểu sử
+						textarea(name="history" id="history" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` placeholder="Write something..." rows="3")
+					div(class="flex items-center grid grid-cols-2 gap-[30px]")
+						div(class="flex flex-col gap-y-[8px]") 
+							label(for="email") Email
+							input(type="text", id="email" name="email" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` required placeholder="Nhập email")
+						div(class="flex flex-col gap-y-[8px]") 
+							label(for="password") Mật khẩu
+							input(type="password", id="password" name="password" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` required placeholder="Nhập mật khẩu")
+				div(class="text-main flex items-center gap-[10px] py-[20px]")
+					i(class="fa-solid fa-building")
+					div(class="uppercase  font-[600]") Thông tin công ty
+				div(class="flex flex-col text-text w-full gap-y-[24px]") 
+					div(class="flex items-center grid grid-cols-2 gap-[30px]")
+						div(class="flex flex-col gap-y-[8px]") 
+							label(for="company_name") Tên công ty
+							input(type="text", id="company_name" name="company_name" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` placeholder="Nhập tên công ty đang làm...")
+						div(class="flex flex-col gap-y-[8px]") 
+							label(for="website") Website
+							input(type="url", id="website" name="website" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` placeholder="Nhập link website")
+
+
+				div(class="text-main flex items-center gap-[10px] py-[20px]")
+					i(class="fa-solid fa-building")
+					div(class="uppercase  font-[600]") xã hội
+				div(class="flex flex-col text-text w-full gap-y-[24px]") 
+					div(class="flex items-center grid grid-cols-2 gap-[30px]")
+						div(class="flex flex-col gap-y-[8px]") 
+							label(for="facebook") Facebook
+							div(class="flex border-[1px] border-text  rounded-[7px] truncate")
+								div(class="px-[15px] py-[7px] border-r-[1px] border-r-text bg-[#323A46]")
+									i(class="fa-brands fa-square-facebook")
+								input(type="url", id="facebook" name="facebook" class=`bg-transparent w-full outline-none px-[10px] py-[5px]` placeholder="Nhập link ")
+						div(class="flex flex-col gap-y-[8px]") 
+							label(for="facebook") Twitter
+							div(class="flex border-[1px] border-text  rounded-[7px] truncate")
+								div(class="px-[15px] py-[7px] border-r-[1px] border-r-text bg-[#323A46]")
+									i(class="fa-brands fa-square-twitter")
+								input(type="url", id="facebook" name="facebook" class=`bg-transparent w-full outline-none px-[10px] py-[5px]` placeholder="Nhập link ")
+					
+
+					div(class="flex items-center grid grid-cols-2 gap-[30px]")
+						div(class="flex flex-col gap-y-[8px]") 
+							label(for="instagram") Instagram
+							div(class="flex border-[1px] border-text  rounded-[7px] truncate")
+								div(class="px-[15px] py-[7px] border-r-[1px] border-r-text bg-[#323A46]")
+									i(class="fa-brands fa-instagram")
+								input(type="url", id="instagram" name="instagram" class=`bg-transparent w-full outline-none px-[10px] py-[5px]` placeholder="Nhập link ")
+						div(class="flex flex-col gap-y-[8px]") 
+							label(for="linkedin") Linkedin
+							div(class="flex border-[1px] border-text  rounded-[7px] truncate")
+								div(class="px-[15px] py-[7px] border-r-[1px] border-r-text bg-[#323A46]")
+									i(class="fa-brands fa-linkedin-in")
+								input(type="url", id="linkedin" name="linkedin" class=`bg-transparent w-full outline-none px-[10px] py-[5px]` placeholder="Nhập link ")
+						
+
+					div(class="flex items-center grid grid-cols-2 gap-[30px]")
+						div(class="flex flex-col gap-y-[8px]") 
+							label(for="skype") Skype
+							div(class="flex border-[1px] border-text  rounded-[7px] truncate")
+								div(class="px-[15px] py-[7px] border-r-[1px] border-r-text bg-[#323A46]")
+									i(class="fa-brands fa-skype")
+								input(type="url", id="skype" name="skype" class=`bg-transparent w-full outline-none px-[10px] py-[5px]` placeholder="Nhập link ")
+						div(class="flex flex-col gap-y-[8px]") 
+							label(for="github") Github
+							div(class="flex border-[1px] border-text  rounded-[7px] truncate")
+								div(class="px-[15px] py-[7px] border-r-[1px] border-r-text bg-[#323A46]")
+									i(class="fa-brands fa-github")
+								input(type="url", id="github" name="github" class=`bg-transparent w-full outline-none px-[10px] py-[5px]` placeholder="Nhập link ")
+			
+				button(type="submit" class=`bg-do hover:bg-dohover px-[15px] py-[5px] text-main block mx-auto rounded-[7px] text-[12px] my-[20px]`)
+					i(class="fa-regular fa-floppy-disk")
+					span  Lưu

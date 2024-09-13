@@ -18,20 +18,21 @@ include ../../mixins/dieu-huong.pug
 block main
 	- if(role.permisstion.includes('products_view'))
 		+dieu-huong(`Danh sách sản phẩm`)
-		+them-moi("Thêm sản phẩm (F1)", `/${admin}/product/create`)(button-create = "")
+		- if(role.permisstion.includes(`products_create`))
+			+them-moi("Thêm sản phẩm", `/${admin}/product/create`)
 		- if(product.length == 0)
 			+khung-table("Chưa có sản phẩm nào!!")
 		- else
-			- if(role.permisstion.includes('products_fillterandsearch'))
+			- if(role.permisstion.includes('products_edit'))
 				+khung-table("Lọc theo trạng thái và tìm sản phẩm")
 					div(class=`flex flex-wrap gap-[10px] justify-between p-[10px] items-center`)
 						+fillter-status(fillerStatus)
 						+search(key)
-			- if(role.permisstion.includes('products_quickActionMenu'))
+			- if(role.permisstion.includes('products_edit'))
 				+khung-table("hành động")
 					+box-actions(`/${admin}/product/change-multi`, statusOption)
 			
-			- if(role.permisstion.includes('products_sort'))
+			- if(role.permisstion.includes('products_edit'))
 				+khung-table("Sắp xếp")
 					div(class="flex gap-[10px] items-center py-[10px] justify-center" sort) 
 						select(name="" class="outline-adminColorTertiary bg-transparent outline-[1px] text-adminColorHeadline pl-[10px] rounded-[10px] py-[5px] text-[12px]")
@@ -55,7 +56,7 @@ block main
 					title="Chọn tất cả"
 				)
 				each it, i in product
-					div(class="bg-box p-[24px] rounded-[5px] relative group")
+					div(class="bg-box p-[24px] rounded-[5px] relative group truncate")
 						input(
 							type="checkbox", 
 							name="checkItem"
@@ -67,44 +68,69 @@ block main
 							a(href=`/${admin}/product/edit/${it.id}`) 
 								img(src=it.thumbnail, alt="" class=`mx-auto my-auto w-full h-auto object-cover` nameImageImg = it.nameImage)
 							nav(class=`absolute top-0 right-0 duration-500 flex gap-[5px]` edit-delete)
-								a(
-									href=`/${admin}/product/edit/${it.id}`
-									type="button" class=`text-main bg-xanh hover:bg-xanhhover text-[7px] fa-solid fa-pen py-[5px] px-[10px] rounded-[3px]`
-									title="Chỉnh sửa sản phẩm"
-								)
-								button(
-									type="button" 
-									class=`text-main bg-do hover:bg-dohover text-[7px] fa-solid fa-x py-[5px] px-[10px] rounded-[3px]`
-									button-delete = `/${admin}/product/delete/${it.id}`
-									title="Xóa sản phẩm"
-								)
-						div(class="pt-[24px] flex gap-[5px]")
-							div(class="flex flex-col gap-[10px]")
-								a(href=`/${admin}/product/detail/${it.id}` class=`text-main`) #{it.title}
-								div(class="flex justify-between items-center truncate gap-[10px]") 
-									- if(it.status == 'active')
-										button(
-											button-change-status=(`/${admin}/product/change-status/inactive/${it.id}`)
-											type="button"
-											class=`bg-xanh hover:bg-xanhhover w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành dừng hoạt động") Đang hoạt động
-									- else
-										button(
-											button-change-status=`/${admin}/product/change-status/active/${it.id}`
-											type="button"
-											class=`bg-do hover:bg-dohover w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành hoạt động"
-										) Dừng hoạt động
-									input(
-										link=`/${admin}/product/change-position/${it.id}`
-										type="number"
-										name="position"
-										value=it.position
-										class=`bg-transparent text-adminColorHeadline outline-adminColorTertiary `
-										min='1'
+								- if(role.permisstion.includes(`products_edit`))
+									a(
+										href=`/${admin}/product/edit/${it.id}`
+										type="button" class=`text-main bg-xanh hover:bg-xanhhover text-[7px] fa-solid fa-pen py-[5px] px-[10px] rounded-[3px]`
+										title="Chỉnh sửa sản phẩm"
 									)
-								div(class="flex-1 grow flex items-center justify-left rounded-[10px]")
-									div(class="p-[10px] bg-[#323A46]  font-bold text-main") #{it.priceNew}đ
-									del(class="p-[10px] bg-[#323A46]  font-bold text-main text-adminColorHeadline opacity-50 text-[10px]") #{it.price}đ
-								div(class="flex text-adminColorHeadline text-[15px]") Số lượng: #{it.stock} cái 
+								- if(role.permisstion.includes(`products_delete`))
+									button(
+										type="button" 
+										class=`text-main bg-do hover:bg-dohover text-[7px] fa-solid fa-x py-[5px] px-[10px] rounded-[3px]`
+										button-delete = `/${admin}/product/delete/${it.id}`
+										title="Xóa sản phẩm"
+									)
+						div(class="pt-[24px] flex  gap-[5px] truncate")
+							div(class="flex flex-col flex-wrap gap-[10px] truncate")
+								a(href=`/${admin}/product/detail/${it.id}` class=`text-main   line-clamp-1 text-wrap`) #{it.title}
+								div(class="flex text-wrap w-full justify-between items-center truncate gap-[10px]")
+									- if(role.permisstion.includes(`products_edit`))
+										- if(it.status == 'active')
+											button(
+												button-change-status=(`/${admin}/product/change-status/inactive/${it.id}`)
+												type="button"
+												class=`text-nowrap bg-xanh hover:bg-xanhhover w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành dừng hoạt động") Đang hoạt động
+										- else
+											button(
+												button-change-status=`/${admin}/product/change-status/active/${it.id}`
+												type="button"
+												class=`bg-do hover:bg-dohover text-nowrap w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px] w-max` title="Click vào để đổi thành hoạt động"
+											) Dừng hoạt động
+									- else
+										- if(it.status == 'active')
+											button(
+												type="button"
+												class=`text-nowrap bg-xanh hover:bg-xanhhover w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành dừng hoạt động w-max") Đang hoạt động
+										- else
+											button(
+												type="button"
+												class=`bg-do hover:bg-dohover text-nowrap w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px] w-max` title="Click vào để đổi thành hoạt động"
+											) Dừng hoạt động
+									- if(role.permisstion.includes(`products_edit`))
+										input(
+											link=`/${admin}/product/change-position/${it.id}`
+											type="number"
+											name="position"
+											value=it.position
+											class=`bg-transparent text-adminColorHeadline outline-adminColorTertiary `
+											min='1'
+										)
+									- else
+										div(
+											class=`text-center bg-transparent text-adminColorHeadline outline-adminColorTertiary `
+										) #{it.position}
+								div(class="absolute top-0 right-0 flex justify-between")
+									button(
+										class=`bg-do hover:bg-dohover text-nowrap w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px] w-max` title="Tạo bởi"
+									) #{it.createdBy}
+									button(
+										class=`bg-xanh hover:bg-xanhhover text-nowrap w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px] w-max` title="Tạo vào lúc"
+									) #{it.createdAtFormat}
+								div(class="flex-1 grow flex text-wrap w-full items-center justify-left rounded-[10px]")
+									div(class="p-[10px] text-wrap w-full text-[14px] bg-[#323A46]  font-bold text-main w-max") #{it.priceNew}đ
+									span(class="p-[10px] text-main/50 text-adminColorHeadline text-wrap w-full text-[10px] w-max text-[12px]") -#{it.discountPercentage}%
+								div(class="flex text-wrap w-full text-adminColorHeadline text-[15px]") Số lượng: #{it.stock} cái 
 	- else
 		div(no-view-permission)
 
