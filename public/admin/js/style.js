@@ -38,7 +38,6 @@ if (formSearch) {
 	const input = formSearch.querySelector('input')
 	const i = formSearch.querySelector('i')
 	const h = i.clientWidth
-	console.log(h)
 	i.classList.toggle(`mr-[-${h}px]`)
 	if (input) {
 		input.addEventListener("focus", () => {
@@ -1176,7 +1175,23 @@ if (buttonCreate) {
 }
 
 
+const imageUpload = document.querySelector('[image-upload]');
+if (imageUpload) {
+	imageUpload.addEventListener('click', () => {
+		const pickerOpts = {
+			types: [{
+				description: 'Images',
+				accept: {
+					'image/*': ['.png', '.gif', '.jpeg', '.jpg']
+				}
+			}, ],
+			excludeAcceptAllOption: true,
+			multiple: false
+		};
 
+		window.showOpenFilePicker(pickerOpts)
+	});
+}
 
 console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
 console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');

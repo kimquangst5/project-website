@@ -1,43 +1,56 @@
 extends ../../layouts/default.pug
+include ../../mixins/dieu-huong.pug
 
 block main
+	-
+		let array = [
+			{
+				link: `/product/${titleCategory.slug}`,
+				title: `${titleCategory.title}`
+			}
+		]
+	+dieu-huong(product.title, array)
 	div(class="")
 		div(class="container")
-			div(class="text-[80px] font-bold") Chi tiết sản phẩm 
-			table(class="mx-auto")
-				tr(class="border-b-[1px] border-b-[black]/30")
-					th(class="w-1/2 text-left font-normal text-[30px] pr-[100px]  aligh-center") Tên sản phẩm:
-					td(class="w-1/2 font-bold text-[30px] text-[#CD4F41] text-justify") #{product.title}
-				tr(class="border-b-[1px] border-b-[black]/30")
-					th(class="text-left font-normal text-[30px] pr-[100px]  aligh-center") Giá
-					td(class="font-bold text-[30px] text-[#F77F00]") #{product.price}
-				tr(class="border-b-[1px] border-b-[black]/30")
-					th(class="text-left font-normal text-[30px] pr-[100px]  aligh-center") Giảm giá
-					td(class="font-bold text-[30px] text-[#66C2A5]") -#{product.discountPercentage}%
-				tr(class="border-b-[1px] border-b-[black]/30")
-					th(class="text-left font-normal text-[30px] pr-[100px]  aligh-center") Còn lại
-					td(class="font-bold text-[30px] text-[#1C404C]") #{product.stock}
-				tr(class="border-b-[1px] border-b-[black]/30")
-					th(class="text-left font-normal text-[30px] pr-[100px]  aligh-center") Hình Ảnh
-					td(class="font-bold text-[30px]")
-						if(product.thumbnail)
-							img(src=product.thumbnail, alt="" class="max-h-[150px] w-auto rounded-[10px]")
-						else
-							div(class="") Chưa có
-				tr(class="border-b-[1px] border-b-[black]/30")
-					th(class="text-left font-normal text-[30px] pr-[100px]  aligh-center") Trạng thái
-					td(class="font-bold text-[30px]")
-						if(product.status == 'active')
-							div(class="text-[#3288BD]") Hoạt động
-						else
-							div(class="text-[#EF233C]") Dừng hoạt động
+			div(class="text-chu text-[25px] font-[700] py-[30px]") Điện thoại #{product.title}
+			div(class="flex grid grid-cols-2 gap-[20px]")
+				div(class="w-full rounded-[10px] truncate bg-[white] py-[10px]")
+					img(
+						src=product.thumbnail
+						alt=product.title
+						class=`w-[full] h-auto`
+					)
+				div(class="w-full h-max flex flex-col gap-y-[20px]")
+					div(class="w-full rounded-[10px] truncate bg-[white] p-[20px]")
+						div(class="flex items-center gap-[15px]") 
+							div(class="font-bold") Giá: 
+							div(class="font-bold text-chu text-[20px]") #{product.priceNew}
+								sup đ
+							- if(product.priceNew != product.priceOld)
+								div(class="line-through text-[18px]") #{product.priceOld}
+									sup đ
 
-				tr(class="border-b-[1px] border-b-[black]/30")
-					th(class="text-left font-normal text-[30px] pr-[100px]  aligh-center") Vị trí
-					td(class="font-bold text-[30px]") #{product.position}
-				tr(class="")
-					th(class="text-left font-normal text-[30px] pr-[100px]  aligh-center") Mô tả sản phẩm:
-			if(product.description)
-				div(class="italic") !{product.description}
-			else
-				div(class="") Chưa nhập mô tả
+					div(class="w-full rounded-[10px] truncate bg-[white] px-[20px] py-[10px]")
+						div(class="flex items-center gap-[15px]") 
+							div(class="") CÒN HÀNG:
+							div(class="flex gap-[10px]") 
+								div(class="rounded-[7px] border-[1px] border-[black]/10 aspect-1/1 w-[35px] h-[35px] truncate flex items-center justify-center hover:cursor-pointer" subtraction)
+									div(class="text-chu text-[25px]" ) -
+								div(class="w-[70px] truncate rounded-[7px] border-[1px] border-[black]/10 aspect-1/1 h-auto px-[30px] truncate flex items-center justify-center hover:cursor-pointer")
+									div(class="text-[16px]" stock) 1
+								div(class="rounded-[7px] border-[1px] border-[black]/10 aspect-1/1 w-[35px] h-[35px] truncate flex items-center justify-center hover:cursor-pointer" addition)
+									div(class="text-chu text-[25px]") +
+
+
+					div(class="w-full bg-chu text-[#333333] flex rounded-[7px] items-center justify-center py-[10px] font-bold gap-[20px] hover:cursor-pointer" add-cart = `/order/cart-add/${product.id}`)
+						i(class=`fa-solid  fa-bag-shopping`)
+						div(class="uppercase") mua hàng ngay 
+					
+
+					div(class="flex justify-between gap-[20px]")
+						div(class="border-[2px] border-chu rounded-[7px] text-[#333333] flex gap-[10px] items-center w-full justify-center py-[10px] hover:bg-chu hover:text-[white] hover:cursor-pointer")
+							i(class=`fa-solid fa-cart-plus`)
+							div(class="uppercase font-bold") thêm vào giỏ  
+						div(class="border-chu rounded-[7px] text-[white] bg-[#DA0808] flex gap-[10px] items-center w-full justify-center hover:bg-[chu] hover:text-[white]")
+							i(class=`fa-solid fa-phone-volume`)
+							div(class="uppercase font-bold") 0859.615.254

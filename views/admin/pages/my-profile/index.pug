@@ -54,18 +54,18 @@ block main
 				div(class="flex flex-col text-text w-full gap-y-[24px]") 
 					div(class="flex items-center grid grid-cols-2 gap-[30px]")
 						div(class="flex flex-col gap-y-[8px]") 
-							label(for="firstname") Họ
-							input(type="text", id="firstname" name="firstname" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` required placeholder="Nhập họ")
+							label(for="firstname") Họ và tên
+							input(type="text", id="firstname" name="firstname" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` required placeholder="Nhập họ tên của bạn..." value=account.fullName)
 						div(class="flex flex-col gap-y-[8px]") 
-							label(for="lastname") Tên
-							input(type="text", id="lastname" name="lastname" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` required placeholder="Nhập tên")
+							label(for="birthday") Ngày sinh
+							input(type="text", id="birthday" name="birthday" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` required placeholder="Nhập ngày sinh của bạn..." value=account.birthday)
 					div(class="flex flex-col gap-y-[8px]") 
 						label(for="history") Tiểu sử
 						textarea(name="history" id="history" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` placeholder="Write something..." rows="3")
 					div(class="flex items-center grid grid-cols-2 gap-[30px]")
 						div(class="flex flex-col gap-y-[8px]") 
 							label(for="email") Email
-							input(type="text", id="email" name="email" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` required placeholder="Nhập email")
+							input(type="text", id="email" name="email" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` required placeholder="Nhập email" value=account.email)
 						div(class="flex flex-col gap-y-[8px]") 
 							label(for="password") Mật khẩu
 							input(type="password", id="password" name="password" class=`bg-transparent rounded-[7px] border-[1px] border-text outline-none w-full px-[10px] py-[5px]` required placeholder="Nhập mật khẩu")

@@ -14,7 +14,14 @@ include ../../mixins/dieu-huong.pug
 
 block main
 	- if(role.permisstion.includes(`account_view`))
-		+dieu-huong("Tài khoản quản trị")
+		-
+			let array = [
+				{
+					link: `/${admin}/dashboard`,
+					title: 'Cấu hình'
+				}
+			]
+		+dieu-huong("Tài khoản quản trị", array)
 		- if(role.permisstion.includes(`account_create`))
 			+them-moi("Thêm tài khoản", `/${admin}/accounts/create`)
 		+khung-table("Danh sách tài khoản")

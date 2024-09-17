@@ -14,6 +14,7 @@ const productShema = new Schema({
 	nameImage: String,
 	thumbnail: String,
 	status: String,
+	featured: String,
 	position: Number,
 	createdBy: String,
 	updatedBy: String,

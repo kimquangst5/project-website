@@ -1,14 +1,56 @@
-div(class=``)
+include ../mixins/select-tree.pug
+
+div(class="bg-[#F5F6F8]")
+	div(class="container")
+		div(class="text-[#333333] flex justify-between py-[10px] text-[12px]")
+			div(class="uppercase font-bold") Kim Quang - Điện thoại di động
+			div(class="flex justify-between items-center gap-[20px]")
+				div(class="flex justify-center items-center gap-[10px]")
+					i(class=`fa-solid fa-phone text-chu`)
+					div(class="font-bold") 0859.615.254
+				div(class="flex justify-center items-center gap-[10px]")
+					i(class=`fa-solid fa-location-dot text-chu`)
+					div(class="") Phường 12, Tân Bình - Hồ Chí Minh
+
+
+div(class="bg-[white] py-[30px]")
+	div(class="container")
+		div(class="flex items-center justify-between gap-[25px]")
+			div(class="h-[50px] w-auto")
+				img(
+					src=`/${admin}/images/LOGO3.svg`
+					alt=""
+					class=`h-full w-auto`
+				)
+			form(method="get" class=`grow flex border-[2px] border-[black] rounded-[8px] truncate`
+				form-search = `tim-kiem`
+			)
+				input(
+					type="text"
+					name=""
+					placeholder = "Bạn tìm kiếm sản phẩm gì..."
+					class=`w-full outline-none p-[10px] bg-transparent`
+					value = key
+				)
+				button(
+					type="submit"
+					class=`px-[20px] bg-[black] text-main flex items-center justify-center flex-end fa-solid fa-magnifying-glass hover:bg-chu duration-500`
+				)
+			div(class="") icon
+
+header(class=`z-[100] sticky top-0 duration-1000`)
 	div(class=`container`)
-		div(class=`gap-[10px] uppercase bg-[#EEEEEE] text-[#] flex items-center justify-left `)
-			div(class="flex items-center justify-center gap-[90px] bg-[#333333] hover:cursor-pointer px-[10px] py-[20px] ")
-				ul(class="text-[white] ") DANH MỤC SẢN PHẨM
-					li(class="")
-				div(class="text-[white]") xzcxz
-			div(class="flex items-center justify-between flex-1 [&>div]:hover:cursor-pointer [&>div]:hover:bg-[#FFC234] [&>div]:px-[10px] [&>div]:py-[20px]")
-				div(class="") TRANG CHỦ
-				div(class="") SẢN PHẨM
-				div(class="") GIỚI THIỆU
-				div(class="") TƯ VẤN CHỌN
-				div(class="") TẠP CHÍ NƯỚC HOA
-				div(class="") LIÊN HỆ
+		div(class=`gap-[10px] bg-[#EEEEEE] flex items-center justify-left h-[70px]`)
+			div(class="flex items-center justify-between text-main bg-[#333333] hover:cursor-pointer gap-x-[30px] h-full px-[10px]" list-category)
+				div(class="") DANH MỤC SẢN PHẨM
+				i(class="fa-solid fa-angle-left duration-1000")
+			div(class="absolute top-[70px] rounded-[10px] w-max h-max truncate shadow-[pink] shadow-2xl px-[10px] bg-[white]") 
+				- if(categogyProduct)
+					+select-tree(categogyProduct)
+			div(class="flex items-center justify-start flex-1  [&>div]:hover:cursor-pointer [&>div]:px-[10px] [&>div]:text-center [&>div]:h-[70px] [&>a]:h-[70px] [&>*]:px-[20px] [&>*]:duration-700")
+				a(href=`/` class="hover:bg-chu place-content-center block") TRANG CHỦ
+				div(class="hover:bg-chu place-content-center") SẢN PHẨM
+				div(class="hover:bg-chu place-content-center") GIỚI THIỆU
+				div(class="hover:bg-chu place-content-center xl:hidden") TƯ VẤN CHỌN
+				div(class="hover:bg-chu place-content-center xl:hidden") TẠP CHÍ NƯỚC HOA
+				div(class="hover:bg-chu place-content-center") LIÊN HỆ

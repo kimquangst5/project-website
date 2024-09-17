@@ -1,0 +1,9 @@
+mixin select-tree(array, level = 1, padding = 0)
+	ul(class=`list-inside duration-1000 truncate` level = level)
+		each it, i in array
+			li(class=`pl-[${padding}px] py-[15px] flex justify-between items-center` level = level) 
+				a(href=`/product/${it.slug}`) #{level}. #{it.title}
+				- if(it.children)
+					i(class=`fa-solid fa-angle-left mr-[10px] duration-1000`)
+			-if(it.children)
+				+select-tree(it.children, level + 1, padding + 20)

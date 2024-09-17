@@ -43,6 +43,27 @@ block main
 							placeholder="Nhập tiêu đề sản phẩm..."
 							required
 						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4 text-[12px]`)
+						label(
+							for="status"
+							class=``
+						) Sản phẩm nổi bật
+							span(class="text-[red]")  *
+						div(class=`flex flex-row gap-[10px]`)
+							input(
+								type="radio", name='featured' value="active" id="active"
+								class=``
+							)
+							label(
+								for="active"
+							) Có
+						div(class=`flex flex-row gap-[10px]`)
+							input(
+								type="radio", name='featured' value="inactive" checked id="inactive"
+							)
+							label(
+								for="inactive"
+							) Không
 					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
 						label(
 							for="product_category_id"
@@ -53,6 +74,7 @@ block main
 						class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`)
 							option(value='') --- Chọn danh mục ---
 							+select-tree(category, '')
+					
 					div(class=`flex flex-col items-left gap-y-[10px] w-full`)
 						label(
 							for="description_ifr"
@@ -129,32 +151,28 @@ block main
 							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
 							placeholder="Tự động tăng..."
 						)
-					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4 text-[12px]`)
 						label(
 							for="status"
-							class=`text-[12px]`
+							class=``
 						) Trạng thái
 							span(class="text-[red]")  *
 						div(class=`flex flex-row gap-[10px]`)
 							input(
 								type="radio", name='status' value="active" id="active"
 								class=``
-								required
 								checked
 							)
 							label(
 								for="active"
-								class=`font-bold text-[20px] capitalize`
 							) Hoạt động
 						div(class=`flex flex-row gap-[10px]`)
 							input(
 								type="radio", name='status' value="inactive" id="inactive"
-								required
 							)
 							label(
 								for="inactive"
-								class=`font-bold text-[20px] capitalize`
-							) dừng Hoạt động
+							) Dừng hoạt động
 				button(type="submit"
 					class=`transition duration-700 ease-in-out text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto hidden`
 				) Tạo mới

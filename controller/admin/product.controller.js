@@ -384,9 +384,8 @@ module.exports.editPatch = async (req, res) => {
 
 			res.redirect('back');
 		} catch (error) {
-			res.json({
-				code: 400
-			})
+			req.flash("error", 'Cập nhật thất bại!')
+			res.redirect('back')
 		}
 	} else {
 		res.json({

@@ -33,7 +33,8 @@ module.exports.index = async (req, res) => {
 // [GET] /admin/product-category/create
 module.exports.create = async (req, res) => {
 	const category = await ProductCategory.find({
-		deleted: false
+		deleted: false,
+		status: "active"
 	});
 
 

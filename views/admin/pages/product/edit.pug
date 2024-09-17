@@ -52,6 +52,32 @@ block main
 						class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`)
 							option(value='') --- Chọn danh mục ---
 							+select-tree(category, '', product.product_category_id)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="status"
+							class=`text-[14px] text-adminColorHeadline`
+						) Sản phẩm nổi bật
+						div(class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2 flex justify-between`)
+							div(class=`flex flex-row gap-[10px]`)
+								input(
+									type="radio", name='featured' value="active" id="active"
+									class=``
+									required
+									checked = (product.featured == 'active' ? true : false)
+								)
+								label(
+									for="active"
+								) Có
+							div(class=`flex flex-row gap-[10px]`)
+								input(
+									type="radio", name='featured' value="inactive" id="inactive"
+									required
+									checked = (product.featured == 'inactive' ? true : false)
+								)
+								label(
+									for="inactive"
+								) Không
+							
 					div(class=`flex flex-col items-left gap-y-[10px]`)
 						label(
 							for="description"
@@ -132,34 +158,36 @@ block main
 							placeholder="Tự động tăng..."
 							value = product.position
 						)
-					div(class=`flex justify-center gap-[20px] text-adminColorHeadline`)
-						div(class=`flex flex-row gap-[10px]`)
-							input(
-								type="radio", name='status' value="active" id="active"
-								class=``
-								required
-								checked = (product.status == 'active' ? true : false)
-							)
-							label(
-								for="active"
-								class=`font-bold text-[20px] capitalize`
-							) Hoạt động
-						div(class=`flex flex-row gap-[10px]`)
-							input(
-								type="radio", name='status' value="inactive" id="inactive"
-								required
-								checked = (product.status == 'inactive' ? true : false)
-							)
-							label(
-								for="inactive"
-								class=`font-bold text-[20px] capitalize`
-							) dừng Hoạt động
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="status"
+							class=`text-[14px] text-adminColorHeadline`
+						) Trạng thái
+						div(class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2 flex justify-between`)
+							div(class=`flex flex-row gap-[10px]`)
+								input(
+									type="radio", name='status' value="active" id="active"
+									class=``
+									required
+									checked = (product.status == 'active' ? true : false)
+								)
+								label(
+									for="active"
+								) Hoạt động
+							div(class=`flex flex-row gap-[10px]`)
+								input(
+									type="radio", name='status' value="inactive" id="inactive"
+									required
+									checked = (product.status == 'inactive' ? true : false)
+								)
+								label(
+									for="inactive"
+								) dừng Hoạt động
 				button(type="submit"
-					class=`text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto hidden`
+					class=`hidden text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto hidden`
 				) Cập nhật
 
 		div(class="mx-auto flex gap-[10px] items-center") 
-			+cap-nhat("Cập nhật")(button-submit-form="")
 			span(class="inline-flex gap-[10px] text-[12px] px-[10px] py-[5px] border-[0px] bg-do hover:bg-dohover text-main rounded-[5px] items-center w-max h-max" delete-product = `/${admin}/product/delete/${product.id}`)
 				i(class=`fa-solid fa-trash`)
 				button(

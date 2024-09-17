@@ -1,0 +1,31 @@
+extends ../../layouts/default.pug
+include ../../mixins/dieu-huong.pug
+
+block main
+	+dieu-huong("Giỏ hàng")
+	div(class="my-[40px]") 
+		div(class="container")
+			div(class="bg-[white] rounded-[7px] p-[5px] flex flex-col")
+				div(class="font-bold text-[20px] py-[20px]") Thông tin sản phẩm 
+					span(class=`font-normal capitalize`) (2 sản phẩm)
+				table(class=`w-full`)
+					thead(class=`text-[14px]`)
+						tr
+							th Sản phẩm
+							th Giá
+							th Số lượng
+							th Tổng tiền
+					tbody
+						tr
+							td(class=`flex`)
+								img(src="https://cdn.bapperfume.com/thumbs/z4526873716249_aef7f54d0e537ba82df22093b0f3b683_thumb_150.jpg", alt=""
+								class=`h-[80px] w-auto`)
+								div(class="flex flex-col justify-between")
+									div(class="hover:text-chu") vcxvcxv
+									div(class="text-[#da0808] font-bold") Xóa
+								
+				div(class="ml-auto w-1/2")
+					div(class="flex justify-between text-[17px] font-bold gap-[10px] py-[10px]") 
+						div(class="") Tổng tiền 
+						div(class="text-chu") 250,000 đ
+					button(class="rounded-[10px] hover:rounded-[20px] bg-chu text-[white] w-full py-[10px]") Xác nhận giỏ hàng

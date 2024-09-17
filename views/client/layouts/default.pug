@@ -7,8 +7,20 @@ html(lang="en")
 		meta(name="twitter:image" content="/media/logo/LOGO.png")
 		script(src="https://cdn.tailwindcss.com/")
 		script(src="/tailwind.config.js")
+		link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css")
+		link(rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css")
 		link(href="/media/logo/logo.svg", rel="icon", type="image/x-icon")
 		title #{pageTitle}
-	body
+	body(class=`font-THAI_CONG bg-[#F5F5F5]`)
 		include ../partials/header.pug
 		block main
+
+		span(class="fixed bottom-[30px] right-[30px] aspect-square")
+			span(class="animate-ping absolute inline-flex aspect-square w-full place-content-center rounded-full bg-sky-400 opacity-75")
+			span(class="relative inline-flex rounded-full aspect-square place-content-center bg-sky-500")
+				div(class="flex flex-col place-content-center justify-center px-[10px] text-[white] gap-[5px]")
+					i(class=`fa-solid fa-message-dots mx-auto`)
+					div(class="") Liên hệ
+
+	script(src="/js/style.js")
+	script(type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/tooltip.js")

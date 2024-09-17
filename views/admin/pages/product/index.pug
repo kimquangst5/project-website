@@ -83,7 +83,7 @@ block main
 									)
 						div(class="pt-[24px] flex  gap-[5px] truncate")
 							div(class="flex flex-col flex-wrap gap-[10px] truncate")
-								a(href=`/${admin}/product/detail/${it.id}` class=`text-main   line-clamp-1 text-wrap`) #{it.title}
+								a(href=`/${admin}/product/detail/${it.id}` class=`text-main   line-clamp-1 text-wrap` title=it.title) #{it.title}
 								div(class="flex text-wrap w-full justify-between items-center truncate gap-[10px]")
 									- if(role.permisstion.includes(`products_edit`))
 										- if(it.status == 'active')

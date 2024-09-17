@@ -141,6 +141,7 @@ tailwind.config = {
 				textHover: `#B4C6DB`,
 				color3: "#FA6B04",
 				text: "#94A0aD",
+				chu: "#FFC234",
 			},
 			fontFamily: {
 				font_main: ['Poppins', 'sans-serif'],
