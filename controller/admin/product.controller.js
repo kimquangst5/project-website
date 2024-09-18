@@ -96,9 +96,25 @@ module.exports.index = async (req, res) => {
 		.skip(pagination.skip)
 		.sort(sort)
 
+	// for (const it of product) {
+	// 	it.priceNew = it.price - (it.price * it.discountPercentage) / 100
+	// 	it.priceNew = it.priceNew.toFixed(0);
+	// }
+
 	for (const it of product) {
 		it.priceNew = it.price - (it.price * it.discountPercentage) / 100
 		it.priceNew = it.priceNew.toFixed(0);
+		it.priceNew = parseInt(it.priceNew / 1000)
+		if(it.priceNew % 1000 <= 100){
+			it.priceNew = parseInt(it.priceNew / 1000) - 1
+			it.priceNew = (1000 * it.priceNew + 990) * 1000
+		}
+		else{
+			it.priceNew = it.priceNew * 1000
+		}
+		it.priceNew = [it.priceNew].toLocaleString('en-EN')
+		
+
 	}
 
 	for (const it of product) {

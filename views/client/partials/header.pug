@@ -52,9 +52,15 @@ header(class=`z-[100] sticky top-0 duration-1000`)
 				- if(categogyProduct)
 					+select-tree(categogyProduct)
 			div(class="flex items-center justify-start flex-1  [&>div]:hover:cursor-pointer [&>div]:px-[10px] [&>div]:text-center [&>div]:h-[70px] [&>a]:h-[70px] [&>*]:px-[20px] [&>*]:duration-700")
-				a(href=`/` class="hover:bg-chu place-content-center block") TRANG CHỦ
-				div(class="hover:bg-chu place-content-center") SẢN PHẨM
-				div(class="hover:bg-chu place-content-center") GIỚI THIỆU
-				div(class="hover:bg-chu place-content-center xl:hidden") TƯ VẤN CHỌN
-				div(class="hover:bg-chu place-content-center xl:hidden") TẠP CHÍ
-				div(class="hover:bg-chu place-content-center") LIÊN HỆ
+				a(href=`/` class=" place-content-center block relative group truncate" animation) TRANG CHỦ
+					div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
+				div(class="place-content-center relative group truncate" animation) SẢN PHẨM
+					div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
+				div(class=" place-content-center relative group truncate" animation) GIỚI THIỆU
+					div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000" animation)
+				div(class=" place-content-center xl:hidden  relative group truncate" animation) TƯ VẤN CHỌN
+					div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
+				div(class=" place-content-center xl:hidden relative group truncate" animation) TẠP CHÍ
+					div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
+				div(class=" place-content-center relative group truncate" animation) LIÊN HỆ
+					div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
