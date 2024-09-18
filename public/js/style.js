@@ -242,40 +242,96 @@ if (calculate.length > 0) {
 		if (add && sub) {
 			add.addEventListener('click', () => {
 				stock.value = parseInt(stock.value) + 1
-				if(price){
+				if (price) {
 					const getPrice = price.getAttribute("priceTotal");
-				if(getPrice){
-					let PRICE = parseInt(parseInt(getPrice) * parseInt(stock.value))
-					price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
-					price.innerHTML = parseInt(price.innerHTML);
-					PRICE = PRICE.toLocaleString('en-EN')
-					price.innerHTML = PRICE
+					if (getPrice) {
+						let PRICE = parseInt(parseInt(getPrice) * parseInt(stock.value))
+						price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
+						price.innerHTML = parseInt(price.innerHTML);
+						PRICE = PRICE.toLocaleString('en-EN')
+						price.innerHTML = PRICE
+					}
+					const allPrice = document.querySelector('[all-price]')
+				if (allPrice) {
+					const getPriceTotalAll = allPrice.getAttribute("all-price");
+					if (getPriceTotalAll) {
+						const value = stock.getAttribute('value');
+						if(value){
+							let PRICE = (parseInt(getPriceTotalAll) - (parseInt(value) * parseInt(getPrice))) + (parseInt(parseInt(getPrice) * parseInt(stock.value)))
+							PRICE = PRICE.toLocaleString('en-EN')
+							allPrice.innerHTML = PRICE
+
+
+						}
+					}
 				}
 				}
-				
+
 			});
 			stock.value = parseInt(stock.value)
 			sub.addEventListener('click', () => {
 				if (parseInt(stock.value) != 1) {
 					stock.value = parseInt(stock.value) - 1
 					const getPrice = price.getAttribute("priceTotal");
-				if(getPrice){
-					let PRICE = parseInt(parseInt(getPrice) * parseInt(stock.value))
-					price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
-					price.innerHTML = parseInt(price.innerHTML);
-					PRICE = PRICE.toLocaleString('en-EN')
-					price.innerHTML = PRICE
+					if (getPrice) {
+						let PRICE = parseInt(parseInt(getPrice) * parseInt(stock.value))
+						price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
+						price.innerHTML = parseInt(price.innerHTML);
+						PRICE = PRICE.toLocaleString('en-EN')
+						price.innerHTML = PRICE
+					}
+					const allPrice = document.querySelector('[all-price]')
+				if (allPrice) {
+					const getPriceTotalAll = allPrice.getAttribute("all-price");
+					if (getPriceTotalAll) {
+						const value = stock.getAttribute('value');
+						if(value){
+							let PRICE = (parseInt(getPriceTotalAll) - (parseInt(value) * parseInt(getPrice))) + (parseInt(parseInt(getPrice) * parseInt(stock.value)))
+							PRICE = PRICE.toLocaleString('en-EN')
+							allPrice.innerHTML = PRICE
+
+
+						}
+					}
 				}
 				}
 			});
+			
 			stock.addEventListener('change', () => {
 				const getPrice = price.getAttribute("priceTotal");
-				if(getPrice){
-					let PRICE = parseInt(parseInt(getPrice) * parseInt(stock.value))
-					price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
-					price.innerHTML = parseInt(price.innerHTML);
-					PRICE = PRICE.toLocaleString('en-EN')
-					price.innerHTML = PRICE
+				if (getPrice) {
+					if(parseInt(stock.value) >= 1){
+						let PRICE = parseInt(parseInt(getPrice) * parseInt(stock.value))
+						price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
+						price.innerHTML = parseInt(price.innerHTML);
+						PRICE = PRICE.toLocaleString('en-EN')
+						price.innerHTML = PRICE
+					}
+					else{
+						if(Math.abs(parseInt(stock.value)) == 0){
+							stock.value = '1'
+						}
+						stock.value = Math.abs(parseInt(stock.value))
+						let PRICE = parseInt(parseInt(getPrice) * Math.abs(parseInt(stock.value)))
+						price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
+						price.innerHTML = parseInt(price.innerHTML);
+						PRICE = PRICE.toLocaleString('en-EN')
+						price.innerHTML = PRICE
+					}
+				}
+				const allPrice = document.querySelector('[all-price]')
+				if (allPrice) {
+					const getPriceTotalAll = allPrice.getAttribute("all-price");
+					if (getPriceTotalAll) {
+						const value = stock.getAttribute('value');
+						if(value){
+							let PRICE = (parseInt(getPriceTotalAll) - (parseInt(value) * parseInt(getPrice))) + (parseInt(parseInt(getPrice) * parseInt(stock.value)))
+							PRICE = PRICE.toLocaleString('en-EN')
+							allPrice.innerHTML = PRICE
+
+
+						}
+					}
 				}
 			})
 		}
@@ -321,9 +377,9 @@ if (addCart) {
 }
 
 
-console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
+// console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
 
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');

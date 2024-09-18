@@ -13,7 +13,7 @@ module.exports.index = async (req, res) => {
 		product.quanlityProduct = it.stock
 		return product
 	}));
-	
+	let totalPrice = 0
 	for (const it of productsCart) {
 		it.priceNew = it.price - (it.price * it.discountPercentage) / 100
 		it.priceNew = it.priceNew.toFixed(0);
@@ -25,10 +25,13 @@ module.exports.index = async (req, res) => {
 			it.priceNew = it.priceNew * 1000
 		}
 		it.newPrice = it.priceNew
+		totalPrice += (it.priceNew * it.quanlityProduct)
 		it.priceItem = [it.priceNew * it.quanlityProduct].toLocaleString('en-EN')
 		it.priceNew = [it.priceNew].toLocaleString('en-EN')
 		
 	}
+	let priceTotalAll = totalPrice
+	totalPrice = totalPrice.toLocaleString('en-EN')
 	for (const it of productsCart) {
 		it.priceOld = [it.price].toLocaleString('en-EN')
 	}
@@ -37,6 +40,8 @@ module.exports.index = async (req, res) => {
 	res.render("client/pages/orders/index.pug", {
 		pageTitle: "Thông tin giỏ hàng",
 		carts: productsCart,
+		totalPrice: totalPrice,
+		priceTotalAll: priceTotalAll
 	})
 };
 

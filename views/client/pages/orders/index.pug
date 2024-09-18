@@ -19,10 +19,10 @@ block main
 						div(class="h-[100px] flex grow col-span-2") 
 							img(src=it.thumbnail, alt=it.title class=` h-full w-auto`)
 							div(class="flex flex-col justify-between h-full")
-								div(href=`/product/detail/${it.slug}`  class="hover:text-chu ") #{it.title}
+								a(href=`/product/detail/${it.slug}`  class="hover:text-chu ") #{it.title}
 								div(class="text-[#da0808] font-bold text-left") Xóa
 						div(class=`items-center flex justify-center text-[13px]`)
-							div(class="") #{it.priceNew}
+							div(class="") #{it.priceNew}đ
 						div(class=`items-center flex justify-center text-[13px]`)
 							+cal(it.quanlityProduct)
 						div(class=`items-center flex justify-center text-[13px]`)
@@ -31,7 +31,7 @@ block main
 				div(class=`w-full`)
 					div(class="w-1/2 ml-auto font-bold flex justify-between py-[10px]")
 						div(class="") Tổng tiền
-						div(class="text-chu") 2,4343,000
+						div(class="text-chu" all-price = priceTotalAll) #{totalPrice}đ
 					div(class="w-1/2 ml-auto bg-chu text-center p-[10px] rounded-[10px]") Xác nhận giỏ hàng
 					//- tbody(class=`relative`)
 					//- 		tr(class=`my-[30px] relative h-auto`)
