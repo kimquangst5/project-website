@@ -36,7 +36,11 @@ div(class="bg-[white] py-[30px]")
 					type="submit"
 					class=`px-[20px] bg-[black] text-main flex items-center justify-center flex-end fa-solid fa-magnifying-glass hover:bg-chu duration-500`
 				)
-			div(class="") icon
+			div(class="h-full")
+				a(href="/order/cart-info" class="h-full relative w-auto hover:text-chu duration-500") 
+					i(class=`fa-thin fa-bag-shopping text-[25px] h-full`)
+					- if(cartProductsLength > 0)
+						div(class="absolute top-[-17px] right-[-13px] bg-chu text-[white] rounded-[100%] w-[18px] h-[18px] text-[12px] flex items-center justify-center font-bold") #{cartProductsLength}
 
 header(class=`z-[100] sticky top-0 duration-1000`)
 	div(class=`container`)

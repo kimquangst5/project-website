@@ -232,47 +232,98 @@ if (linkCart.length > 0) {
 
 }
 
-
-const stock = document.querySelector('[stock]');
-if (stock) {
-	const addition = document.querySelector('[addition]')
-	const subtraction = document.querySelector('[subtraction]')
-	if (addition && subtraction) {
-		addition.addEventListener("click", () => {
-			stock.innerHTML = parseInt(stock.innerHTML) + 1
-
-		});
-		subtraction.addEventListener("click", () => {
-			if (parseInt(stock.innerHTML) != 1) {
-				stock.innerHTML = parseInt(stock.innerHTML) - 1
-			}
-
-		});
-	}
+const calculate = document.querySelectorAll('[calculate]');
+if (calculate.length > 0) {
+	calculate.forEach(cal => {
+		const add = cal.querySelector('[addition]');
+		const sub = cal.querySelector('[subtraction]');
+		const stock = cal.querySelector('[stock]');
+		const price = cal.querySelector(['[priceTotal]']);
+		if (add && sub) {
+			add.addEventListener('click', () => {
+				stock.value = parseInt(stock.value) + 1
+				if(price){
+					const getPrice = price.getAttribute("priceTotal");
+				if(getPrice){
+					let PRICE = parseInt(parseInt(getPrice) * parseInt(stock.value))
+					price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
+					price.innerHTML = parseInt(price.innerHTML);
+					PRICE = PRICE.toLocaleString('en-EN')
+					price.innerHTML = PRICE
+				}
+				}
+				
+			});
+			stock.value = parseInt(stock.value)
+			sub.addEventListener('click', () => {
+				if (parseInt(stock.value) != 1) {
+					stock.value = parseInt(stock.value) - 1
+					const getPrice = price.getAttribute("priceTotal");
+				if(getPrice){
+					let PRICE = parseInt(parseInt(getPrice) * parseInt(stock.value))
+					price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
+					price.innerHTML = parseInt(price.innerHTML);
+					PRICE = PRICE.toLocaleString('en-EN')
+					price.innerHTML = PRICE
+				}
+				}
+			});
+			stock.addEventListener('change', () => {
+				const getPrice = price.getAttribute("priceTotal");
+				if(getPrice){
+					let PRICE = parseInt(parseInt(getPrice) * parseInt(stock.value))
+					price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
+					price.innerHTML = parseInt(price.innerHTML);
+					PRICE = PRICE.toLocaleString('en-EN')
+					price.innerHTML = PRICE
+				}
+			})
+		}
+	});
 }
+
 
 const addCart = document.querySelector('[add-cart]');
 if (addCart) {
 	addCart.addEventListener('click', () => {
 		const link = addCart.getAttribute('add-cart');
 		if (link) {
-			const quality = stock.innerHTML;
-			const data = {
-				quality: quality
+			const stock = document.querySelector('[stock]');
+			const quanlity = parseInt(stock.value);
+			if (quanlity) {
+				const data = {
+					quanlity: quanlity
+				}
+				if (data) {
+					fetch(link, {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify(data)
+						})
+						.then(res => res.json())
+						.then(dataItem => {
+							if (dataItem.code == 200) {
+								window.location.href = '/order/cart-info'
+							}
+							if (dataItem.code == 400) {
+								window.location.reload();
+							}
+						})
+				}
 			}
-			console.log(data)
-			fetch(link, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(data)
-				})
-				.then(res => res.json())
-				.then(dataItem => {
-					console.log(dataItem)
-				})
+
+
 		}
 
 	});
 }
+
+
+console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
+
+console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');

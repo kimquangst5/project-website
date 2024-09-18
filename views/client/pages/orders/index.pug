@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/dieu-huong.pug
+include ../../mixins/adddition - subtraction.pug
 
 block main
 	+dieu-huong("Giỏ hàng")
@@ -7,25 +8,49 @@ block main
 		div(class="container")
 			div(class="bg-[white] rounded-[7px] p-[5px] flex flex-col")
 				div(class="font-bold text-[20px] py-[20px]") Thông tin sản phẩm 
-					span(class=`font-normal capitalize`) (2 sản phẩm)
-				table(class=`w-full`)
-					thead(class=`text-[14px]`)
-						tr
-							th Sản phẩm
-							th Giá
-							th Số lượng
-							th Tổng tiền
-					tbody
-						tr
-							td(class=`flex`)
-								img(src="https://cdn.bapperfume.com/thumbs/z4526873716249_aef7f54d0e537ba82df22093b0f3b683_thumb_150.jpg", alt=""
-								class=`h-[80px] w-auto`)
-								div(class="flex flex-col justify-between")
-									div(class="hover:text-chu") vcxvcxv
-									div(class="text-[#da0808] font-bold") Xóa
+					span(class=`font-normal capitalize`) (#{cartProductsLength} sản phẩm)
+				div(class=`font-bold text-[14px] [&>*]:text-center flex justify-between grid grid-cols-5`)
+					div(class=`col-span-2`) Sản phẩm
+					div Giá
+					div Số lượng
+					div Tổng tiền
+				each it in carts
+					div(class=`font-bold text-[14px] [&>*]:text-center flex justify-between grid grid-cols-5 py-[10px]` calculate)
+						div(class="h-[100px] flex grow col-span-2") 
+							img(src=it.thumbnail, alt=it.title class=` h-full w-auto`)
+							div(class="flex flex-col justify-between h-full")
+								div(href=`/product/detail/${it.slug}`  class="hover:text-chu ") #{it.title}
+								div(class="text-[#da0808] font-bold text-left") Xóa
+						div(class=`items-center flex justify-center text-[13px]`)
+							div(class="") #{it.priceNew}
+						div(class=`items-center flex justify-center text-[13px]`)
+							+cal(it.quanlityProduct)
+						div(class=`items-center flex justify-center text-[13px]`)
+							div(class="" priceTotal = it.newPrice) #{it.priceItem}
+							span đ
+				div(class=`w-full`)
+					div(class="w-1/2 ml-auto font-bold flex justify-between py-[10px]")
+						div(class="") Tổng tiền
+						div(class="text-chu") 2,4343,000
+					div(class="w-1/2 ml-auto bg-chu text-center p-[10px] rounded-[10px]") Xác nhận giỏ hàng
+					//- tbody(class=`relative`)
+					//- 		tr(class=`my-[30px] relative h-auto`)
+					//- 			td(class=`w-max relative`)
+					//- 				div(class="flex justify-start h-full text-left") 
+					//- 					div(class="h-[70px]") 
+					//- 						img(src=it.thumbnail, alt=it.title
+					//- 					class=` h-full w-auto`)
+					//- 					a(href=`/product/detail/${it.slug}` class="flex flex-col justify-between h-full")
+					//- 						div(class="hover:text-chu") #{it.title}
+					//- 						div(class="text-[#da0808] font-bold") Xóa
+					//- 			td
+					//- 				div(class="text-center font-bold") #{it.priceNew}
+					//- 			td(class=``)
+					//- 				div(class="flex justify-center") 
+					//- 					include ../../partials/adddition - subtraction.pug
 								
-				div(class="ml-auto w-1/2")
-					div(class="flex justify-between text-[17px] font-bold gap-[10px] py-[10px]") 
-						div(class="") Tổng tiền 
-						div(class="text-chu") 250,000 đ
-					button(class="rounded-[10px] hover:rounded-[20px] bg-chu text-[white] w-full py-[10px]") Xác nhận giỏ hàng
+				//- div(class="ml-auto w-1/2")
+				//- 	div(class="flex justify-between text-[17px] font-bold gap-[10px] py-[10px]") 
+				//- 		div(class="") Tổng tiền 
+				//- 		div(class="text-chu") 250,000 đ
+				//- 	button(class="rounded-[10px] hover:rounded-[20px] bg-chu text-[white] w-full py-[10px]") Xác nhận giỏ hàng

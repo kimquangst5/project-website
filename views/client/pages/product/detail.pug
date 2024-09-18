@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
 include ../../mixins/dieu-huong.pug
 
+
 block main
 	-
 		let array = [
@@ -10,7 +11,7 @@ block main
 			}
 		]
 	+dieu-huong(product.title, array)
-	div(class="")
+	div(class="" calculate)
 		div(class="container")
 			div(class="text-chu text-[25px] font-[700] py-[30px]") Điện thoại #{product.title}
 			div(class="flex grid grid-cols-2 gap-[20px]")
@@ -33,13 +34,7 @@ block main
 					div(class="w-full rounded-[10px] truncate bg-[white] px-[20px] py-[10px]")
 						div(class="flex items-center gap-[15px]") 
 							div(class="") CÒN HÀNG:
-							div(class="flex gap-[10px]") 
-								div(class="rounded-[7px] border-[1px] border-[black]/10 aspect-1/1 w-[35px] h-[35px] truncate flex items-center justify-center hover:cursor-pointer" subtraction)
-									div(class="text-chu text-[25px]" ) -
-								div(class="w-[70px] truncate rounded-[7px] border-[1px] border-[black]/10 aspect-1/1 h-auto px-[30px] truncate flex items-center justify-center hover:cursor-pointer")
-									div(class="text-[16px]" stock) 1
-								div(class="rounded-[7px] border-[1px] border-[black]/10 aspect-1/1 w-[35px] h-[35px] truncate flex items-center justify-center hover:cursor-pointer" addition)
-									div(class="text-chu text-[25px]") +
+							include ../../partials/adddition - subtraction.pug
 
 
 					div(class="w-full bg-chu text-[#333333] flex rounded-[7px] items-center justify-center py-[10px] font-bold gap-[20px] hover:cursor-pointer" add-cart = `/order/cart-add/${product.id}`)
