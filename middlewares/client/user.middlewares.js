@@ -1,11 +1,14 @@
 const User = require("../../models/user.model");
 
 module.exports.user = async (req, res, next) => {
-	const user = await User.findOne({
-		tokenUser: req.cookies.tokenUser
-	})
-	if(user){
-		res.locals.user = user
+	if (req.cookies.tokenUser) {
+		const user = await User.findOne({
+			tokenUser: req.cookies.tokenUser
+		})
+		if (user && req.cookies.tokenUser) {
+			res.locals.infoUser = user
+		}
 	}
+
 	next();
 };
