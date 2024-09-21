@@ -41,6 +41,12 @@ div(class="bg-[white] py-[30px]")
 					i(class=`fa-thin fa-bag-shopping text-[25px] h-full`)
 					- if(cartProductsLength > 0)
 						div(class="absolute top-[-17px] right-[-13px] bg-chu text-[white] rounded-[100%] w-[18px] h-[18px] text-[12px] flex items-center justify-center font-bold") #{cartProductsLength}
+			- if(!user)
+				a(href="/member/login") Đăng nhập
+				a(href="/member/register") Đăng ký
+			- else
+				div(class="") #{user.fullName}
+				a(href="/member/log-out")  Đăng xuất
 
 header(class=`z-[100] sticky top-0 duration-1000`)
 	div(class=`container`)

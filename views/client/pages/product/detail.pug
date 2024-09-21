@@ -13,7 +13,7 @@ block main
 	+dieu-huong(product.title, array)
 	div(class="" calculate)
 		div(class="container")
-			div(class="text-chu text-[25px] font-[700] py-[30px]") Điện thoại #{product.title}
+			div(class="text-chu text-[25px] font-[700] py-[30px]") #{product.title}
 			div(class="flex grid grid-cols-2 gap-[20px]")
 				div(class="w-full rounded-[10px] truncate bg-[white] py-[10px]")
 					img(
@@ -49,3 +49,7 @@ block main
 						div(class="border-chu rounded-[7px] text-[white] bg-[#DA0808] flex gap-[10px] items-center w-full justify-center hover:bg-[chu] hover:text-[white]")
 							i(class=`fa-solid fa-phone-volume`)
 							div(class="uppercase font-bold") 0859.615.254
+			div(class="bg-[white] rounded-[7px] p-[10px] my-[20px]")
+				div(class="capitalize py-[10px] border-b-[2px] font-bold border-b-chu text-chu w-max") Mô tả sản phẩm
+				div(class="font-bold text-[#333333] text-[20px] mt-[20px]") Giới thiệu #{product.title}
+				div(class="text-[#333333] text-[14px]") !{product.description}

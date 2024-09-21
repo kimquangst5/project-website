@@ -176,8 +176,6 @@ if (listCategory) {
 								}
 							}
 						}
-
-
 					});
 				});
 			}
@@ -252,19 +250,19 @@ if (calculate.length > 0) {
 						price.innerHTML = PRICE
 					}
 					const allPrice = document.querySelector('[all-price]')
-				if (allPrice) {
-					const getPriceTotalAll = allPrice.getAttribute("all-price");
-					if (getPriceTotalAll) {
-						const value = stock.getAttribute('value');
-						if(value){
-							let PRICE = (parseInt(getPriceTotalAll) - (parseInt(value) * parseInt(getPrice))) + (parseInt(parseInt(getPrice) * parseInt(stock.value)))
-							PRICE = PRICE.toLocaleString('en-EN')
-							allPrice.innerHTML = PRICE
+					if (allPrice) {
+						const getPriceTotalAll = allPrice.getAttribute("all-price");
+						if (getPriceTotalAll) {
+							const value = stock.getAttribute('value');
+							if (value) {
+								let PRICE = (parseInt(getPriceTotalAll) - (parseInt(value) * parseInt(getPrice))) + (parseInt(parseInt(getPrice) * parseInt(stock.value)))
+								PRICE = PRICE.toLocaleString('en-EN')
+								allPrice.innerHTML = PRICE
 
 
+							}
 						}
 					}
-				}
 				}
 
 			});
@@ -281,34 +279,36 @@ if (calculate.length > 0) {
 						price.innerHTML = PRICE
 					}
 					const allPrice = document.querySelector('[all-price]')
-				if (allPrice) {
-					const getPriceTotalAll = allPrice.getAttribute("all-price");
-					if (getPriceTotalAll) {
-						const value = stock.getAttribute('value');
-						if(value){
-							let PRICE = (parseInt(getPriceTotalAll) - (parseInt(value) * parseInt(getPrice))) + (parseInt(parseInt(getPrice) * parseInt(stock.value)))
-							PRICE = PRICE.toLocaleString('en-EN')
-							allPrice.innerHTML = PRICE
+					if (allPrice) {
+						const getPriceTotalAll = allPrice.getAttribute("all-price");
+						if (getPriceTotalAll) {
+							const value = stock.getAttribute('value');
+							if (value) {
+								let PRICE = (parseInt(getPriceTotalAll) - (parseInt(value) * parseInt(getPrice))) + (parseInt(parseInt(getPrice) * parseInt(stock.value)))
+								PRICE = PRICE.toLocaleString('en-EN')
+								allPrice.innerHTML = PRICE
 
 
+							}
 						}
 					}
 				}
-				}
 			});
-			
+
 			stock.addEventListener('change', () => {
 				const getPrice = price.getAttribute("priceTotal");
 				if (getPrice) {
-					if(parseInt(stock.value) >= 1){
+					if (parseInt(stock.value) >= 1) {
 						let PRICE = parseInt(parseInt(getPrice) * parseInt(stock.value))
 						price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
 						price.innerHTML = parseInt(price.innerHTML);
 						PRICE = PRICE.toLocaleString('en-EN')
 						price.innerHTML = PRICE
-					}
-					else{
-						if(Math.abs(parseInt(stock.value)) == 0){
+					} else {
+						if (Math.abs(parseInt(stock.value)) == 0) {
+							stock.value = '1'
+						}
+						if(isNaN){
 							stock.value = '1'
 						}
 						stock.value = Math.abs(parseInt(stock.value))
@@ -324,7 +324,7 @@ if (calculate.length > 0) {
 					const getPriceTotalAll = allPrice.getAttribute("all-price");
 					if (getPriceTotalAll) {
 						const value = stock.getAttribute('value');
-						if(value){
+						if (value) {
 							let PRICE = (parseInt(getPriceTotalAll) - (parseInt(value) * parseInt(getPrice))) + (parseInt(parseInt(getPrice) * parseInt(stock.value)))
 							PRICE = PRICE.toLocaleString('en-EN')
 							allPrice.innerHTML = PRICE
@@ -339,51 +339,175 @@ if (calculate.length > 0) {
 }
 
 
-const addCart = document.querySelector('[add-cart]');
-if (addCart) {
-	addCart.addEventListener('click', () => {
-		const link = addCart.getAttribute('add-cart');
-		if (link) {
-			const stock = document.querySelector('[stock]');
-			const quanlity = parseInt(stock.value);
-			if (quanlity) {
-				const data = {
-					quanlity: quanlity
+const addCart = document.querySelectorAll('[add-cart]');
+if (addCart.length > 0) {
+	addCart.forEach(cart => {
+		cart.addEventListener('click', () => {
+			const link = cart.getAttribute('add-cart');
+			console.log(link)
+			if (link) {
+				const stock = document.querySelector('[stock]');
+				const quanlity = parseInt(stock.value);
+				if (quanlity) {
+					const data = {
+						quanlity: quanlity
+					}
+					if (data) {
+						fetch(link, {
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json",
+								},
+								body: JSON.stringify(data)
+							})
+							.then(res => res.json())
+							.then(dataItem => {
+								if (dataItem.code == 200) {
+									window.location.href = '/order/cart-info'
+								}
+								if (dataItem.code == 400) {
+									window.location.reload();
+								}
+							})
+					}
 				}
-				if (data) {
-					fetch(link, {
-							method: "POST",
-							headers: {
-								"Content-Type": "application/json",
-							},
-							body: JSON.stringify(data)
-						})
-						.then(res => res.json())
-						.then(dataItem => {
-							if (dataItem.code == 200) {
-								window.location.href = '/order/cart-info'
-							}
-							if (dataItem.code == 400) {
-								window.location.reload();
-							}
-						})
-				}
+	
+	
 			}
-
-
-		}
-
+	
+		});
 	});
+	
 }
 
 const animation = document.querySelectorAll('[animation]');
-if(animation.length > 0){
+if (animation.length > 0) {
 	animation.forEach(it => {
 		const div = it.querySelector('div');
-		if(div){
+		if (div) {
 			const width = div.clientWidth;
-			if(width){
+			if (width) {
 				div.classList.add(`group-hover:ml-[0px]`, `ml-[-${width}px]`)
+			}
+		}
+	});
+}
+
+const saveCart = document.querySelector('[save-cart]');
+if (saveCart) {
+	saveCart.addEventListener('click', () => {
+		const calculate = document.querySelectorAll('[calculate]');
+		if (calculate.length > 0) {
+			let array = []
+			calculate.forEach(cal => {
+				const input = cal.querySelector('input');
+				if (input) {
+					let quantity = parseInt(input.value);
+					let id = input.getAttribute('stock')
+					let dataSend = {
+						id: id,
+						quantity: quantity
+					}
+					array.push(dataSend)
+				}
+			});
+			fetch('/order/cart-update', {
+					method: "PATCH",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({array})
+				})
+				.then(res => res.json())
+				.then(data => {
+					if (data.code == 200) {
+						location.reload();
+					}
+				})
+
+		}
+	});
+
+}
+
+const cartsChoose = document.querySelectorAll('[carts-choose]');
+if(cartsChoose.length > 0){
+	cartsChoose.forEach(cart => {
+		const chooseAtributes = cart.querySelector('[choose-attribute]')
+		if(chooseAtributes){
+			const boxCart = cart.querySelector('[box-cart]');
+			const height = boxCart.clientHeight
+			boxCart.classList.toggle(`mt-[-${height + 10}px]`)
+
+			chooseAtributes.addEventListener("click", () => {
+				boxCart.classList.toggle(`mt-[-${height + 10}px]`)
+				boxCart.classList.add(`duration-1000`)
+			});
+
+			const exit = cart.querySelector('[exit]')
+			exit.addEventListener("click", () => {
+				boxCart.classList.toggle(`mt-[-${height + 10}px]`)
+				boxCart.classList.add(`duration-1000`)
+			});
+		}
+	});
+}
+
+// ALEART
+const Success = document.querySelector('[update]');
+if (Success) {
+	const value = Success.getAttribute('update');
+	const title = JSON.parse(value)[0]
+
+	Swal.fire({
+		position: "top-end",
+		icon: "success",
+		title: title,
+		showConfirmButton: false,
+		timer: 2000
+	});
+}
+
+const error = document.querySelector('[error]');
+if (error) {
+	const value = error.getAttribute('error');
+	if (value) {
+		const title = JSON.parse(value)[0]
+
+		Swal.fire({
+			position: "top-end",
+			icon: "error",
+			title: title,
+			showConfirmButton: false,
+			timer: 3000
+		});
+	}
+
+}
+
+const noViewPermission = document.querySelector(`[no-view-permission]`);
+if (noViewPermission) {
+	Swal.fire({
+		position: "top-center",
+		icon: "error",
+		title: "Bạn không xem được nội dung này!",
+		showConfirmButton: false,
+		timer: 1500
+	});
+	setTimeout(() => {
+		history.back()
+	}, 1500);
+}
+// ALEART
+
+const buttonPayment = document.querySelector('[button-payment]');
+if(buttonPayment){
+	buttonPayment.addEventListener('click', () => {
+		const body = buttonPayment.closest('body');
+		if(body){
+			const buttonFormPayment = body.querySelector(`form[method="post"] button[type="submit"]`);
+			if(buttonFormPayment){
+				buttonFormPayment.click();
 			}
 		}
 	});

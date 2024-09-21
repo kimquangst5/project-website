@@ -759,6 +759,7 @@ if (main) {
 
 // HẾT HEADER
 
+// ALEART
 const Success = document.querySelector('[update]');
 if (Success) {
 	const value = Success.getAttribute('update');
@@ -803,6 +804,7 @@ if (noViewPermission) {
 		history.back()
 	}, 1500);
 }
+// ALEART
 
 // XỬ LÍ ẢNH LỖI
 const imgs = document.querySelectorAll('img');
