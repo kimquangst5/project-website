@@ -6,9 +6,21 @@ router.get('/register', controller.register)
 
 router.post('/register', controller.registerPost)
 
+// Bắt đầu luồng Đăng ký Google
+router.get('/register/gmail/auth/google', controller.registerGmail);
+
+// Gọi URL lại để xử lý phản hồi Đăng nhập Google
+router.get('/register/gmail/auth/google/callback', controller.registerGmailCallback);
+
 router.get('/login', controller.login)
 
 router.post('/login', controller.loginPost)
+
+// Bắt đầu luồng Đăng ký Google
+router.get('/login/gmail/auth/google', controller.loginGmail);
+
+// Gọi URL lại để xử lý phản hồi Đăng nhập Google
+router.get('/login/gmail/auth/google/callback', controller.loginGmailCallback);
 
 router.get('/log-out', controller.logOut)
 

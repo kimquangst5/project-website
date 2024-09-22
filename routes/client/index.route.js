@@ -12,7 +12,7 @@ module.exports.index = (app) => {
 	app.use(categoryMiddlewares.category)
 	app.use(cartMiddlewares.cart)
 	app.use(userMiddlewares.user)
-
+	// app.use('/', authRoutes);
      app.use('/',homeRoute);
      app.use('/product', productRoute);
      app.use('/tim-kiem', searchRoute);

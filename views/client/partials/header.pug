@@ -42,13 +42,30 @@ div(class="bg-[white] py-[30px]")
 					- if(cartProductsLength > 0)
 						div(class="absolute top-[-17px] right-[-13px] bg-chu text-[white] rounded-[100%] w-[18px] h-[18px] text-[12px] flex items-center justify-center font-bold") #{cartProductsLength}
 			- if(!infoUser)
-				a(href="/member/login") Đăng nhập
-				a(href="/member/register") Đăng ký
+				i(class=`fa-thin fa-user text-[25px] cursor-pointer hover:text-chu duration-500` icon-user)
 			- else
-				div(class="") #{infoUser.fullName}
+				div(class="relative") 
+					div(class="cursor-pointer  hover:text-chu duration-500") #{infoUser.fullName}
+					div(class="absolute mt-[20px] rounded-[10px] p-[5px] truncate bg-[white] z-[100] w-max")
+						div(class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+							div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
+								i(class="fa-light fa-user-tie")
+								div(class="") Thông tin cá nhân
+						div(class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+							div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
+								i(class="fa-regular fa-cart-shopping-fast")
+								div(class="") Quản lí đơn hàng
+						div(class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+							div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
+								i(class="fa-regular fa-lock-keyhole-open")
+								div(class="") Thay đổi mật khẩu
+						div(class="hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+							div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
+								i(class="fa-thin fa-left-to-bracket")
+								div(class="") Thoát
 				a(href="/member/log-out")  Đăng xuất
 
-header(class=`z-[100] sticky top-0 duration-1000`)
+header(class=`z-[90] sticky top-0 duration-1000`)
 	div(class=`container`)
 		div(class=`gap-[10px] bg-[#EEEEEE] flex items-center justify-left h-[70px]`)
 			div(class="flex items-center justify-between text-main bg-[#333333] hover:cursor-pointer gap-x-[30px] h-full px-[10px]" list-category)

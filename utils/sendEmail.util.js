@@ -23,7 +23,7 @@ module.exports.sendMail = (email, subject, html) => {
 	};
 
 	// Send the email
-	transporter.sendMail(mailOptions, function (error, info) {
+	transporter.sendMail(mailOptions, (error, info) => {
 		if (error) {
 			req.flash("error", "Không tồn tại email này!!!");
 			res.redirect("back");

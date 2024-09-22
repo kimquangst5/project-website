@@ -308,7 +308,7 @@ if (calculate.length > 0) {
 						if (Math.abs(parseInt(stock.value)) == 0) {
 							stock.value = '1'
 						}
-						if(isNaN){
+						if (isNaN) {
 							stock.value = '1'
 						}
 						stock.value = Math.abs(parseInt(stock.value))
@@ -344,7 +344,6 @@ if (addCart.length > 0) {
 	addCart.forEach(cart => {
 		cart.addEventListener('click', () => {
 			const link = cart.getAttribute('add-cart');
-			console.log(link)
 			if (link) {
 				const stock = document.querySelector('[stock]');
 				const quanlity = parseInt(stock.value);
@@ -371,13 +370,13 @@ if (addCart.length > 0) {
 							})
 					}
 				}
-	
-	
+
+
 			}
-	
+
 		});
 	});
-	
+
 }
 
 const animation = document.querySelectorAll('[animation]');
@@ -416,7 +415,9 @@ if (saveCart) {
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({array})
+					body: JSON.stringify({
+						array
+					})
 				})
 				.then(res => res.json())
 				.then(data => {
@@ -431,10 +432,10 @@ if (saveCart) {
 }
 
 const cartsChoose = document.querySelectorAll('[carts-choose]');
-if(cartsChoose.length > 0){
+if (cartsChoose.length > 0) {
 	cartsChoose.forEach(cart => {
 		const chooseAtributes = cart.querySelector('[choose-attribute]')
-		if(chooseAtributes){
+		if (chooseAtributes) {
 			const boxCart = cart.querySelector('[box-cart]');
 			const height = boxCart.clientHeight
 			boxCart.classList.toggle(`mt-[-${height + 10}px]`)
@@ -501,18 +502,74 @@ if (noViewPermission) {
 // ALEART
 
 const buttonPayment = document.querySelector('[button-payment]');
-if(buttonPayment){
+if (buttonPayment) {
 	buttonPayment.addEventListener('click', () => {
 		const body = buttonPayment.closest('body');
-		if(body){
+		if (body) {
 			const buttonFormPayment = body.querySelector(`form[method="post"] button[type="submit"]`);
-			if(buttonFormPayment){
+			if (buttonFormPayment) {
 				buttonFormPayment.click();
 			}
 		}
 	});
 }
 
+
+const iconUser = document.querySelector('[icon-user]');
+if (iconUser) {
+	const boxLogin = document.querySelector('[box-login]');
+	iconUser.addEventListener('click', () => {
+		if (boxLogin) {
+			boxLogin.classList.toggle('hidden');
+			setTimeout(() => {
+				boxLogin.classList.toggle('mt-[-30px]');
+				boxLogin.classList.toggle('opacity-0');
+			}, 200);
+
+		}
+	});
+	const exit = boxLogin.querySelector('[exit]');
+	if (exit) {
+		if (boxLogin) {
+			exit.addEventListener('click', () => {
+				boxLogin.classList.toggle('mt-[-30px]');
+				boxLogin.classList.toggle('opacity-0');
+				setTimeout(() => {
+					boxLogin.classList.toggle('hidden');
+				}, 400);
+			});
+			boxLogin.addEventListener('click', (event) => {
+				if(event.target.className.includes('fixed')){
+					exit.click();
+				}
+			});
+		}
+
+	}
+}
+
+const listInput = document.querySelectorAll(`input[type="password"]`);
+if(listInput.length > 0){
+	listInput.forEach(input => {
+		const iconEye = input.nextElementSibling;
+		if(iconEye){
+			const eye = iconEye.getAttribute('icon-eye');
+			if(eye){
+				iconEye.addEventListener('click', () => {
+					const value = input.getAttribute('type');
+					if(value == 'text'){
+						input.setAttribute("type", "password");
+						iconEye.classList.replace("fa-eye", "fa-eye-slash")
+					}
+					else{
+						input.setAttribute("type", "text");
+						iconEye.classList.replace("fa-eye-slash", "fa-eye")
+					}
+				});
+			}
+		}
+	});
+}
 
 // console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
 // console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
