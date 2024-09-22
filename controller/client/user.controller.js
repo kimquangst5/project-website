@@ -198,14 +198,14 @@ module.exports.loginGmailCallback = async (req, res) => {
 		});
 		// Code to handle user authentication and retrieval using the profile data
 		// console.log(profile.name)
+		const dataBody = {
+			fullName: profile.name,
+			email: profile.email
+		}
 		const user = await User.findOne({
 			email: dataBody.email,
 		})
 		if (!user) {
-			const dataBody = {
-				fullName: profile.name,
-				email: profile.email
-			}
 			const payload = {
 				randomId: crypto.randomBytes(30).toString('hex')
 			};
