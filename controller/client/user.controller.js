@@ -100,7 +100,7 @@ module.exports.registerGmailCallback = async (req, res) => {
 		const user = await User.findOne({
 			email: dataBody.email,
 		})
-	
+
 		if (user) {
 			req.flash("error", "Email đã tồn tại!");
 			res.redirect('/member/login');
@@ -120,7 +120,7 @@ module.exports.registerGmailCallback = async (req, res) => {
 		await newUser.save();
 
 		req.flash("success", "Đăng ký tài khoản thành công!")
-		    res.redirect('/');
+		res.redirect('/');
 	} catch (error) {
 		console.error('Error:', error);
 		res.redirect('/member/login');
@@ -198,25 +198,34 @@ module.exports.loginGmailCallback = async (req, res) => {
 		});
 		// Code to handle user authentication and retrieval using the profile data
 		// console.log(profile.name)
-		const dataBody = {
-			fullName: profile.name,
-			email: profile.email
-		}
 		const user = await User.findOne({
 			email: dataBody.email,
 		})
 		if (!user) {
-			req.flash("error", "Vui lòng đăng ký tài khoản!");
-			res.redirect('/member/register');
-			return;
+			const dataBody = {
+				fullName: profile.name,
+				email: profile.email
+			}
+			const payload = {
+				randomId: crypto.randomBytes(30).toString('hex')
+			};
+			const secretKey = process.env.secretKey;
+			const tokenUser = jwt.sign(payload, secretKey);
+			dataBody.tokenUser = tokenUser
+			res.cookie('tokenUser', tokenUser, {
+				expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+			}) //số 1 là số ngày
+			const newUser = new User(dataBody);
+			await newUser.save();
+		} else {
+			res.cookie('tokenUser', user.tokenUser, {
+				expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+			}) //số 2 là số ngày
+
 		}
-
-		res.cookie('tokenUser', user.tokenUser, {
-			expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
-		}) //số 2 là số ngày
-
-		req.flash("success", "Đăng nhập tài khoản thành công!")
+		req.flash("success", "Đăng nhập thành công!")
 		res.redirect('/');
+
 	} catch (error) {
 		console.error('Error:', error);
 		res.redirect('/member/login');
