@@ -202,13 +202,12 @@ module.exports.loginGmailCallback = async (req, res) => {
 			fullName: profile.name,
 			email: profile.email
 		}
-		console.log(dataBody)
 		const user = await User.findOne({
 			email: dataBody.email,
 		})
 		if (!user) {
-			req.flash("error", "Email không tồn tại!");
-			res.redirect('back');
+			req.flash("error", "Vui lòng đăng ký tài khoản!");
+			res.redirect('/member/register');
 			return;
 		}
 
