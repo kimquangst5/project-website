@@ -3,25 +3,26 @@ include ../mixins/select-tree.pug
 div(class="bg-[#F5F6F8]")
 	div(class="container")
 		div(class="text-[#333333] flex justify-between py-[10px] text-[12px]")
-			div(class="uppercase font-bold") Trần Kim Quang - sinh viên công nghệ thông tin
+			div(class="uppercase font-bold") #{infoWeb.nameWeb}
 			div(class="flex justify-between items-center gap-[20px]")
 				div(class="flex justify-center items-center gap-[10px]")
 					i(class=`fa-solid fa-phone text-chu`)
-					div(class="font-bold") 0859.615.254
+					div(class="font-bold") #{infoWeb.phone}
 				div(class="flex justify-center items-center gap-[10px]")
 					i(class=`fa-solid fa-location-dot text-chu`)
-					div(class="") Phường 12, Tân Bình - Hồ Chí Minh
+					div(class="capitalize") #{infoWeb.address}
 
 
 div(class="bg-[white] py-[30px]")
 	div(class="container")
 		div(class="flex items-center justify-between gap-[25px]")
 			div(class="h-[50px] w-auto")
-				img(
-					src=`/${admin}/images/LOGO3.svg`
-					alt=""
-					class=`h-full w-auto`
-				)
+				a(href="/") 
+					img(
+						src=infoWeb.logo
+						alt=""
+						class=`h-full w-auto`
+					)
 			form(method="get" class=`grow flex border-[2px] border-[black] rounded-[8px] truncate`
 				form-search = `tim-kiem`
 			)

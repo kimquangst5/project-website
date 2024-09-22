@@ -3,8 +3,23 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../../controller/admin/general-setting.controller');
-const checkLogInMiddleWares = require('../../middlewares/admin/checklogin.middlewares')
+const multer = require('multer')
+const upload = multer()
+const uploadCloudMiddleWares = require('../../middlewares/admin/uploadCloud.middlewares');
 
-router.get('/', checkLogInMiddleWares, controller.index);
+router.get('/', controller.index);
+
+router.get('/website-info',
+	upload.single('logo'),
+	uploadCloudMiddleWares.uploadSingle,
+	controller.infoWebsite
+);
+
+router.patch(
+	'/website-info',
+	upload.single('logo'),
+	uploadCloudMiddleWares.uploadSingle,
+	controller.infoWebsitePatch,
+);
 
 module.exports = router;

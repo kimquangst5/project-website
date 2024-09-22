@@ -1,6 +1,6 @@
 module.exports.index = (req, res)=> {
-	res.render('admin/pages/dashboard/index.pug', {
+	res.render('admin/pages/main/index.pug', {
 		pageTitle: 'Trang chủ Admin',
-		header: 'Tổng quan'
 	})
 };
+

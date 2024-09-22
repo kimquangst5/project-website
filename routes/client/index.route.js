@@ -7,12 +7,13 @@ const userRoute = require("./user.route")
 const categoryMiddlewares = require("../../middlewares/client/category.middlewares")
 const cartMiddlewares = require("../../middlewares/client/cart.middlewares")
 const userMiddlewares = require("../../middlewares/client/user.middlewares")
+const settingiddlewares = require("../../middlewares/client/setting.middlewares")
 
 module.exports.index = (app) => {
 	app.use(categoryMiddlewares.category)
 	app.use(cartMiddlewares.cart)
 	app.use(userMiddlewares.user)
-	// app.use('/', authRoutes);
+	app.use(settingiddlewares.InfoWebsite)
      app.use('/',homeRoute);
      app.use('/product', productRoute);
      app.use('/tim-kiem', searchRoute);

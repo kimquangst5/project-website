@@ -31,6 +31,10 @@ html(lang="vi")
 				div(class="flex flex-col place-content-center justify-center px-[10px] text-[white] gap-[5px]")
 					i(class=`fa-solid fa-message-dots mx-auto`)
 					div(class="text-[10px]") Liên hệ
+		- if(infoWeb.copyRight)
+			div(class="bg-[#F5F5F5] border-t-[#333333] border-t-[1px]")
+				div(class="container")
+					div(class="flex text-center justify-center text-[#333333] items-center py-[20px]") #{infoWeb.copyRight}
 
 		script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11") 
 		script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")
