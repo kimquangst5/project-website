@@ -8,6 +8,8 @@ const authRoute = require('./auth.route');
 const trashRoute = require('./trash.route')
 const myProfileRoute = require('./profile.route')
 const articleRoute = require('./article.route')
+const interfaceRoute = require('./interface.route')
+const orderRoute = require('./order.route')
 const checkLogInMiddleWares = require('../../middlewares/admin/checklogin.middlewares')
 
 module.exports.index = (app) => {
@@ -21,5 +23,7 @@ module.exports.index = (app) => {
 	app.use(`/${admin}/trash`, checkLogInMiddleWares, trashRoute);
 	app.use(`/${admin}/my-profile`, checkLogInMiddleWares, myProfileRoute);
 	app.use(`/${admin}/articles`, checkLogInMiddleWares, articleRoute);
+	app.use(`/${admin}/interface`, checkLogInMiddleWares, interfaceRoute);
+	app.use(`/${admin}/order`, checkLogInMiddleWares, orderRoute);
 	app.use(`/${admin}`, authRoute);
 };

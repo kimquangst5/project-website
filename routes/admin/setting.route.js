@@ -22,4 +22,8 @@ router.patch(
 	controller.infoWebsitePatch,
 );
 
+router.get('/email', controller.email)
+
+router.patch('/email', controller.emailPatch)
+
 module.exports = router;

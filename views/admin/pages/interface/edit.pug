@@ -1,0 +1,21 @@
+extends ../../layouts/default.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/setting-box.pug
+include ../../mixins/dieu-huong.pug
+
+
+block main
+	-
+		let array = [
+			{
+				link: `/${admin}/interface`,
+				title: "Giao diện"
+			}
+		]
+	+dieu-huong("Chỉnh sửa giao diện", array)
+	+khung-table("Tùy chỉnh giao diện")
+		div(class="flex grid grid-cols-4 gap-x-[20px]")
+			+box-setting('fa-solid fa-gear-code', `/${admin}/interface/edit/box-product`, 'Hộp sản phẩm', 'Tùy chỉnh cho tất cả hộp sản phẩm')
+			+box-setting('fa-solid fa-pen-line', `/${admin}/roles`, 'Chỉnh sửa giao diện', 'Chỉnh sửa file giao diện gốc')
+			+box-setting('fa-brands fa-css3-alt', `/${admin}/roles`, 'Tùy chỉnh Css', 'Tùy chỉnh Css cho Website')
+			+box-setting('fa-brands fa-js', `/${admin}/roles`, 'Tùy chỉnh JavaScript', 'Tùy chỉnh JavaScript cho Website')

@@ -4,14 +4,14 @@ include ../../mixins/box-product.pug
 block main
 	div(class="select-none py-[40px]")
 		div(class="container")
-			div(class="p-[28px] bg-[#FFC234] rounded-[7px]")
+			div(class=`p-[28px] bg-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}] rounded-[7px]`)
 
-				div(class="text-[#333333] flex justify-center")
+				div(class=`text-[${BOX ? BOX.mauGiaGoc : ''}] flex justify-center`)
 					- if(featuredProducts)
 						div(class="uppercase text-[25px] font-[700] w-max flex flex-col justify-center mb-[20px]") sản phẩm nổi bật
 					- if(productsCategory)
 						div(class="uppercase text-[25px] font-[700] w-max flex flex-col justify-center mb-[20px]") SẢN PHẨM THUỘC DANH MỤC #{titleCategory}
-							div(class="border-[1px] border-[#333333] w-[50%] mx-auto my-[10px]")
+							div(class=`border-[1px] border-[${BOX ? BOX.mauGiaGoc : ''}] w-[50%] mx-auto my-[10px]`)
 				
 				div(class="grid grid-cols-4 flex gap-x-[10px] gap-y-[15px]")
 					- if(featuredProducts)
@@ -23,11 +23,11 @@ block main
 	- if(newproducts)
 		div(class="select-none py-[40px]")
 			div(class="container")
-				div(class="p-[28px] bg-[#FFC234] rounded-[7px]")
+				div(class=`p-[28px] bg-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}] rounded-[7px]`)
 
-					div(class="text-[#333333] flex justify-center") 
+					div(class=`text-[${BOX ? BOX.mauGiaGoc : ''}] flex justify-center`) 
 						div(class="uppercase text-[25px] font-[700] w-max flex flex-col justify-center") sản phẩm mới nhất
-							div(class="border-[1px] border-[#333333] w-[50%] mx-auto my-[10px]")
+							div(class=`border-[1px] border-[${BOX ? BOX.mauGiaGoc : ''}]] w-[50%] mx-auto my-[10px]`)
 					
 					div(class="grid grid-cols-4 flex gap-x-[10px] gap-y-[15px]")
 						+box-product(newproducts)

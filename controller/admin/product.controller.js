@@ -6,6 +6,7 @@ const createTreeUtil = require('../../utils/creeteTree.util');
 const Account = require('../../models/account.model');
 const moment = require('moment');
 const system = require(`../../config/system`)
+const priceNew = require("../../utils/price-new.util")
 
 // [GET] /admin/product/
 module.exports.index = async (req, res) => {
@@ -31,10 +32,11 @@ module.exports.index = async (req, res) => {
 	// Pagination
 	let pagination = {
 		current: 1,
-		limit: 5
+		limit: 8
 	};
 
 	pagination.totalProduct = await Product.countDocuments(find)
+	console.log(pagination.totalProduct)
 	if (req.query.page) {
 		pagination.current = parseInt(req.query.page)
 	}
@@ -96,34 +98,19 @@ module.exports.index = async (req, res) => {
 		.skip(pagination.skip)
 		.sort(sort)
 
-	// for (const it of product) {
-	// 	it.priceNew = it.price - (it.price * it.discountPercentage) / 100
-	// 	it.priceNew = it.priceNew.toFixed(0);
-	// }
-
-	for (const it of product) {
-		it.priceNew = it.price - (it.price * it.discountPercentage) / 100
-		it.priceNew = it.priceNew.toFixed(0);
-		it.priceNew = parseInt(it.priceNew / 1000)
-		if(it.priceNew % 1000 <= 100){
-			it.priceNew = parseInt(it.priceNew / 1000) - 1
-			it.priceNew = (1000 * it.priceNew + 990) * 1000
-		}
-		else{
-			it.priceNew = it.priceNew * 1000
-		}
-		it.priceNew = [it.priceNew].toLocaleString('en-EN')
-		
-
-	}
+	priceNew(product)
+	
 
 	for (const it of product) {
 		const account = await Account.findOne({
 			_id: it.createdBy
-		}).select("fullName")
-		it.createdBy = account.fullName
+		})
+		if(account){
+			it.createdBy = account.fullName
+		}
 		it.createdAtFormat = moment(it.createdAt).format('DD/MM HH:mm');
 	}
+	console.log(pagination)
 	res.render('admin/pages/product/index.pug', {
 		pageTitle: 'Trang quản lí sản phẩm',
 		header: 'Quản lí sản phẩm',

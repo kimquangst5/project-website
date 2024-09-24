@@ -52,7 +52,7 @@ block main
 				input(
 					type="checkbox", 
 					name="checkAll"
-					class=`appearance-none w-[20px] h-[20px] border-[1px] border-do rounded-[10px] checked:bg-do hover:cursor-pointer absolute top-0 right-0`
+					class=`appearance-none w-[20px] h-[20px] border-[1px] border-do rounded-[10px] checked:bg-do hover:cursor-pointer absolute top-[-20px] left-[-20px]`
 					title="Chọn tất cả"
 				)
 				each it, i in product
@@ -131,6 +131,7 @@ block main
 									div(class="p-[10px] text-wrap w-full text-[14px] bg-[#323A46]  font-bold text-main w-max") #{it.priceNew}đ
 									span(class="p-[10px] text-main/50 text-adminColorHeadline text-wrap w-full text-[10px] w-max text-[12px]") -#{it.discountPercentage}%
 								div(class="flex text-wrap w-full text-adminColorHeadline text-[15px]") Số lượng: #{it.stock} cái 
+			+pagination(pagination)
 	- else
 		div(no-view-permission)
 

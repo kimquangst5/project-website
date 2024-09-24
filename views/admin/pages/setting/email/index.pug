@@ -1,0 +1,60 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/dieu-huong.pug
+include ../../../mixins/cap-nhat.pug
+include ../../../mixins/khung-table.pug
+include ../../../mixins/option-input.pug
+include ../../../mixins/option-input-image.pug
+
+block main
+	-
+		let array = [
+			{
+				link: `/${admin}/dashboard`,
+				title: "Cài đặt chung"
+			}
+		]
+	+dieu-huong("Cấu hình Email", array)
+	+cap-nhat("Cập nhật")(button-submit-form = "")
+
+	+khung-table("Thông tin chính")
+		form(
+			action=`/${admin}/dashboard/email?_method=PATCH`
+			method="POST"
+			target='_self'
+			autocomplete = "on"
+			class="py-[20px]"
+		)
+			div(class=`flex flex-col gap-y-[10px]`)
+				+option-input(
+					
+					'Tên người gửi',
+					'fullName',
+					'yes',
+					'fa-light fa-user',
+					'Nhập Tên người gửi...',
+					"text",
+					(email ? (email.fullName ? email.fullName : '') : '')
+				)
+				+option-input(
+					'Email người gửi',
+					'from',
+					'yes',
+					'fa-light fa-envelope',
+					'Nhập Email người gửi...',
+					"email",
+					(email ? (email.from ? email.from : '') : '')
+				)
+				+option-input(
+					
+					'Tiêu đề Email',
+					'title',
+					'yes',
+					'fa-light fa-h1',
+					'Nhập Tiêu đề Email...',
+					"text",
+					(email ? (email.title ? email.title : '') : '')
+				)
+				textarea(name="content" textarea-mce placeholder="Nhập Nội dung Email...") #{(email ? (email.content ? email.content : '') : '')}
+				
+			button(type="submit" class=`hidden`) Cập nhật
+					

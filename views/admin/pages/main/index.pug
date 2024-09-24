@@ -1,17 +1,47 @@
 extends ../../layouts/default.pug
-include ../../mixins/pagination.pug
 include ../../mixins/khung-table.pug
-include ../../mixins/permission-mixin.pug
-include ../../mixins/quay-lai.pug
-include ../../mixins/them-moi.pug
-
-
-//- block header
-	+quay-lai("Đi đến cài đặt chung", `/${admin}/dashboard`)
+include ../../mixins/box-dashboard.pug
 
 block main
-	+khung-table("Thông tin của bạn")
-		h1 #{account.fullName}
-			div(class="text-wrap") #{role.title}
-			//- each it in role.permisstion
-			//- 	div(class="") #{it}
+	div(class="flex grid grid-cols-3 gap-[10px]")
+		+khung-table("Sản phẩm")
+			div(class="")
+				+box-dashboard('Số lượng', dashboard.product.total)
+				+box-dashboard('Hoạt động', dashboard.product.active)
+				+box-dashboard('Dừng hoạt động', dashboard.product.inactive)
+				+box-dashboard('Đã xóa', dashboard.product.deleted)
+		+khung-table("Danh mục sản phẩm")
+			div(class="")
+				+box-dashboard('Số lượng', dashboard.product_category.total)
+				+box-dashboard('Hoạt động', dashboard.product_category.active)
+				+box-dashboard('Dừng hoạt động', dashboard.product_category.inactive)
+				+box-dashboard('Đã xóa', dashboard.product_category.deleted)
+		+khung-table("Tài khoản quản trị")
+			div(class="")
+				+box-dashboard('Số lượng', dashboard.account.total)
+				+box-dashboard('Hoạt động', dashboard.account.active)
+				+box-dashboard('Dừng hoạt động', dashboard.account.inactive)
+				+box-dashboard('Dừng hoạt động', dashboard.account.deleted)
+
+	div(class="flex grid grid-cols-3 gap-[10px]")
+		+khung-table("Tài khoản người dùng")
+			div(class="")
+				+box-dashboard('Số lượng', dashboard.user.total)
+				+box-dashboard('Hoạt động', dashboard.user.active)
+				+box-dashboard('Dừng hoạt động', dashboard.user.inactive)
+				+box-dashboard('Đã xóa', dashboard.user.deleted)
+		+khung-table("Nhóm quyền")
+			div(class="")
+				+box-dashboard('Số lượng', dashboard.role.total)
+				+box-dashboard('Đã xóa', dashboard.role.deleted)
+		+khung-table("Giỏ hàng")
+			div(class="")
+				+box-dashboard('Số lượng', dashboard.cart.total)
+				+box-dashboard('Trống', dashboard.cart.empty)
+	
+	div(class="flex grid grid-cols-3 gap-[10px]")
+		+khung-table("Đơn hàng")
+			div(class="")
+				+box-dashboard('Số lượng', dashboard.order.total)
+				+box-dashboard('Đã xử lí', 0)
+				+box-dashboard('Chưa xử lí', dashboard.order.total)

@@ -1,5 +1,6 @@
 const User = require("../../models/user.model")
 const ForgotPassword = require("../../models/forgot-password.model")
+const Email = require("../../models/email.model")
 // Md5 mã hóa password
 const md5 = require('md5');
 const jwt = require('jsonwebtoken'); // tạo token
@@ -12,6 +13,7 @@ const CLIENT_ID = '305581713618-k13nhu7troqk6gdkvuo237tnpbjtn6ha.apps.googleuser
 const CLIENT_SECRET = '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';
 const REDIRECT_URI = 'https://tkq.vercel.app/member/register/gmail/auth/google/callback';
 const REDIRECT_URI_LOGIN = 'https://tkq.vercel.app/member/login/gmail/auth/google/callback';
+const _ = require('lodash');
 
 const sendMail = require("../../utils/sendEmail.util")
 
@@ -96,7 +98,6 @@ module.exports.registerGmailCallback = async (req, res) => {
 			fullName: profile.name,
 			email: profile.email
 		}
-		console.log(dataBody)
 		const user = await User.findOne({
 			email: dataBody.email,
 		})
@@ -140,7 +141,7 @@ module.exports.loginPost = async (req, res) => {
 		email: req.body.email,
 	})
 	if (!user) {
-		req.flash("error", "Email không tồn tại!");
+		req.flash("error", "Email không không tồn tại!");
 		res.redirect('back');
 		return;
 	}
@@ -165,6 +166,7 @@ module.exports.loginGmail = (req, res, next) => {
 	const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI_LOGIN}&response_type=code&scope=profile email`;
 	res.redirect(url);
 }
+
 // [GET] member/login/gmail/auth/google/callback
 module.exports.loginGmailCallback = async (req, res) => {
 	const {
@@ -232,13 +234,13 @@ module.exports.loginGmailCallback = async (req, res) => {
 	}
 }
 
-
+// [POST] /member/log-out
 module.exports.logOut = async (req, res) => {
 	res.clearCookie('tokenUser');
 	res.redirect("/")
 }
 
-
+// [GET] /forgot-password
 module.exports.forgotPassword = async (req, res) => {
 	res.render("client/pages/user/forgot-password.pug", {
 		pageTitle: "Quên mật khẩu",
@@ -255,7 +257,7 @@ module.exports.forgotPasswordPost = async (req, res) => {
 	})
 
 	if (!user) {
-		req.flash("error", "Email không tồn tại!!!");
+		req.flash("error", "Vui lòng đăng ký tài khoản!!!");
 		res.redirect("back");
 		return;
 	}
@@ -272,9 +274,18 @@ module.exports.forgotPasswordPost = async (req, res) => {
 
 	const newForgotPassword = new ForgotPassword(data);
 	await newForgotPassword.save();
+	const emailDatabase = await Email.find({});
+	
+
+	const template = emailDatabase[0].content;
+	const compiled = _.template(template);
+	const result = compiled({
+		MA_OTP: data.otp,
+	});
+	// console.log(result); // Output: Chào Bob, mã OTP của bạn: 345678
 	sendMail.sendMail(email,
-		"Xác thực mã OTP",
-		`<br><div><strong style="font-size: 20px;">Xin chào ${user.fullName}</strong></div><br><span>Mã OTP của bạn là: </div><strong style="color: #E92031; font-size: 30px;">${data.otp}</strong><br><br><div>Mã này có hiệu lức trong vòng 3 phút.</div><div>Vui lòng không cung cấp mã này cho bất cứ ai!</div>`
+		emailDatabase[0].title,
+		result
 	)
 	res.redirect(`/member/otp?email=${user.email}`)
 }
@@ -284,7 +295,6 @@ module.exports.otp = async (req, res) => {
 	const {
 		email
 	} = req.query;
-	console.log(email)
 	const user = await User.findOne({
 		email: email
 	})

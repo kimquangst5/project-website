@@ -1,6 +1,7 @@
 const Cart = require("../../models/cart.model")
 const Product = require("../../models/product.model")
 const Order = require("../../models/orders.model")
+const priceNew = require("../../utils/price-new.util")
 
 module.exports.index = async (req, res) => {
 	const carts = await Cart.findOne({
@@ -14,36 +15,20 @@ module.exports.index = async (req, res) => {
 		product.quanlityProduct = it.stock
 		return product
 	}));
-	let totalPrice = 0
-	for (const it of productsCart) {
-		it.priceNew = it.price - (it.price * it.discountPercentage) / 100
-		it.priceNew = it.priceNew.toFixed(0);
-		it.priceNew = parseInt(it.priceNew / 1000)
-		if (it.priceNew % 1000 <= 100) {
-			it.priceNew = parseInt(it.priceNew / 1000) - 1
-			it.priceNew = (1000 * it.priceNew + 990) * 1000
-		} else {
-			it.priceNew = it.priceNew * 1000
-		}
-		it.newPrice = it.priceNew
-		totalPrice += (it.priceNew * it.quanlityProduct)
-		it.priceItem = [it.priceNew * it.quanlityProduct].toLocaleString('en-EN')
-		it.priceNew = [it.priceNew].toLocaleString('en-EN')
-		
-	}
-	let priceTotalAll = totalPrice
-	totalPrice = totalPrice.toLocaleString('en-EN')
+	priceNew(productsCart)
 	res.render("client/pages/payment/index.pug", {
 		pageTitle: "Thanh toán",
 		carts: productsCart,
-		totalPrice: totalPrice,
-		priceTotalAll: priceTotalAll
 	})
 };
 
 module.exports.payPost = async (req, res) => {
 	const data = {
-		userInfo: req.body,
+		userInfo: {
+			fullName: req.body.fullName,
+			phone: req.body.phone,
+			address: req.body.address
+		},
 		products: []
 	}
 	const carts = await Cart.findOne({
@@ -63,6 +48,8 @@ module.exports.payPost = async (req, res) => {
 		}
 		data.products.push(items)
 	}
+	data.methodPay = req.body.methodPay
+	data.note = req.body.note
 	const newOrder = new Order(data)
 	await newOrder.save();
 
@@ -76,7 +63,9 @@ module.exports.payPost = async (req, res) => {
 }
 
 module.exports.success = async (req, res) => {
-	const { id } = req.params;
+	const {
+		id
+	} = req.params;
 	const order = await Order.findOne({
 		_id: id
 	})
@@ -87,17 +76,16 @@ module.exports.success = async (req, res) => {
 		it.title = product.title
 		it.thumbnail = product.thumbnail
 	}
-
+	priceNew(order.products)
 	order.total_price = 0
 	for (const it of order.products) {
 		it.priceNew = it.price - (it.price * it.discountPercentage) / 100
 		it.priceNew = it.priceNew.toFixed(0);
 		it.priceNew = parseInt(it.priceNew / 1000)
-		if(it.priceNew % 1000 <= 100){
+		if (it.priceNew % 1000 <= 100) {
 			it.priceNew = parseInt(it.priceNew / 1000) - 1
 			it.priceNew = (1000 * it.priceNew + 990) * 1000
-		}
-		else{
+		} else {
 			it.priceNew = it.priceNew * 1000
 		}
 		it.priceNew = it.priceNew * it.quantity
@@ -105,8 +93,7 @@ module.exports.success = async (req, res) => {
 		it.priceNew = [it.priceNew].toLocaleString('en-EN')
 	}
 	order.total_price = [order.total_price].toLocaleString('en-EN')
-	
-	
+
 	res.render("client/pages/payment/success.pug", {
 		pageTitle: "Biên lai đơn hàng",
 		order: order
@@ -124,36 +111,10 @@ module.exports.method = async (req, res) => {
 		product.quanlityProduct = it.stock
 		return product
 	}));
-	let totalPrice = 0
-	for (const it of productsCart) {
-		it.priceNew = it.price - (it.price * it.discountPercentage) / 100
-		it.priceNew = it.priceNew.toFixed(0);
-		it.priceNew = parseInt(it.priceNew / 1000)
-		if (it.priceNew % 1000 <= 100) {
-			it.priceNew = parseInt(it.priceNew / 1000) - 1
-			it.priceNew = (1000 * it.priceNew + 990) * 1000
-		} else {
-			it.priceNew = it.priceNew * 1000
-		}
-		it.newPrice = it.priceNew
-		totalPrice += (it.priceNew * it.quanlityProduct)
-		it.priceItem = [it.priceNew * it.quanlityProduct].toLocaleString('en-EN')
-		it.priceNew = [it.priceNew].toLocaleString('en-EN')
-		
-	}
-	let priceTotalAll = totalPrice
-	totalPrice = totalPrice.toLocaleString('en-EN')
-	for (const it of productsCart) {
-		it.priceOld = [it.price].toLocaleString('en-EN')
-	}
-	if(req.body.note == 'Ghi chú'){
-		req.body.note = ''
-	}
+	priceNew(productsCart)
 	res.render("client/pages/payment/method.pug", {
 		pageTitle: "Tiến hành thanh toán",
 		carts: productsCart,
-		totalPrice: totalPrice,
-		priceTotalAll: priceTotalAll,
 		inforUser: req.body
 	})
 }

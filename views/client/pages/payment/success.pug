@@ -25,8 +25,14 @@ block main
 										span(class="font-bold")  #{order.userInfo.phone}
 									div(class="") Địa chỉ: 
 										span(class="font-bold")  #{order.userInfo.address}
+									- if(order.methodPay == 'transfer')
+										div(class="") Phương thức thanh toán:
+											span(class="font-bold")  Chuyển khoản
+									- if(order.methodPay == 'cash')
+										div(class="") Phương thức thanh toán:
+											span(class="font-bold")  Tiền mặt
 									div(class="") Ghi chú: 
-										span(class="font-bold")  #{order.userInfo.note || 'Không có'}
+										span(class="font-bold")  #{order.note || 'Không có'}
 									button(type="submit" class="hidden w-full ml-auto bg-chu text-center p-[10px] rounded-[10px] text-[white] capitalize mt-[30px]") thanh toán
 							
 					div(class="col-span-3")

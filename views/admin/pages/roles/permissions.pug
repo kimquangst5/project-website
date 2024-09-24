@@ -8,10 +8,6 @@ include ../../mixins/box-permission.pug
 include ../../mixins/dieu-huong.pug
 
 
-//- block header
-	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
-	+cap-nhat("Cập nhật", ``)(roles = "")
-
 block main
 	- if(role.permisstion.includes(`permissions_views`))
 		-

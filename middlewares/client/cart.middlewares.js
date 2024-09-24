@@ -15,7 +15,7 @@ module.exports.cart = async (req, res, next) => {
 			res.locals.cartProductsLength = cart.products.length
 			next();
 		} catch (error) {
-			res.clearCookie(req.cookies.cardID)
+			res.clearCookie(cardID)
 			const cart = new Cart();
 			await cart.save();
 			res.cookie('cardID', cart.id, {

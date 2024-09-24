@@ -1,7 +1,8 @@
 // Import the Nodemailer library
 const nodemailer = require('nodemailer');
 require('dotenv').config();
-module.exports.sendMail = (email, subject, html) => {
+const Email = require("../models/email.model")
+module.exports.sendMail = async (email, subject, html) => {
 
 	// Create a transporter object
 	const transporter = nodemailer.createTransport({
@@ -14,9 +15,10 @@ module.exports.sendMail = (email, subject, html) => {
 		}
 	});
 
+	const emailBatabase = await Email.find({});
 	// Configure the mailoptions object
 	const mailOptions = {
-		from: process.env.email,
+		from: `${emailBatabase[0].fullName} <${emailBatabase[0].from}>`,
 		to: email,
 		subject: subject,
 		html: html

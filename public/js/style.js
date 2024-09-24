@@ -506,8 +506,9 @@ if (buttonPayment) {
 	buttonPayment.addEventListener('click', () => {
 		const body = buttonPayment.closest('body');
 		if (body) {
-			const buttonFormPayment = body.querySelector(`form[method="post"] button[type="submit"]`);
+			const buttonFormPayment = body.querySelector(`button[type="submit"][button-submit-form]`);
 			if (buttonFormPayment) {
+				// console.log(buttonFormPayment)
 				buttonFormPayment.click();
 			}
 		}
@@ -571,6 +572,68 @@ if(listInput.length > 0){
 	});
 }
 
+const boxShowMenuProfile = document.querySelector('[box-show-menu-profile]');
+if(boxShowMenuProfile){
+	const next  =boxShowMenuProfile.nextElementSibling;
+	if(next){
+		boxShowMenuProfile.addEventListener('click', () => {
+			next.classList.toggle('mt-[50px]')
+			setTimeout(() => {
+				next.classList.toggle('opacity-0')
+			}, 200);
+		});
+
+	}
+}
+
+const boxMethodPayBank = document.querySelector('[box-method-pay-bank]')
+if(boxMethodPayBank){
+	const buttonMethodPayBank = document.querySelector('[button-method-pay-bank]')
+	if(buttonMethodPayBank){
+		const inputMethodPay = document.querySelector('[input-method-pay]');
+		inputMethodPay.value = 'cash'
+		buttonMethodPayBank.addEventListener('click', () => {
+			buttonMethodPayBank.classList.toggle('border-chu')
+			buttonMethodPayBank.classList.toggle('text-chu')
+
+			const buttonpre = buttonMethodPayBank.previousElementSibling
+			buttonpre.classList.toggle('border-chu')
+			buttonpre.classList.toggle('text-chu')
+
+			boxMethodPayBank.classList.toggle('mt-[-30px]')
+			boxMethodPayBank.classList.toggle('hidden')
+			setTimeout(() => {
+				boxMethodPayBank.classList.toggle('opacity-0')
+			}, 300);
+			if(boxMethodPayBank.className.includes('opacity-0')){
+				inputMethodPay.value = "transfer"
+			}
+			else{
+				inputMethodPay.value = "cash"
+			}
+			console.log(inputMethodPay.value)
+		})
+		const buttonpre = buttonMethodPayBank.previousElementSibling
+		buttonpre.addEventListener('click', () => {
+			buttonMethodPayBank.click()
+		})
+	}
+}
+
+const demGiayOtp = document.querySelector('[count-s-otp]');
+if(demGiayOtp){
+	const div = demGiayOtp.querySelector('div');
+	setInterval(() => {
+		if(parseInt(div.innerHTML) != 0){
+		const value = parseInt(div.innerHTML) - 1;
+		div.innerHTML = value
+		if(parseInt(div.innerHTML) == 0){
+			history.back();
+		}
+	}
+	}, 1000);
+	
+}
 // console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
 // console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
 

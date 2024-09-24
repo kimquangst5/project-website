@@ -459,7 +459,7 @@ if (showAlert) {
 const upploadImage = document.querySelector(`[upload-image]`);
 
 if (upploadImage) {
-	const input = upploadImage.querySelector(`[upload-image-input]`);
+	const input = upploadImage.querySelector(`input`);
 	const images = upploadImage.querySelector(`img`);
 	input.addEventListener('change', () => {
 		const file = input.files[0];
@@ -1193,6 +1193,32 @@ if (imageUpload) {
 
 		window.showOpenFilePicker(pickerOpts)
 	});
+}
+
+const buttonChangeStatusMethodPay = document.querySelector('[button-change-status-method-pay]');
+if(buttonChangeStatusMethodPay){
+	const listButton = buttonChangeStatusMethodPay.querySelectorAll('button');
+	if(listButton.length > 0){
+		listButton.forEach(button => {
+			button.addEventListener('click', () => {
+				const link = button.getAttribute('link');
+				if(link){
+					fetch(link, {
+						method: "PATCH",
+						headers: {
+							"Content-Type": "application/json",
+						},
+					})
+						.then(res => res.json())
+						.then(data => {
+							if(data.code == 200){
+								window.location.reload();
+							}
+						})
+				}
+			});
+		});
+	}
 }
 
 console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');

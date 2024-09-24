@@ -13,6 +13,20 @@ const accountShema = new Schema({
 	roleTitle: String,
 	token: String,
 	birthday: Date,
+
+	avatar: String,
+
+	aboutMe: String,
+
+	instagram: String,
+	facebook: String,
+	twitter: String,
+	linkedin: String,
+	skype: String,
+	github: String,
+	gmail: String,
+	zalo: String,
+
 	roleTitle: String,
 	createdBy: String,
 	deletedBy: String,

@@ -17,7 +17,13 @@ const orderShema = new Schema({
 			discountPercentage: Number,
 			quantity: Number
 		}
-	]
+	],
+	methodPay: String,
+	note: String,
+	deleted: {
+		type: Boolean,
+		default: false
+	}
 }, {
 	timestamps: true
 });

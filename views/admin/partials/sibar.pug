@@ -29,7 +29,7 @@ aside(
 		
 		+box-sidebar(`Đơn hàng`, '',  `fa-solid fa-file-lines`)
 			+box-sidebar(`Đơn mới`, `/${admin}/article/create`)
-			+box-sidebar(`Danh sách`, `/${admin}/article`)
+			+box-sidebar(`Danh sách`, `/${admin}/order`)
 			+box-sidebar(`Trạng thái`, `/${admin}/article-category`)
 			+box-sidebar(`Hoàn tiền/Đổi trả`, `/${admin}/article-category`)
 
@@ -53,6 +53,8 @@ aside(
 
 		- if(role.permisstion.includes("dashboard_view"))
 			+box-sidebar(`Cấu hình`, `/${admin}/dashboard`, `fa-solid fa-screwdriver-wrench`)
+
+		+box-sidebar(`Giao diện`, `/${admin}/interface`, `fa-light fa-computer`)
 		
 		- if(role.permisstion.includes(`trash_view`))
 			+box-sidebar(`Thùng rác`, ``,  `fa-solid fa-trash-can`)

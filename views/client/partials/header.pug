@@ -2,7 +2,7 @@ include ../mixins/select-tree.pug
 
 div(class="bg-[#F5F6F8]")
 	div(class="container")
-		div(class="text-[#333333] flex justify-between py-[10px] text-[12px]")
+		div(class=`text-[${BOX ? BOX.mauGiaGoc : ''}] flex justify-between py-[10px] text-[12px]`)
 			div(class="uppercase font-bold") #{infoWeb.nameWeb}
 			div(class="flex justify-between items-center gap-[20px]")
 				div(class="flex justify-center items-center gap-[10px]")
@@ -23,7 +23,7 @@ div(class="bg-[white] py-[30px]")
 						alt=""
 						class=`h-full w-auto`
 					)
-			form(method="get" class=`grow flex border-[2px] border-[black] rounded-[8px] truncate`
+			form(method="get" class=`grow flex border-[2px] border-[${BOX ? BOX.mauGiaGoc : ''}] rounded-[8px] truncate`
 				form-search = `tim-kiem`
 			)
 				input(
@@ -35,7 +35,7 @@ div(class="bg-[white] py-[30px]")
 				)
 				button(
 					type="submit"
-					class=`px-[20px] bg-[black] text-main flex items-center justify-center flex-end fa-solid fa-magnifying-glass hover:bg-chu duration-500`
+					class=`px-[20px] bg-[${BOX ? BOX.mauGiaGoc : ''}] text-main flex items-center justify-center flex-end fa-solid fa-magnifying-glass hover:bg-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}] hover:text-[${BOX ? BOX.mauGiaGoc : ''}] duration-500`
 				)
 			div(class="h-full")
 				a(href="/order/cart-info" class="h-full relative w-auto hover:text-chu duration-500") 
@@ -46,8 +46,8 @@ div(class="bg-[white] py-[30px]")
 				i(class=`fa-thin fa-user text-[25px] cursor-pointer hover:text-chu duration-500` icon-user)
 			- else
 				div(class="relative") 
-					div(class="cursor-pointer  hover:text-chu duration-500") #{infoUser.fullName}
-					div(class="absolute mt-[20px] rounded-[10px] p-[5px] truncate bg-[white] z-[100] w-max")
+					div(class="cursor-pointer  hover:text-chu duration-500" box-show-menu-profile) #{infoUser.fullName}
+					div(class="absolute right-0 duration-1000  opacity-0 rounded-[10px] p-[5px] truncate bg-[white] z-[100] w-max" )
 						div(class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
 							div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
 								i(class="fa-light fa-user-tie")
@@ -60,11 +60,10 @@ div(class="bg-[white] py-[30px]")
 							div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
 								i(class="fa-regular fa-lock-keyhole-open")
 								div(class="") Thay đổi mật khẩu
-						div(class="hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+						a(href="/member/log-out" class="hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer flex")
 							div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
 								i(class="fa-thin fa-left-to-bracket")
 								div(class="") Thoát
-				a(href="/member/log-out")  Đăng xuất
 
 header(class=`z-[90] sticky top-0 duration-1000`)
 	div(class=`container`)

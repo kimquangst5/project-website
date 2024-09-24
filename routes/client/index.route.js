@@ -4,6 +4,7 @@ const searchRoute = require("./search.route")
 const cartRoute = require("./cart.route")
 const paymentRoute = require("./payment.route")
 const userRoute = require("./user.route")
+const chatRoute = require("./chat.route")
 const categoryMiddlewares = require("../../middlewares/client/category.middlewares")
 const cartMiddlewares = require("../../middlewares/client/cart.middlewares")
 const userMiddlewares = require("../../middlewares/client/user.middlewares")
@@ -20,4 +21,5 @@ module.exports.index = (app) => {
      app.use('/order', cartRoute);
      app.use('/payment', paymentRoute);
      app.use('/member', userRoute);
+     app.use('/chat', chatRoute);
 };

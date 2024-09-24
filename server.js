@@ -5,6 +5,16 @@ const app = express();
 // Body Parser
 const bodyParser = require('body-parser');
 
+// SOKET IO
+const http = require('http');
+const { Server } = require("socket.io");
+const server = http.createServer(app);
+const io = new Server(server);
+io.on('connection', (socket) => {
+	console.log('Có 1 người dùng đã kết nối', socket.id);
+});
+// HẾT SOCKET IO
+
 // create application/json parser
 app.use(bodyParser.json());
 
@@ -69,10 +79,10 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 
 
 // Xử lý 404 - đặt ở cuối cùng
-// app.use((req, res) => {
-// 	res.status(404).redirect(`/${process.env.admin}/main`); // Chuyển hướng về trang chủ
-// });
+app.use((req, res) => {
+	res.status(404).render("client/pages/error/404.pug")
+});
 
-app.listen(port, () => {
+server.listen(port, () => {
 	console.log(`Đang lắng nghe cổng ${port}`);
 });
