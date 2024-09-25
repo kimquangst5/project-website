@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 const Email = require("../models/email.model")
 module.exports.sendMail = async (email, subject, html) => {
+	const emailBatabase = await Email.find({});
 
 	// Create a transporter object
 	const transporter = nodemailer.createTransport({
@@ -15,7 +16,6 @@ module.exports.sendMail = async (email, subject, html) => {
 		}
 	});
 
-	const emailBatabase = await Email.find({});
 	// Configure the mailoptions object
 	const mailOptions = {
 		from: `${emailBatabase[0].fullName} <${emailBatabase[0].from}>`,
