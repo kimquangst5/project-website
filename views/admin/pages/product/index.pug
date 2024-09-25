@@ -18,12 +18,18 @@ include ../../mixins/dieu-huong.pug
 block main
 	- if(role.permisstion.includes('products_view'))
 		+dieu-huong(`Danh sách sản phẩm`)
+		
 		- if(role.permisstion.includes(`products_create`))
 			+them-moi("Thêm sản phẩm", `/${admin}/product/create`)
 		- if(product.length == 0)
 			+khung-table("Chưa có sản phẩm nào!!")
 		- else
 			- if(role.permisstion.includes('products_edit'))
+				div(class="w-max flex items-center text-[white] mr-[20px]")
+					div(class="w-max") Hiển thị
+					div(class="w-[80px]") 
+						input(type="number" class=`w-full bg-transparent outline-none text-center` value=(displayProduct ? displayProduct : 1) min="1" input-change-quantity-product = (pagination ? (pagination.totalProduct ? pagination.totalProduct : '') : ''))
+					div(class="") sản phẩm
 				+khung-table("Lọc theo trạng thái và tìm sản phẩm")
 					div(class=`flex flex-wrap gap-[10px] justify-between p-[10px] items-center`)
 						+fillter-status(fillerStatus)

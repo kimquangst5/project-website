@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../../controller/client/user.controller")
+const userMiddlewares = require("../../middlewares/client/user.middlewares")
 
 router.get('/register', controller.register)
 
@@ -35,6 +36,10 @@ router.post('/otp', controller.otpPost)
 router.get('/change-password', controller.changePassword)
 
 router.post('/change-password', controller.changePasswordPost)
+
+router.get('/dashboard', userMiddlewares.requireAuth, controller.dashboard)
+
+router.get('/profile', userMiddlewares.requireAuth, controller.profile)
 
 
 

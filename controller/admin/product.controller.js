@@ -4,6 +4,7 @@ const uploadCloudMiddlewares = require('../../middlewares/admin/uploadCloud.midd
 const ProductCategory = require('../../models/product-category.model')
 const createTreeUtil = require('../../utils/creeteTree.util');
 const Account = require('../../models/account.model');
+const DisplayProduct = require('../../models/display-product.model');
 const moment = require('moment');
 const system = require(`../../config/system`)
 const priceNew = require("../../utils/price-new.util")
@@ -30,13 +31,14 @@ module.exports.index = async (req, res) => {
 	// End  Search
 
 	// Pagination
+	const displayProduct = await DisplayProduct.find({});
+	// console.log(displayProduct[0].limit)
 	let pagination = {
 		current: 1,
-		limit: 8
+		limit: parseInt(displayProduct[0].limit)
 	};
 
 	pagination.totalProduct = await Product.countDocuments(find)
-	console.log(pagination.totalProduct)
 	if (req.query.page) {
 		pagination.current = parseInt(req.query.page)
 	}
@@ -119,8 +121,7 @@ module.exports.index = async (req, res) => {
 		pagination: pagination,
 		fillerStatus: fillerStatus,
 		statusOption: statusOption,
-		buttonTitle: "+ Thêm mới sản phẩm",
-		buttonLink: `/${process.env.admin}/product/create`
+		displayProduct: displayProduct[0].limit
 	})
 };
 
@@ -418,7 +419,6 @@ module.exports.detail = async (req, res) => {
 			const nameUpdated = await Account.findOne({
 				_id: product.updatedBy
 			}).select("fullName")
-			console.log(product.updatedBy)
 			product.updatedAtFormat = moment(product.updatedAt).format('[Ngày ]DD[ tháng ]MM[ năm ]YYYY [Vào lúc ]HH[ giờ ]mm[ phút ]ss[ giây ]')
 			product.updatedBy = nameUpdated.fullName
 		} else {
@@ -438,4 +438,34 @@ module.exports.detail = async (req, res) => {
 		console.log(error)
 		// res.redirect(`/${process.env.admin}/product`)
 	}
+}
+
+// [patch] /admin/product/display-product
+module.exports.displayProduct = async (req, res) => {
+	// console.log(req.body)
+	const { total, limit } = req.body
+	// console.log(total)
+	// console.log(limit)
+	if(limit > total){
+		req.flash("error", "Nhập sai!");
+		res.redirect('back')
+		return;
+	}
+	const displayProductDatabase = await DisplayProduct.find({});
+	// console.log(displayProductDatabase[0].id)
+	if(displayProductDatabase.length == 0){
+		const newDisplayProduct = new DisplayProduct({
+			total: total,
+			limit: limit
+		})
+		await newDisplayProduct.save();
+	}
+	else{
+		// console.log(req.body)
+		// console.log(displayProductDatabase)
+		await DisplayProduct.updateOne(displayProductDatabase[0], req.body)
+	}
+	res.json({
+		code: 200
+	})
 }

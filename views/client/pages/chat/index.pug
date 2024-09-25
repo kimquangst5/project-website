@@ -3,3 +3,11 @@ include ../../mixins/dieu-huong.pug
 
 block main
 	+dieu-huong("Nhắn tin")
+	div(class="my-[10px]")
+		div(class="container")
+			div(class="h-[600px] truncate relative bg-[white]  rounded-[10px] p-[10px]")
+				form(class=`flex flex-col h-full` form-chat)
+					div(class="h-full") ok
+					div(class="rounded-[10px] flex flex-end border-[black]/50 border-[1px] flex items-center") 
+						input(type="text" class=`p-[10px] outline-none  bg-transparent w-full`)
+						button(type="submit" class="h-full fa-solid fa-paper-plane-top text-[20px] cursor-pointer text-[pink] px-[15px] flex items-center")

@@ -1195,35 +1195,82 @@ if (imageUpload) {
 	});
 }
 
-const buttonChangeStatusMethodPay = document.querySelector('[button-change-status-method-pay]');
-if(buttonChangeStatusMethodPay){
-	const listButton = buttonChangeStatusMethodPay.querySelectorAll('button');
-	if(listButton.length > 0){
-		listButton.forEach(button => {
-			button.addEventListener('click', () => {
-				const link = button.getAttribute('link');
-				if(link){
-					fetch(link, {
-						method: "PATCH",
-						headers: {
-							"Content-Type": "application/json",
-						},
-					})
-						.then(res => res.json())
-						.then(data => {
-							if(data.code == 200){
-								window.location.reload();
-							}
+const buttonChangeStatusMethodPay = document.querySelectorAll('[button-change-status-method-pay]');
+if(buttonChangeStatusMethodPay.length > 0){
+	buttonChangeStatusMethodPay.forEach(buttonChangeStatusMethodPay => {
+		const listButton = buttonChangeStatusMethodPay.querySelectorAll('button');
+		if(listButton.length > 0){
+			listButton.forEach(button => {
+				button.addEventListener('click', () => {
+					const link = button.getAttribute('link');
+					if(link){
+						fetch(link, {
+							method: "PATCH",
+							headers: {
+								"Content-Type": "application/json",
+							},
 						})
-				}
+							.then(res => res.json())
+							.then(data => {
+								if(data.code == 200){
+									window.location.reload();
+								}
+							})
+					}
+				});
 			});
-		});
-	}
+		}
+	});
+	
 }
 
-console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
 
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+
+const inputChangeQuantityProduct = document.querySelector("[input-change-quantity-product]");
+if(inputChangeQuantityProduct){
+	const total = inputChangeQuantityProduct.getAttribute('input-change-quantity-product');
+	// if(total){
+	// 	inputChangeQuantityProduct.max = total
+	// }
+	inputChangeQuantityProduct.addEventListener('change', () => {
+		let value = inputChangeQuantityProduct.value;
+		if(value){
+			if(parseInt(value) > parseInt(total)){
+				value = parseInt(total)
+			}
+			if(parseInt(value) < 1){
+				value = 1
+			}
+			fetch(`/admin/product/display-product`, {
+				method: "PATCH",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					total: parseInt(total),
+					limit: parseInt(value)
+				}),
+			})
+				.then(res => res.json())
+				.then(data => {
+					if(data.code == 200){
+						Swal.fire({
+							position: "top-end",
+							icon: "success",
+							title: "Cập nhật thành công!",
+							showConfirmButton: false,
+							timer: 1000
+						});
+						window.location.reload()
+					}
+				})
+		}
+	});
+}
+
+// console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
+
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');

@@ -70,6 +70,12 @@ module.exports.index = async (req, res)=> {
 		},
 		order:{
 			total: await Order.countDocuments(),
+			cash: await Order.countDocuments({
+				methodPay: 'cash'
+			}),
+			transfer: await Order.countDocuments({
+				methodPay: 'transfer'
+			}),
 		}
 	}
 		

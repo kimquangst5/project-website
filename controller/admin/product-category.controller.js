@@ -20,7 +20,10 @@ module.exports.index = async (req, res) => {
 				const account = await Account.findOne({
 					_id: item.createdBy
 				})
-				item.createdBy = account.fullName
+				if(account){
+					item.createdBy = account.fullName
+
+				}
 			}
 			item.createdAtFormat = moment(item.createdAt).format("DD/MM/YY-HH:mm")
 		}

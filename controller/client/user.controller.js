@@ -386,3 +386,27 @@ module.exports.changePasswordPost = async (req, res) => {
 	res.redirect('/')
 
 }
+
+// [GET] /member/dashboard
+module.exports.dashboard = async (req, res) => {
+	const user = await User.findOne({
+		tokenUser: req.cookies.tokenUser
+	})
+	console.log(req.cookies.tokenUser)
+	console.log(user)
+	res.render("client/pages/user/dashboard.pug", {
+		pageTitle: "Quản lí tài khoản",
+		user: user
+	})
+}
+
+// [GET] /member/profile
+module.exports.profile = async (req, res) => {
+	const user = await User.findOne({
+		tokenUser: req.cookies.tokenUser
+	})
+	res.render("client/pages/user/profile.pug", {
+		pageTitle: "Sửa thông tin",
+		user: user
+	})
+}

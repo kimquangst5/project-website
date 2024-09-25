@@ -35,3 +35,24 @@ block main
 						td(class=`border-collapse border-[1px] border-text w-max`) #{it.quantity}
 						td(class=`border-collapse border-[1px] border-text`) #{it.priceOld}đ
 						td(class=`border-collapse border-[1px] border-text`) #{it.priceNew}đ
+	div(class="flex grid grid-cols-3 gap-[10px]")
+		+khung-table("Thông tin vận chuyển (Shipping Information)")
+			div(class="flex flex-col gap-[10px]")
+				div(class="font-bold text-xanh") #{order.userInfo.fullName}
+				div(class="grid grid-cols-2")
+					div(class="") Địa chỉ:
+					div(class="font-bold text-do text-right")  #{(order ? (order.userInfo.address ? order.userInfo.address : 'Chưa có') : 'Chưa có')}
+				div(class="grid grid-cols-2")
+					div(class="") Số điện thoại:
+					div(class="font-bold text-do text-right")  #{(order ? (order.userInfo.phone ? order.userInfo.phone : 'Chưa có') : 'Chưa có')}
+		+khung-table("Thông tin thanh toán (Billing Information)")
+			div(class="flex flex-col gap-[10px]")
+				div(class="grid grid-cols-2")
+					div(class="") Hình thức thanh toán:
+					div(class="font-bold text-do text-right")  #{(order ? (order.methodPay ? (order.methodPay == 'transfer' ? 'Chuyển khoản' : 'Tiền mặt') : 'Chưa có') : 'Chưa có')}
+		+khung-table("Thông tin giao hàng (Delivery Info)")
+			div(class="flex flex-col gap-[10px]")
+				div(class="grid grid-cols-2")
+					//- div(class="") Hình thức thanh toán:
+					//- div(class="font-bold text-do text-right")  #{(order ? (order.methodPay ? (order.methodPay == 'transfer' ? 'Chuyển khoản' : 'Tiền mặt') : 'Chưa có') : 'Chưa có')}
+					

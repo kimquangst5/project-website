@@ -10,9 +10,7 @@ const http = require('http');
 const { Server } = require("socket.io");
 const server = http.createServer(app);
 const io = new Server(server);
-io.on('connection', (socket) => {
-	console.log('Có 1 người dùng đã kết nối', socket.id);
-});
+global.io = io
 // HẾT SOCKET IO
 
 // create application/json parser

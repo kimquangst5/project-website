@@ -50,5 +50,7 @@ router.patch(
 
 router.get('/detail/:id', controller.detail);
 
+router.patch('/display-product', controller.displayProduct);
+
 
 module.exports = router;

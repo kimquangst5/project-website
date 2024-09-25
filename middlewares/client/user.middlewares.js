@@ -12,3 +12,19 @@ module.exports.user = async (req, res, next) => {
 
 	next();
 };
+
+module.exports.requireAuth = async (req, res, next) => {
+	if (!req.cookies.tokenUser) {
+		res.redirect('/member/login');
+		return;
+	}
+	const user = await User.findOne({
+		tokenUser: req.cookies.tokenUser
+	})
+	if (!user) {
+		res.redirect('/member/login');
+		return;
+	}
+
+	next();
+};
