@@ -11,8 +11,8 @@ const {
 const axios = require('axios');
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
-const REDIRECT_URI = `${__dirname}/member/register/gmail/auth/google/callback`;
-const REDIRECT_URI_LOGIN = `${__dirname}/member/login/gmail/auth/google/callback`;
+const REDIRECT_URI = `https://kim-quang.vercel.app/member/register/gmail/auth/google/callback`;
+const REDIRECT_URI_LOGIN = `https://kim-quang.vercel.app/member/login/gmail/auth/google/callback`;
 const _ = require('lodash');
 const moment = require("moment")
 
