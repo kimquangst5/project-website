@@ -10,13 +10,13 @@ div(class="fixed w-screen mt-[-30px] hidden opacity-0 h-screen z-[100] flex just
 						span(class=`text-[red] text-[18px]`)  *
 					div(class="border-[1px] border-[black]/30 rounded-[5px] flex gap-[10px] items-center px-[5px] py-[10px]")
 						i(class="fa-regular fa-user text-[black]/80 icon px-[10px]")
-						input(type="email", id="email" name="email" class=`outline-none w-full bg-[transparent]` placeholder="Ví dụ: kimquangst5@gmail.com")
+						input(type="email", id="email" name="email" class=`outline-none w-full bg-[transparent]` required placeholder="Ví dụ: kimquangst5@gmail.com")
 				div(class="flex flex-col gap-y-[10px]") 
 					label(for="password" class=`text-chu`) Mật khẩu
 						span(class=`text-[red] text-[18px]`)  *
 					div(class="border-[1px] border-[black]/30 rounded-[5px] flex gap-[10px] items-center px-[5px] py-[10px]")
 						i(class="fa-regular fa-unlock text-[black]/80 icon px-[10px]")
-						input(type="password", id="password" name="password" 	class=`outline-none w-full bg-[transparent]` placeholder="Mật khẩu")
+						input(type="password", id="password" name="password" 	class=`outline-none w-full bg-[transparent]` required placeholder="Mật khẩu")
 						i(class="fa-light fa-eye-slash mr-[10px] hover:cursor-pointer" icon-eye = "icon")
 				a(href="/member/forgot-password" class=`text-[blue]/50`) Quên mật khẩu?
 				button(type="submit" class="bg-chu text-[white] p-[15px] text-center rounded-[6px]") Đăng nhập
