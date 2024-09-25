@@ -449,6 +449,12 @@ module.exports.changeEmailPost = async (req, res) => {
 		return;
 	}
 
+	if(email != user.email){
+		req.flash("error", "Nhập lại email!");
+		res.redirect("back");
+		return;
+	}
+
 	const randow = {
 		otp: crypto.randomInt(100000, 999999)
 	}
