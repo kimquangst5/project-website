@@ -9,10 +9,10 @@ const {
 	Script
 } = require('vm');
 const axios = require('axios');
-const CLIENT_ID = '305581713618-k13nhu7troqk6gdkvuo237tnpbjtn6ha.apps.googleusercontent.com';
-const CLIENT_SECRET = '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';
-const REDIRECT_URI = 'https://tkq.vercel.app/member/register/gmail/auth/google/callback';
-const REDIRECT_URI_LOGIN = 'https://tkq.vercel.app/member/login/gmail/auth/google/callback';
+const CLIENT_ID = process.env.CLIENT_ID
+const CLIENT_SECRET = process.env.CLIENT_SECRET
+const REDIRECT_URI = `${__dirname}/member/register/gmail/auth/google/callback`;
+const REDIRECT_URI_LOGIN = `${__dirname}/member/login/gmail/auth/google/callback`;
 const _ = require('lodash');
 const moment = require("moment")
 
@@ -165,7 +165,8 @@ module.exports.loginPost = async (req, res) => {
 // [GET] member/login/gmail/auth/google
 module.exports.loginGmail = (req, res, next) => {
 	const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI_LOGIN}&response_type=code&scope=profile email`;
-	res.redirect(url);
+	console.log(url)
+	// res.redirect(url);
 }
 
 // [GET] member/login/gmail/auth/google/callback

@@ -10,7 +10,7 @@ module.exports.sendMail = async (email, subject, html) => {
 		port: 587,
 		secure: false, // use false for STARTTLS; true for SSL on port 465
 		auth: {
-			user: process.env.email,
+			user: emailBatabase[0].from,
 			pass: process.env.pass,
 		}
 	});
