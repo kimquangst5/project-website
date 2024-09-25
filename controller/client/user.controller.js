@@ -568,6 +568,15 @@ module.exports.changeEmailSuccessPost = async (req, res) => {
 		return;
 	}
 
+	const newEmail = await User.findOne({
+		email: req.body.email,
+	})
+	if (newEmail) {
+		req.flash("error", "Email đã tồn tại. Vui lòng  chọn email khác nhé!");
+		res.redirect("back");
+		return;
+	}
+
 	await User.updateOne({
 		email: req.body.emailOld,
 		deleted: false
