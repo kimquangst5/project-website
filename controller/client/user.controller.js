@@ -14,6 +14,7 @@ const CLIENT_SECRET = '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';
 const REDIRECT_URI = 'https://tkq.vercel.app/member/register/gmail/auth/google/callback';
 const REDIRECT_URI_LOGIN = 'https://tkq.vercel.app/member/login/gmail/auth/google/callback';
 const _ = require('lodash');
+const moment = require("moment")
 
 const sendMail = require("../../utils/sendEmail.util")
 
@@ -405,8 +406,171 @@ module.exports.profile = async (req, res) => {
 	const user = await User.findOne({
 		tokenUser: req.cookies.tokenUser
 	})
+	user.birthdayFormat = moment(user.birthday).format("YYYY-MM-DD")
 	res.render("client/pages/user/profile.pug", {
 		pageTitle: "Sửa thông tin",
 		user: user
 	})
+}
+
+// [PATCH] /member/profile
+module.exports.profilePatch = async (req, res) => {
+	await User.updateOne({
+		tokenUser: req.cookies.tokenUser
+	}, req.body);
+	req.flash("success", "Cập nhật thông tin thành công!");
+	res.redirect("back")
+}
+
+// [GET] /member/change-email
+module.exports.changeEmail = async (req, res) => {
+	const user = await User.findOne({
+		tokenUser: req.cookies.tokenUser
+	})
+	res.render("client/pages/user/change email.pug", {
+		pageTitle: "Thay đổi email",
+		user: user
+	})
+}
+
+// [POST] /member/change-email
+module.exports.changeEmailPost = async (req, res) => {
+	const {
+		email
+	} = req.body
+	const user = await User.findOne({
+		email: email
+	})
+
+	if (!user) {
+		req.flash("error", "Vui lòng đăng ký tài khoản!!!");
+		res.redirect("back");
+		return;
+	}
+
+	const randow = {
+		otp: crypto.randomInt(100000, 999999)
+	}
+
+	const data = {
+		email: email,
+		otp: randow.otp,
+		expireAt: Date.now() + 3 * 60 * 1000
+	}
+
+	const newForgotPassword = new ForgotPassword(data);
+	await newForgotPassword.save();
+	const emailDatabase = await Email.find({});
+	
+
+	const template = emailDatabase[0].content;
+	const compiled = _.template(template);
+	const result = compiled({
+		MA_OTP: data.otp,
+	});
+	// console.log(result); // Output: Chào Bob, mã OTP của bạn: 345678
+	sendMail.sendMail(email,
+		emailDatabase[0].title,
+		result
+	)
+	res.redirect(`/member/change-email/otp?email=${user.email}`)
+}
+
+// [GET] /member/change-email
+module.exports.otpEmail = async (req, res) => {
+	const {
+		email
+	} = req.query;
+	const user = await User.findOne({
+		email: email
+	})
+
+	if (!user) {
+		req.flash("error", "Email không tồn tại!!!");
+		res.redirect("back");
+		return;
+	}
+
+	res.render("client/pages/user/otp email.pug", {
+		pageTitle: "Nhập mã OTP",
+		user: user
+	})
+}
+
+// [POST] /member/change-email/otp
+module.exports.otpEmailPost = async (req, res) => {
+	const {
+		email,
+		otp
+	} = req.body
+	const otpForgot = await ForgotPassword.findOne({
+		email: email,
+		otp: otp
+	})
+	if (!otpForgot) {
+		req.flash("error", "Mã OTP không đúng!");
+		res.redirect("back");
+		return;
+	}
+	console.log(otpForgot)
+	res.redirect(`/member/change-email-success?email=${email}`)
+}
+
+// [GET] /member/change-email/success?email=...
+module.exports.changeEmailSuccess = async (req, res) => {
+	const {
+		email
+	} = req.query
+	const user = await ForgotPassword.findOne({
+		email: email,
+	})
+	if (!user) {
+		req.flash("error", "Email không tồn tại!");
+		res.redirect("back");
+		return;
+	}
+	res.render("client/pages/user/change email success.pug", {
+		pageTitle: "Thay đổi Email",
+		email: user.email
+	})
+}
+// [GET] /member/change-email/success?email=...
+module.exports.changeEmailSuccessPost = async (req, res) => {
+	console.log(req.body)
+	if(!req.body.emailOld){
+		req.flash("error", "Email cũ không đúng!");
+		res.redirect('back');
+		return;
+	}
+	if(!req.body.email){
+		req.flash("error", "Email mới không đúng!");
+		res.redirect('back');
+		return;
+	}
+	if(req.body.emailOld == req.body.email){
+		req.flash("error", "2 email giống nhau!");
+		res.redirect('back');
+		return;
+	}
+	const user = await User.findOne({
+		email: req.body.emailOld,
+	})
+	if (!user) {
+		req.flash("error", "Email không tồn tại!");
+		res.redirect("back");
+		return;
+	}
+
+	await User.updateOne({
+		email: req.body.emailOld,
+		deleted: false
+	}, {
+		email: req.body.email
+	})
+
+	res.cookie('tokenUser', user.tokenUser, {
+		expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+	}) //số 2 là số ngày
+	req.flash("success", "Đổi email thành công!")
+	res.redirect('/')
 }

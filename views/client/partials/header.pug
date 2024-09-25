@@ -48,15 +48,15 @@ div(class="bg-[white] py-[30px]")
 				div(class="relative") 
 					div(class="cursor-pointer  hover:text-chu duration-500" box-show-menu-profile) #{infoUser.fullName}
 					div(class="absolute right-0 duration-1000  opacity-0 rounded-[10px] p-[5px] truncate bg-[white] z-[100] w-max" )
-						div(class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+						a(href="/member/dashboard" class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
 							div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
 								i(class="fa-light fa-user-tie")
 								div(class="") Thông tin cá nhân
-						div(class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+						a(href="/member/order" class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
 							div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
 								i(class="fa-regular fa-cart-shopping-fast")
 								div(class="") Quản lí đơn hàng
-						div(class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+						a(href="/member/reset-password" class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
 							div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
 								i(class="fa-regular fa-lock-keyhole-open")
 								div(class="") Thay đổi mật khẩu

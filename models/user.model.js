@@ -11,6 +11,7 @@ const userShema = new Schema({
 	phone: String,
 	tokenUser: String,
 	birthday: Date,
+	sex: String,
 	status: {
 		type: String,
 		default: "active"

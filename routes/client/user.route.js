@@ -41,6 +41,22 @@ router.get('/dashboard', userMiddlewares.requireAuth, controller.dashboard)
 
 router.get('/profile', userMiddlewares.requireAuth, controller.profile)
 
+router.patch('/profile', userMiddlewares.requireAuth, controller.profilePatch)
+
+
+router.get('/change-email', controller.changeEmail)
+
+router.post('/change-email', controller.changeEmailPost)
+
+router.get('/change-email/otp', controller.otpEmail)
+
+router.post('/change-email/otp', controller.otpEmailPost)
+
+router.get('/change-email-success', controller.changeEmailSuccess)
+
+router.post('/change-email-success', controller.changeEmailSuccessPost)
+
+
 
 
 module.exports = router

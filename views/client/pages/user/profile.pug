@@ -1,5 +1,6 @@
-extends ../../layouts/default.pug
+extends ../../layouts/default
 include ../../mixins/dieu-huong
+include ../../mixins/khung-table
 
 block main
 	-
@@ -27,20 +28,23 @@ block main
 
 				div(class="bg-[white] rounded-[7px] p-[20px] col-span-2")
 					div(class="text-[#333333] font-bold py-[20px]") Sửa thông tin
-					div(class="flex flex-col gap-y-[10px]") 
+					form(class="flex flex-col gap-y-[10px]" action="/member/profile?_method=PATCH" method="post") 
 						div(class="flex flex-col gap-y-[10px]") 
 							div(class="text-[#333333] font-bold text-[14px]") Họ và tên:
 								span(class="text-[red]")  *
-							input(type="text" class=`w-full rounded-[8px] hover:border-chu border-[1px] border-[#ddd] outline-chu outline-[1px] p-[10px] text-[14px]` value=user.fullName)
+							input(type="text" class=`w-full rounded-[8px] hover:border-chu border-[1px] border-[#ddd] outline-chu outline-[1px] p-[10px] text-[14px]` value=user.fullName name="fullName")
 
 						div(class="grid grid-cols-2 gap-[20px]") 
 							div(class="flex flex-col gap-y-[10px]") 
 								div(class="text-[#333333] font-bold text-[14px]") Ngày sinh
-								input(type="date" class=`w-full rounded-[8px] hover:border-chu border-[1px] border-[#ddd] outline-chu outline-[1px] p-[10px] text-[14px]` value=user.birthday)
+								input(type="date" class=`w-full rounded-[8px] hover:border-chu border-[1px] border-[#ddd] outline-chu outline-[1px] p-[10px] text-[14px]`  name="birthday" value=user.birthdayFormat )
 
 							div(class="flex flex-col gap-y-[10px]") 
 								div(class="text-[#333333] font-bold text-[14px]") Giới tính:
-								input(type="text" class=`w-full rounded-[8px] hover:border-chu border-[1px] border-[#ddd] outline-chu outline-[1px] p-[10px] text-[14px]` value=user.sex || 'Chưa điền')
+								select(class=`w-full rounded-[8px] hover:border-chu border-[1px] border-[#ddd] outline-chu outline-[1px] p-[10px] text-[14px] hover:cursor-pointer appearance-none` value=(user.sex || 'Chưa chọn') name="sex" readonly)
+									option ---Chưa chọn---
+									option(name="sex" value="male" selected=(user.sex == "male" ? true : false)) Nam
+									option(name="sex" value="female" selected=(user.sex == "female" ? true : false)) Nữ
 						
 						div(class="grid grid-cols-2 gap-[20px]") 	
 							div(class="flex flex-col gap-y-[10px]") 
@@ -52,3 +56,5 @@ block main
 								div(class="text-[#333333] font-bold text-[14px]") Số điện thoại
 								div(class=`w-full rounded-[8px] hover:border-chu border-[1px] border-[#ddd] outline-chu outline-[1px] p-[10px] text-[14px]`) #{user.phone || 'Chưa có'}
 								a(href="/member/change-phone" class="text-[12px] text-[red] ml-auto") (Chỉnh sửa)
+						div(class="ml-auto") 	
+							button(type="submit" class=`bg-chu text-[white] rounded-[8px] p-[10px]`) Cập nhật
