@@ -166,7 +166,7 @@ module.exports.loginPost = async (req, res) => {
 module.exports.loginGmail = (req, res, next) => {
 	const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI_LOGIN}&response_type=code&scope=profile email`;
 	console.log(url)
-	// res.redirect(url);
+	res.redirect(url);
 }
 
 // [GET] member/login/gmail/auth/google/callback
