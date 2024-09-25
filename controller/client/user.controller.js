@@ -568,9 +568,6 @@ module.exports.changeEmailSuccessPost = async (req, res) => {
 		email: req.body.email
 	})
 
-	res.cookie('tokenUser', user.tokenUser, {
-		expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
-	}) //số 2 là số ngày
 	req.flash("success", "Đổi email thành công!")
 	res.redirect('/')
 }
