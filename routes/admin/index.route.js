@@ -10,6 +10,7 @@ const myProfileRoute = require('./profile.route')
 const articleRoute = require('./article.route')
 const interfaceRoute = require('./interface.route')
 const orderRoute = require('./order.route')
+const customerRoute = require('./customer.route')
 const checkLogInMiddleWares = require('../../middlewares/admin/checklogin.middlewares')
 
 module.exports.index = (app) => {
@@ -25,5 +26,6 @@ module.exports.index = (app) => {
 	app.use(`/${admin}/articles`, checkLogInMiddleWares, articleRoute);
 	app.use(`/${admin}/interface`, checkLogInMiddleWares, interfaceRoute);
 	app.use(`/${admin}/order`, checkLogInMiddleWares, orderRoute);
+	app.use(`/${admin}/customers`, checkLogInMiddleWares, customerRoute);
 	app.use(`/${admin}`, authRoute);
 };

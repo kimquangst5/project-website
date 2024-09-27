@@ -6,7 +6,8 @@ const cartsSchema = new Schema({
 	products:  [
 		{
 			productId: String,
-			stock: Number
+			stock: Number,
+			position: Number
 		}
 	]
 }, {

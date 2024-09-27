@@ -26,7 +26,7 @@ block main
 									div(class="") Khách hàng:
 										span(class="font-bold")  #{inforUser.fullName}
 										input(class=`hidden` type="text" name="fullName" value=inforUser.fullName)
-									div(class="") Số điện thoại: 
+									div(class="") Số điện thoại:
 										span(class="font-bold")  #{inforUser.phone}
 										input(class=`hidden` type="text" name="phone" value=inforUser.phone)
 									div(class="") Địa chỉ: 
@@ -66,7 +66,7 @@ block main
 						div(class="flex grid grid-rows-2 gap-[20px]")
 							div(class="row-span-1 bg-[white] rounded-[7px] p-[10px]") 
 								div(class="font-bold text-[20px] py-[15px] text-[#222222]") Giỏ hàng 
-									span(class=`font-normal capitalize`) (#{cartProductsLength})
+									span(class=`font-normal capitalize`) (#{shoopings_cart.length})
 								each it in carts
 									div(class="flex items-center gap-[15px]")
 										div(class="w-[70px] ") 

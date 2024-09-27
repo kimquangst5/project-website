@@ -1,20 +1,71 @@
 const Cart = require("../../models/cart.model")
 const Product = require("../../models/product.model")
 const priceNew = require("../../utils/price-new.util")
+const mongoose = require("mongoose")
 
 module.exports.cartInfo = async (req, res) => {
+	
+	const sortAndUpdateCart = async (req) => {
+		const cartId = req.cookies.cardID;
+
+		// Bước 1: Sắp xếp mảng products
+		const sortedCart = await Cart.aggregate([{
+				$match: {
+					_id: cartId
+				}
+			},
+			{
+				$addFields: {
+					sortedProducts: {
+						$sortArray: {
+							input: "$products",
+							sortBy: {
+								position: -1
+							} // Sắp xếp giảm dần theo position
+						}
+					}
+				}
+			}
+		]);
+
+		// Bước 2: Cập nhật document với mảng đã sắp xếp
+		if (sortedCart.length > 0) {
+			const result = await Cart.updateOne({
+				_id: cartId
+			}, {
+				$set: {
+					products: sortedCart[0].sortedProducts
+				}
+			});
+
+			return result;
+		}
+
+		return null;
+	};
+
+	// Sử dụng function
+	const updatedCart = await sortAndUpdateCart(req);
+	
 	const carts = await Cart.findOne({
 		_id: req.cookies.cardID
 	})
-	const productsCart = await Promise.all(carts.products.map(async (it) => {
-		let product = await Product.findOne({
-			_id: it.productId
-		}).select('-description');
-		product.quanlityProduct = it.stock
-		return product
-	}));
+	const productsCart = await Promise
+		.all(carts.products
+			.map(async (it) => {
+				let product = await Product
+					.findOne({
+						_id: it.productId
+					})
+					.select('-description')
+				product.quanlityProduct = it.stock
+				return product
+			}))
 
-	priceNew(productsCart)
+		priceNew(productsCart)
+
+	// console.log(productsCart)
+
 
 	res.render("client/pages/cart/index.pug", {
 		pageTitle: "Thông tin giỏ hàng",
@@ -40,6 +91,9 @@ module.exports.addPost = async (req, res) => {
 		})
 
 		const check = carts.products.find(element => element.productId == id);
+		const positionCart = await Cart.findOne({
+			_id: cardID
+		});
 		if (check) {
 			await Cart.updateOne({
 				_id: cardID,
@@ -50,11 +104,12 @@ module.exports.addPost = async (req, res) => {
 				}
 			})
 		} else {
+			data.position = parseInt(positionCart.products.length + 1)
 			await Cart.updateOne({
 				_id: cardID
 			}, {
 				$push: {
-					products: data
+					products: data,
 				}
 
 			})
@@ -74,7 +129,9 @@ module.exports.addPost = async (req, res) => {
 
 
 module.exports.deletePatch = async (req, res) => {
-	const { id } = req.params;
+	const {
+		id
+	} = req.params;
 	const cardID = req.cookies.cardID
 	const data = {
 		productId: id,
@@ -95,7 +152,6 @@ module.exports.updatePatch = async (req, res) => {
 	const cardID = req.cookies.cardID
 	// const { id, quantity} = req.body
 	const array = req.body.array
-	console.log(array)
 
 	// console.log(quantity)
 	for (const it of array) {

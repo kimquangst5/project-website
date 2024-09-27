@@ -1,5 +1,6 @@
 const InfoWebsite = require("../../models/info-website.model")
 const Email = require("../../models/email.model")
+const Phone = require("../../models/phone.model")
 
 // [GET] /dashboard
 module.exports.index = (req, res) => {
@@ -53,4 +54,39 @@ module.exports.emailPatch =  async (req, res)=> {
 	}
 	req.flash("success", "Lưu thành công!")
 	res.redirect('back')
+}
+
+// [GET] /dashboard/phone
+module.exports.phone =  async (req, res)=> {
+	const phones = await Phone.find({});
+	const result = phones[0].listPhone.join("\n");
+	const listPhoneLength = phones[0].listPhone.length
+	res.render("admin/pages/setting/phone/index.pug", {
+		pageTitle: `Cấu hình số điện thoại`,
+		listPhones: result,
+		listPhoneLength: listPhoneLength
+	})
+}
+
+// [[PATCH]] /dashboard/phone
+module.exports.phonePatch =  async (req, res)=> {
+	let array = req.body.phone
+		.split('\n')
+		.map(item => item.trim())
+     	.filter(item => item !== '');
+	console.log(array)
+	const phones = await Phone.find({});
+	if(phones.length == 0){
+		const newPhone = new Phone({
+			listPhone: array
+		});
+		await newPhone.save();
+	}
+	else{
+		await Phone.updateOne(phones[0], {
+			listPhone: array
+		})
+	}
+	req.flash("success", "Cập nhật thành công")
+	res.redirect('back');
 }

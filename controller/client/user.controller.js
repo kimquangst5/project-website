@@ -1,6 +1,7 @@
 const User = require("../../models/user.model")
 const ForgotPassword = require("../../models/forgot-password.model")
 const Email = require("../../models/email.model")
+const Phone = require("../../models/phone.model")
 // Md5 mã hóa password
 const md5 = require('md5');
 const jwt = require('jsonwebtoken'); // tạo token
@@ -12,7 +13,7 @@ const axios = require('axios');
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
 const REDIRECT_URI = `https://kim-quang.vercel.app/member/register/gmail/auth/google/callback`;
-const REDIRECT_URI_LOGIN = `https://kim-quang.vercel.app/member/login/gmail/auth/google/callback`;
+const REDIRECT_URI_LOGIN = `member/login/gmail/auth/google/callback`;
 const _ = require('lodash');
 const moment = require("moment")
 
@@ -28,33 +29,38 @@ module.exports.register = async (req, res) => {
 
 // [POST] /member/register
 module.exports.registerPost = async (req, res) => {
-	const email = req.body.email
-	const user = await User.findOne({
-		email: email,
-	})
+	try {
+		const email = req.body.email
+		const user = await User.findOne({
+			email: email,
+		})
 
-	if (user) {
-		req.flash("error", "Email đã tồn tại!");
-		res.redirect('back');
-		return;
+		if (user) {
+			req.flash("error", "Email đã tồn tại!");
+			res.redirect('back');
+			return;
+		}
+
+		if (req.body.password) {
+			req.body.password = md5(req.body.password);
+		}
+
+		const payload = {
+			randomId: crypto.randomBytes(30).toString('hex')
+		};
+		const secretKey = process.env.secretKey;
+		req.body.tokenUser = jwt.sign(payload, secretKey);
+		res.cookie('tokenUser', req.body.tokenUser, {
+			expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+		}) //số 1 là số ngày
+		const newUser = new User(req.body);
+		await newUser.save();
+		req.flash('success', "Tạo tài khoản thành công!!!");
+		res.redirect('/');
+	} catch (error) {
+		res.redirect('/')
 	}
 
-	if (req.body.password) {
-		req.body.password = md5(req.body.password);
-	}
-
-	const payload = {
-		randomId: crypto.randomBytes(30).toString('hex')
-	};
-	const secretKey = process.env.secretKey;
-	req.body.tokenUser = jwt.sign(payload, secretKey);
-	res.cookie('tokenUser', req.body.tokenUser, {
-		expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
-	}) //số 1 là số ngày
-	const newUser = new User(req.body);
-	await newUser.save();
-	req.flash('success', "Tạo tài khoản thành công!!!");
-	res.redirect('/');
 }
 
 // [GET] member/register/gmail/auth/google
@@ -94,7 +100,6 @@ module.exports.registerGmailCallback = async (req, res) => {
 			},
 		});
 		// Code to handle user authentication and retrieval using the profile data
-		// console.log(profile.name)
 		const dataBody = {
 			fullName: profile.name,
 			email: profile.email
@@ -138,35 +143,46 @@ module.exports.login = async (req, res) => {
 
 // [POST] /member/login
 module.exports.loginPost = async (req, res) => {
-	const user = await User.findOne({
-		email: req.body.email,
-	})
-	if (!user) {
-		req.flash("error", "Email không không tồn tại!");
-		res.redirect('back');
-		return;
+	try {
+		const user = await User.findOne({
+			email: req.body.email,
+		})
+		if (!user) {
+			req.flash("error", "Email không không tồn tại!");
+			res.redirect('back');
+			return;
+		}
+
+		req.body.password = md5(req.body.password);
+		if (req.body.password != user.password) {
+			req.flash("error", "Mật khẩu không đúng!");
+			res.redirect('back');
+			return;
+		}
+
+		res.cookie('tokenUser', user.tokenUser, {
+			expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+		}) //số 2 là số ngày
+
+		req.flash("success", "Đăng nhập thành công!");
+		res.redirect('/');
+	} catch (error) {
+		res.redirect('/')
 	}
-
-	req.body.password = md5(req.body.password);
-	if (req.body.password != user.password) {
-		req.flash("error", "Mật khẩu không đúng!");
-		res.redirect('back');
-		return;
-	}
-
-	res.cookie('tokenUser', user.tokenUser, {
-		expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
-	}) //số 2 là số ngày
-
-	req.flash("success", "Đăng nhập thành công!");
-	res.redirect('/');
 }
 
-// [GET] member/login/gmail/auth/google
+// [POST] member/login/gmail/auth/google
 module.exports.loginGmail = (req, res, next) => {
-	const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI_LOGIN}&response_type=code&scope=profile email`;
-	console.log(url)
-	res.redirect(url);
+	const URL_ORIGIN = req.body.URL_ORIGIN
+	global.URL_ORIGIN = URL_ORIGIN
+	const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${URL_ORIGIN}/${REDIRECT_URI_LOGIN}&response_type=code&scope=profile email`;
+	// const newurll = new URL()
+	// console.log(newurll)
+	res.json({
+		code: 200,
+		message: url
+	})
+	// res.redirect(url);
 }
 
 // [GET] member/login/gmail/auth/google/callback
@@ -174,7 +190,7 @@ module.exports.loginGmailCallback = async (req, res) => {
 	const {
 		code
 	} = req.query;
-
+	console.log(URL_ORIGIN)
 	try {
 		// Trao đổi mã ủy quyền để lấy mã token
 		const {
@@ -183,7 +199,7 @@ module.exports.loginGmailCallback = async (req, res) => {
 			client_id: CLIENT_ID,
 			client_secret: CLIENT_SECRET,
 			code,
-			redirect_uri: REDIRECT_URI_LOGIN,
+			redirect_uri: URL_ORIGIN + '/' + REDIRECT_URI_LOGIN,
 			grant_type: 'authorization_code',
 		});
 
@@ -201,7 +217,6 @@ module.exports.loginGmailCallback = async (req, res) => {
 			},
 		});
 		// Code to handle user authentication and retrieval using the profile data
-		// console.log(profile.name)
 		const dataBody = {
 			fullName: profile.name,
 			email: profile.email
@@ -238,8 +253,12 @@ module.exports.loginGmailCallback = async (req, res) => {
 
 // [POST] /member/log-out
 module.exports.logOut = async (req, res) => {
-	res.clearCookie('tokenUser');
-	res.redirect("/")
+	try {
+		res.clearCookie('tokenUser');
+		res.redirect("/")
+	} catch (error) {
+		res.redirect("/")
+	}
 }
 
 // [GET] /forgot-password
@@ -251,84 +270,96 @@ module.exports.forgotPassword = async (req, res) => {
 
 // [POST] /forgot-password
 module.exports.forgotPasswordPost = async (req, res) => {
-	const {
-		email
-	} = req.body
-	const user = await User.findOne({
-		email: email
-	})
+	try {
+		const {
+			email
+		} = req.body
+		const user = await User.findOne({
+			email: email
+		})
 
-	if (!user) {
-		req.flash("error", "Vui lòng đăng ký tài khoản!!!");
-		res.redirect("back");
-		return;
+		if (!user) {
+			req.flash("error", "Vui lòng đăng ký tài khoản!!!");
+			res.redirect("back");
+			return;
+		}
+
+		const randow = {
+			otp: crypto.randomInt(100000, 999999)
+		}
+
+		const data = {
+			email: email,
+			otp: randow.otp,
+			expireAt: Date.now() + 3 * 60 * 1000
+		}
+
+		const newForgotPassword = new ForgotPassword(data);
+		await newForgotPassword.save();
+		const emailDatabase = await Email.find({});
+
+
+		const template = emailDatabase[0].content;
+		const compiled = _.template(template);
+		const result = compiled({
+			MA_OTP: data.otp,
+		});
+		// console.log(result); // Output: Chào Bob, mã OTP của bạn: 345678
+		sendMail.sendMail(email,
+			emailDatabase[0].title,
+			result
+		)
+		res.redirect(`/member/otp?email=${user.email}`)
+	} catch (error) {
+		res.redirect("/")
 	}
-
-	const randow = {
-		otp: crypto.randomInt(100000, 999999)
-	}
-
-	const data = {
-		email: email,
-		otp: randow.otp,
-		expireAt: Date.now() + 3 * 60 * 1000
-	}
-
-	const newForgotPassword = new ForgotPassword(data);
-	await newForgotPassword.save();
-	const emailDatabase = await Email.find({});
-	
-
-	const template = emailDatabase[0].content;
-	const compiled = _.template(template);
-	const result = compiled({
-		MA_OTP: data.otp,
-	});
-	// console.log(result); // Output: Chào Bob, mã OTP của bạn: 345678
-	sendMail.sendMail(email,
-		emailDatabase[0].title,
-		result
-	)
-	res.redirect(`/member/otp?email=${user.email}`)
 }
 
 // [GET] /member/otp?email=...
 module.exports.otp = async (req, res) => {
-	const {
-		email
-	} = req.query;
-	const user = await User.findOne({
-		email: email
-	})
-
-	if (!user) {
-		req.flash("error", "Email không tồn tại!!!");
-		res.redirect("back");
-		return;
+	try {
+		const {
+			email
+		} = req.query;
+		const user = await User.findOne({
+			email: email
+		})
+	
+		if (!user) {
+			req.flash("error", "Email không tồn tại!!!");
+			res.redirect("back");
+			return;
+		}
+	
+		res.render("client/pages/user/otp.pug", {
+			pageTitle: "Nhập mã OTP",
+			user: user
+		})
+	} catch (error) {
+		res.redirect("/")
 	}
-
-	res.render("client/pages/user/otp.pug", {
-		pageTitle: "Nhập mã OTP",
-		user: user
-	})
 }
 
 // [POST] /member/otp?email=...
 module.exports.otpPost = async (req, res) => {
-	const {
-		email,
-		otp
-	} = req.body
-	const otpForgot = await ForgotPassword.findOne({
-		email: email,
-		otp: otp
-	})
-	if (!otpForgot) {
-		req.flash("error", "Mã OTP không đúng!");
-		res.redirect("back");
-		return;
+	try {
+		const {
+			email,
+			otp
+		} = req.body
+		const otpForgot = await ForgotPassword.findOne({
+			email: email,
+			otp: otp
+		})
+		if (!otpForgot) {
+			req.flash("error", "Mã OTP không đúng!");
+			res.redirect("back");
+			return;
+		}
+		res.redirect(`/member/change-password?email=${email}`)
+	} catch (error) {
+		res.redirect('/')
 	}
-	res.redirect(`/member/change-password?email=${email}`)
 }
 
 module.exports.changePassword = async (req, res) => {
@@ -350,7 +381,6 @@ module.exports.changePassword = async (req, res) => {
 }
 
 module.exports.changePasswordPost = async (req, res) => {
-	console.log(req.body)
 	const {
 		email,
 		password,
@@ -391,15 +421,17 @@ module.exports.changePasswordPost = async (req, res) => {
 
 // [GET] /member/dashboard
 module.exports.dashboard = async (req, res) => {
-	const user = await User.findOne({
-		tokenUser: req.cookies.tokenUser
-	})
-	console.log(req.cookies.tokenUser)
-	console.log(user)
-	res.render("client/pages/user/dashboard.pug", {
-		pageTitle: "Quản lí tài khoản",
-		user: user
-	})
+	try {
+		const user = await User.findOne({
+			tokenUser: req.cookies.tokenUser
+		})
+		res.render("client/pages/user/dashboard.pug", {
+			pageTitle: "Quản lí tài khoản",
+			user: user
+		})
+	} catch (error) {
+		res.redirect('/')
+	}
 }
 
 // [GET] /member/profile
@@ -449,7 +481,7 @@ module.exports.changeEmailPost = async (req, res) => {
 		return;
 	}
 
-	if(email != user.email){
+	if (email != user.email) {
 		req.flash("error", "Nhập lại email!");
 		res.redirect("back");
 		return;
@@ -468,7 +500,7 @@ module.exports.changeEmailPost = async (req, res) => {
 	const newForgotPassword = new ForgotPassword(data);
 	await newForgotPassword.save();
 	const emailDatabase = await Email.find({});
-	
+
 
 	const template = emailDatabase[0].content;
 	const compiled = _.template(template);
@@ -519,7 +551,6 @@ module.exports.otpEmailPost = async (req, res) => {
 		res.redirect("back");
 		return;
 	}
-	console.log(otpForgot)
 	res.redirect(`/member/change-email-success?email=${email}`)
 }
 
@@ -543,18 +574,17 @@ module.exports.changeEmailSuccess = async (req, res) => {
 }
 // [GET] /member/change-email/success?email=...
 module.exports.changeEmailSuccessPost = async (req, res) => {
-	console.log(req.body)
-	if(!req.body.emailOld){
+	if (!req.body.emailOld) {
 		req.flash("error", "Email cũ không đúng!");
 		res.redirect('back');
 		return;
 	}
-	if(!req.body.email){
+	if (!req.body.email) {
 		req.flash("error", "Email mới không đúng!");
 		res.redirect('back');
 		return;
 	}
-	if(req.body.emailOld == req.body.email){
+	if (req.body.emailOld == req.body.email) {
 		req.flash("error", "2 email giống nhau!");
 		res.redirect('back');
 		return;
@@ -586,4 +616,267 @@ module.exports.changeEmailSuccessPost = async (req, res) => {
 
 	req.flash("success", "Đổi email thành công!")
 	res.redirect('/')
+}
+
+
+
+
+
+
+
+// [GET] /member/change-phone
+module.exports.changePhone = async (req, res) => {
+	const user = await User.findOne({
+		tokenUser: req.cookies.tokenUser
+	})
+	res.render("client/pages/user/change phone.pug", {
+		pageTitle: "Thay đổi số điện thoại",
+		user: user
+	})
+}
+
+// [POST] /member/change-phone
+module.exports.changePhonePost = async (req, res) => {
+	try {
+		const {
+			email
+		} = req.body
+		const user = await User.findOne({
+			email: email
+		})
+
+		if (!user) {
+			req.flash("error", "Vui lòng đăng ký tài khoản!!!");
+			res.redirect("back");
+			return;
+		}
+
+		if (email != user.email) {
+			req.flash("error", "Nhập lại email!");
+			res.redirect("back");
+			return;
+		}
+
+		const randow = {
+			otp: crypto.randomInt(100000, 999999)
+		}
+
+		const data = {
+			email: email,
+			otp: randow.otp,
+			expireAt: Date.now() + 3 * 60 * 1000
+		}
+
+		const newForgotPassword = new ForgotPassword(data);
+		await newForgotPassword.save();
+		const emailDatabase = await Email.find({});
+
+
+		const template = emailDatabase[0].content;
+		const compiled = _.template(template);
+		const result = compiled({
+			MA_OTP: data.otp,
+		});
+		sendMail.sendMail(email,
+			emailDatabase[0].title,
+			result
+		)
+		res.redirect(`/member/change-phone/otp?email=${user.email}`)
+	} catch (error) {
+		res.redirect('/')
+	}
+}
+
+// [GET] /member/change-phone
+module.exports.otpPhone = async (req, res) => {
+	try {
+		const {
+			email
+		} = req.query;
+		const user = await User.findOne({
+			email: email
+		})
+
+		if (!user) {
+			req.flash("error", "Email không tồn tại!!!");
+			res.redirect("back");
+			return;
+		}
+
+		res.render("client/pages/user/otp phone.pug", {
+			pageTitle: "Nhập mã OTP",
+			user: user
+		})
+	} catch (error) {
+		res.redirect('/')
+	}
+}
+
+// [POST] /member/change-email/otp
+module.exports.otpPhonePost = async (req, res) => {
+	try {
+		const {
+			email,
+			otp
+		} = req.body
+		const otpForgot = await ForgotPassword.findOne({
+			email: email,
+			otp: otp
+		})
+		if (!otpForgot) {
+			req.flash("error", "Mã OTP không đúng!");
+			res.redirect("back");
+			return;
+		}
+		res.redirect(`/member/change-phone-success?email=${email}`)
+	} catch (error) {
+		res.redirect('/')
+	}
+}
+
+// [GET] /member/change-email/success?email=...
+module.exports.changePhoneSuccess = async (req, res) => {
+	try {
+		const {
+			email
+		} = req.query
+		const user = await ForgotPassword.findOne({
+			email: email,
+		})
+		const customer = await User.findOne({
+			email: user.email
+		})
+		if (!user) {
+			req.flash("error", "Email không tồn tại!");
+			res.redirect("back");
+			return;
+		}
+		if (!customer) {
+			req.flash("error", "Email không tồn tại!");
+			res.redirect("back");
+			return;
+		}
+		const phone = customer.phone
+		res.render("client/pages/user/change phone success.pug", {
+			pageTitle: "Thay đổi số điện thoại",
+			user: user[0],
+			phoneUser: phone
+		})
+	} catch (error) {
+		res.redirect('/')
+	}
+
+}
+
+// [POST] /member/change-phone/success?phone=...
+module.exports.changePhoneSuccessPost = async (req, res) => {
+	try {
+		console.log(req.body.phoneOld)
+		if (req.body.phoneOld != 'Chưa có') {
+			const kt = await User.findOne({
+				phone: req.body.phoneOld
+			})
+			if (!kt) {
+				req.flash("error", ("Số này không tồn tại!"));
+				res.redirect('back');
+				return;
+			}
+
+
+		}
+		const check = await User.findOne({
+			phone: req.body.phone
+		})
+		if (check) {
+			req.flash("error", ("Số này đã có người khác sử dụng!"));
+			res.redirect('back');
+			return;
+		}
+
+		if (req.body.phone.length != 10) {
+			req.flash("error", ("Phải có 10 chữ số"));
+			res.redirect('back');
+			return;
+		}
+		if (req.body.phone[0] != '0') {
+			req.flash("error", ("Không đúng định dạng số điện thoại"));
+			res.redirect('back');
+			return;
+		}
+		const listPhone = await Phone.find({});
+		const arrayListPhone = listPhone[0].listPhone
+		const sdt = req.body.phone[0] + req.body.phone[1] + req.body.phone[2];
+		console.log(arrayListPhone)
+		console.log('-----')
+		console.log(sdt)
+		if (!arrayListPhone.includes(sdt)) {
+			req.flash("error", ("Không đúng định dạng số điện thoại"));
+			res.redirect('back');
+			return;
+		}
+
+		await User.updateOne({
+			tokenUser: req.cookies.tokenUser,
+			deleted: false
+		}, {
+			phone: req.body.phone
+		})
+
+		req.flash("success", "Đổi số điện thoại thành công!")
+		res.redirect('/member/profile')
+	} catch (error) {
+		res.redirect('/')
+	}
+}
+
+// [GET] /member/reset-password
+module.exports.resetPassword = async (req, res) => {
+	res.render("client/pages/user/reset password.pug", {
+		pageTitle: "Đổi mật khẩu"
+	})
+}
+
+// [PATCH] /member/reset-password
+module.exports.resetPasswordPatch = async (req, res) => {
+	const old = req.body.passwordOld
+	const pass = req.body.passwordNew
+	const again = req.body.confirmPassword
+	console.log(old)
+	console.log(pass)
+	console.log(again)
+	if(!req.body.passwordOld || !req.body.passwordNew || !req.body.confirmPassword){
+		req.flash("error", "Dữ liệu trống");
+		res.redirect("back");
+		return;
+	}
+
+	if(pass != again){
+		req.flash("error", "Xác nhận mật khẩu không giống!");
+		res.redirect("back");
+		return;
+	}
+	console.log(req.cookies.tokenUser)
+	const passold = await User.findOne({
+		tokenUser: req.cookies.tokenUser
+	})
+	if(!passold){
+		req.flash("error", "Vui lòng đăng nhập!");
+		res.redirect("back");
+		return;
+	}
+
+	if(md5(old) != passold.password){
+		req.flash("error", "Mật khẩu cũ không đúng!");
+		res.redirect("back");
+		return;
+	}
+
+
+	await User.updateOne({
+		tokenUser: req.cookies.tokenUser
+	}, {
+		password: md5(pass)
+	})
+	req.flash("success", "Đổi mật khẩu thành công!");
+	res.redirect("/");
 }

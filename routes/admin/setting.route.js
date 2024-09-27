@@ -26,4 +26,9 @@ router.get('/email', controller.email)
 
 router.patch('/email', controller.emailPatch)
 
+
+router.get('/phone', controller.phone)
+
+router.patch('/phone', controller.phonePatch)
+
 module.exports = router;

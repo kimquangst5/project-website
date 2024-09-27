@@ -10,8 +10,6 @@ module.exports.index = async (req, res) => {
 		find.title = regex
 	}
 
-	
-
 	const products = await Product
 		.find(find)
 		.sort({

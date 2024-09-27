@@ -38,10 +38,10 @@ div(class="bg-[white] py-[30px]")
 					class=`px-[20px] bg-[${BOX ? BOX.mauGiaGoc : ''}] text-main flex items-center justify-center flex-end fa-solid fa-magnifying-glass hover:bg-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}] hover:text-[${BOX ? BOX.mauGiaGoc : ''}] duration-500`
 				)
 			div(class="h-full")
-				a(href="/order/cart-info" class="h-full relative w-auto hover:text-chu duration-500") 
+				div(view-carts class="h-full relative w-auto hover:text-chu duration-500") 
 					i(class=`fa-thin fa-bag-shopping text-[25px] h-full`)
-					- if(cartProductsLength > 0)
-						div(class="absolute top-[-17px] right-[-13px] bg-chu text-[white] rounded-[100%] w-[18px] h-[18px] text-[12px] flex items-center justify-center font-bold") #{cartProductsLength}
+					- if(shoopings_cart.length > 0)
+						div(class="absolute top-[-13px] right-[-13px] bg-chu text-[white] rounded-[100%] w-[18px] h-[18px] text-[12px] flex items-center justify-center font-bold") #{shoopings_cart.length}
 			- if(!infoUser)
 				i(class=`fa-thin fa-user text-[25px] cursor-pointer hover:text-chu duration-500` icon-user)
 			- else

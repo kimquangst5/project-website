@@ -37,7 +37,7 @@ block main
 							include ../../partials/adddition - subtraction.pug
 
 
-					div(class="w-full bg-chu text-[#333333] flex rounded-[7px] items-center justify-center py-[10px] font-bold gap-[20px] hover:cursor-pointer" add-cart = `/order/cart-add/${product.id}`)
+					div(class="w-full bg-chu text-[#333333] flex rounded-[7px] items-center justify-center py-[10px] font-bold gap-[20px] hover:cursor-pointer" )
 						i(class=`fa-solid  fa-bag-shopping`)
 						div(class="uppercase") mua hàng ngay 
 					
@@ -45,7 +45,7 @@ block main
 					div(class="flex justify-between gap-[20px]")
 						div(class="border-[2px] border-chu rounded-[7px] text-[#333333] flex gap-[10px] items-center w-full justify-center py-[10px] hover:bg-chu hover:text-[white] hover:cursor-pointer")
 							i(class=`fa-solid fa-cart-plus`)
-							div(class="uppercase font-bold") thêm vào giỏ  
+							div(class="uppercase font-bold" add-cart = `/order/cart-add/${product.id}`) thêm vào giỏ  
 						div(class="border-chu rounded-[7px] text-[white] bg-[#DA0808] flex gap-[10px] items-center w-full justify-center hover:bg-[chu] hover:text-[white]")
 							i(class=`fa-solid fa-phone-volume`)
 							div(class="uppercase font-bold") 0859.615.254

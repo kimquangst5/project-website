@@ -56,6 +56,7 @@ if (formSearch) {
 		const value = event.target.elements[0].value;
 		if (value) {
 			url.searchParams.set('key', value)
+			url.searchParams.delete('page')
 		} else {
 			url.searchParams.delete('key')
 		}

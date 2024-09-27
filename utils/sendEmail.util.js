@@ -11,7 +11,7 @@ module.exports.sendMail = async (email, subject, html) => {
 		port: 587,
 		secure: false, // use false for STARTTLS; true for SSL on port 465
 		auth: {
-			user: emailBatabase[0].from,
+			user: process.env.EMAIL,
 			pass: process.env.pass,
 		}
 	});
@@ -27,9 +27,10 @@ module.exports.sendMail = async (email, subject, html) => {
 	// Send the email
 	transporter.sendMail(mailOptions, (error, info) => {
 		if (error) {
-			req.flash("error", "Không tồn tại email này!!!");
-			res.redirect("back");
-			return;
+			console.log(error)
+			// req.flash("error", "Không tồn tại email này!!!");
+			// res.redirect("back");
+			// return;
 		} else {
 			console.log('Email sent: ', info.response);
 		}

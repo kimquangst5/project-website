@@ -28,7 +28,7 @@ block main
 							div(class="font-bold text-right text-[#333333]") #{user.fullName}
 						div(class="grid grid-cols-2 py-[5px] border-b-[#ddd] border-b-[1px] border-dashed")
 							div(class="text-[#707070]") Giới tính
-							div(class="font-bold text-right text-[#333333]") #{user.sex || 'Chưa điền'}
+							div(class="font-bold text-right text-[#333333]") #{(user.sex == 'male' ? 'Nam' : 'Nữ') || 'Chưa điền'}
 						div(class="grid grid-cols-2 py-[5px] border-b-[#ddd] border-b-[1px] border-dashed")
 							div(class="text-[#707070]") Email
 							div(class="font-bold text-right text-[#333333]") #{user.email}

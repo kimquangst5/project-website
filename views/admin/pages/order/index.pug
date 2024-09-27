@@ -21,7 +21,7 @@ block main
 				div(class="flex grid grid-cols-7 [&>*]:h-[50px] [&>*]:items-center [&>*]:flex")
 					div(class="h-[30px] flex gap-[10px]") 
 						each item in it.products
-							a(href=`/${admin}/product/edit/${item.idProduct}` item.slug)
+							a(href=`/${admin}/product/edit/${item.idProduct}` item.slug title=item.title)
 								img(src=item.thumbnail, alt="" class=`h-[30px]`)
 					div(class="") #{it.createdAtFormat}
 					div(class="") #{it.products.slug}

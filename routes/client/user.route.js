@@ -18,7 +18,7 @@ router.get('/login', controller.login)
 router.post('/login', controller.loginPost)
 
 // Bắt đầu luồng Đăng ký Google
-router.get('/login/gmail/auth/google', controller.loginGmail);
+router.post('/login/gmail/auth/google', controller.loginGmail);
 
 // Gọi URL lại để xử lý phản hồi Đăng nhập Google
 router.get('/login/gmail/auth/google/callback', controller.loginGmailCallback);
@@ -55,6 +55,27 @@ router.post('/change-email/otp', controller.otpEmailPost)
 router.get('/change-email-success', controller.changeEmailSuccess)
 
 router.post('/change-email-success', controller.changeEmailSuccessPost)
+
+
+
+router.get('/change-phone', controller.changePhone)
+
+router.post('/change-phone', controller.changePhonePost)
+
+router.get('/change-phone/otp', controller.otpPhone)
+
+router.post('/change-phone/otp', controller.otpPhonePost)
+
+router.get('/change-phone-success', controller.changePhoneSuccess)
+
+router.post('/change-phone-success', controller.changePhoneSuccessPost)
+
+
+
+
+router.get('/reset-password', controller.resetPassword)
+
+router.patch('/reset-password', controller.resetPasswordPatch)
 
 
 

@@ -362,7 +362,9 @@ if (addCart.length > 0) {
 							.then(res => res.json())
 							.then(dataItem => {
 								if (dataItem.code == 200) {
-									window.location.href = '/order/cart-info'
+									localStorage.setItem("icon-add-cart", true)
+									window.location.reload()
+									
 								}
 								if (dataItem.code == 400) {
 									window.location.reload();
@@ -376,7 +378,6 @@ if (addCart.length > 0) {
 
 		});
 	});
-
 }
 
 const animation = document.querySelectorAll('[animation]');
@@ -437,18 +438,24 @@ if (cartsChoose.length > 0) {
 		const chooseAtributes = cart.querySelector('[choose-attribute]')
 		if (chooseAtributes) {
 			const boxCart = cart.querySelector('[box-cart]');
-			const height = boxCart.clientHeight
-			boxCart.classList.toggle(`mt-[-${height + 10}px]`)
 
 			chooseAtributes.addEventListener("click", () => {
-				boxCart.classList.toggle(`mt-[-${height + 10}px]`)
-				boxCart.classList.add(`duration-1000`)
+				boxCart.classList.toggle(`hidden`)
+				setTimeout(() => {
+					boxCart.classList.toggle(`opacity-0`)
+					boxCart.classList.toggle(`mt-[-50px]`)
+
+				}, 300);
 			});
 
 			const exit = cart.querySelector('[exit]')
 			exit.addEventListener("click", () => {
-				boxCart.classList.toggle(`mt-[-${height + 10}px]`)
-				boxCart.classList.add(`duration-1000`)
+				boxCart.classList.toggle(`opacity-0`)
+				boxCart.classList.toggle(`mt-[-50px]`)
+				setTimeout(() => {
+					boxCart.classList.toggle(`hidden`)
+
+				}, 300);
 			});
 		}
 	});
@@ -540,7 +547,7 @@ if (iconUser) {
 				}, 400);
 			});
 			boxLogin.addEventListener('click', (event) => {
-				if(event.target.className.includes('fixed')){
+				if (event.target.className.includes('fixed')) {
 					exit.click();
 				}
 			});
@@ -550,19 +557,18 @@ if (iconUser) {
 }
 
 const listInput = document.querySelectorAll(`input[type="password"]`);
-if(listInput.length > 0){
+if (listInput.length > 0) {
 	listInput.forEach(input => {
 		const iconEye = input.nextElementSibling;
-		if(iconEye){
+		if (iconEye) {
 			const eye = iconEye.getAttribute('icon-eye');
-			if(eye){
+			if (eye) {
 				iconEye.addEventListener('click', () => {
 					const value = input.getAttribute('type');
-					if(value == 'text'){
+					if (value == 'text') {
 						input.setAttribute("type", "password");
 						iconEye.classList.replace("fa-eye", "fa-eye-slash")
-					}
-					else{
+					} else {
 						input.setAttribute("type", "text");
 						iconEye.classList.replace("fa-eye-slash", "fa-eye")
 					}
@@ -573,9 +579,9 @@ if(listInput.length > 0){
 }
 
 const boxShowMenuProfile = document.querySelector('[box-show-menu-profile]');
-if(boxShowMenuProfile){
-	const next  =boxShowMenuProfile.nextElementSibling;
-	if(next){
+if (boxShowMenuProfile) {
+	const next = boxShowMenuProfile.nextElementSibling;
+	if (next) {
 		boxShowMenuProfile.addEventListener('click', () => {
 			next.classList.toggle('mt-[50px]')
 			setTimeout(() => {
@@ -587,9 +593,9 @@ if(boxShowMenuProfile){
 }
 
 const boxMethodPayBank = document.querySelector('[box-method-pay-bank]')
-if(boxMethodPayBank){
+if (boxMethodPayBank) {
 	const buttonMethodPayBank = document.querySelector('[button-method-pay-bank]')
-	if(buttonMethodPayBank){
+	if (buttonMethodPayBank) {
 		const inputMethodPay = document.querySelector('[input-method-pay]');
 		inputMethodPay.value = 'cash'
 		buttonMethodPayBank.addEventListener('click', () => {
@@ -605,10 +611,9 @@ if(boxMethodPayBank){
 			setTimeout(() => {
 				boxMethodPayBank.classList.toggle('opacity-0')
 			}, 300);
-			if(boxMethodPayBank.className.includes('opacity-0')){
+			if (boxMethodPayBank.className.includes('opacity-0')) {
 				inputMethodPay.value = "transfer"
-			}
-			else{
+			} else {
 				inputMethodPay.value = "cash"
 			}
 			console.log(inputMethodPay.value)
@@ -621,24 +626,98 @@ if(boxMethodPayBank){
 }
 
 const demGiayOtp = document.querySelector('[count-s-otp]');
-if(demGiayOtp){
+if (demGiayOtp) {
 	const div = demGiayOtp.querySelector('div');
 	setInterval(() => {
-		if(parseInt(div.innerHTML) != 0){
-		const value = parseInt(div.innerHTML) - 1;
-		div.innerHTML = value
-		if(parseInt(div.innerHTML) == 0){
-			history.back();
+		if (parseInt(div.innerHTML) != 0) {
+			const value = parseInt(div.innerHTML) - 1;
+			div.innerHTML = value
+			if (parseInt(div.innerHTML) == 0) {
+				history.back();
+			}
 		}
-	}
 	}, 1000);
-	
+
 }
 
+const listUrlLoginGmail = document.querySelectorAll('[url-login-gmail]');
+if (listUrlLoginGmail.length > 0) {
+	listUrlLoginGmail.forEach(it => {
+		it.addEventListener('click', (event) => {
+			event.preventDefault();
+			const link = it.getAttribute('href');
+			const origin = window.location.origin
+			if (link) {
+				fetch(link, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							URL_ORIGIN: origin
+						})
+					})
+					.then(res => res.json())
+					.then(data => {
+						if (data.code == 200) {
+							window.location.href = data.message
+						}
+					})
+			}
+		});
 
-console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
+	});
+}
 
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+const viewCarts = document.querySelector('[view-carts]');
+if (viewCarts) {
+	viewCarts.addEventListener('click', () => {
+		const listCart = document.querySelector('[list-cart]');
+		const chil = listCart.querySelector('div');
+		if (listCart) {
+			listCart.classList.toggle('hidden')
+			setTimeout(() => {
+				chil.classList.toggle('mr-[-80px]')
+				chil.classList.toggle('opacity-0')
+
+			}, 200);
+			listCart.addEventListener('click', (event) => {
+				if (event.target.className.includes('fixed')) {
+					chil.classList.add('mr-[-80px]')
+					chil.classList.add('opacity-0')
+					setTimeout(() => {
+						listCart.classList.add('hidden')
+
+					}, 800);
+				}
+			});
+		}
+		const exit = listCart.querySelector('[exsit]');
+		if (exit) {
+			exit.addEventListener('click', () => {
+				listCart.classList.toggle('hidden')
+				setTimeout(() => {
+
+				}, 100);
+			});
+		}
+	});
+}
+
+window.addEventListener('load', () => {
+	if(localStorage.getItem('icon-add-cart') == 'true'){
+		const iconAddCart = document.querySelector('[view-carts]');
+		if(iconAddCart){
+			iconAddCart.click();
+			localStorage.removeItem('icon-add-cart')
+		}
+	}
+})
+
+
+// console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
+
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
