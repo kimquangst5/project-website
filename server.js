@@ -81,6 +81,11 @@ app.use((req, res) => {
 	res.status(404).render("client/pages/error/404.pug")
 });
 
+// Xử lý 500 - đặt ở cuối cùng
+app.use((req, res) => {
+	res.status(500).render("client/pages/error/500.pug")
+});
+
 server.listen(port, () => {
 	console.log(`Đang lắng nghe cổng ${port}`);
 });
