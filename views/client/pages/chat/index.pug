@@ -5,21 +5,17 @@ block main
 	+dieu-huong("Nhắn tin")
 	div(class="my-[10px]")
 		div(class="container")
-			div(class="h-[600px] truncate relative bg-[white]  rounded-[10px] p-[10px]")
-				form(class=`flex flex-col h-full` form-chat = infoUser.id)
-					div(class="h-full" appendchild)
-						div(class="grid grid-cols-2") 
-							each it in chats
-								div(class="col-span-1 flex flex-col gap-y-[10px]")
-									- if(infoUser.id != it.userId)
-										div(class="") 
-											div(class="font-bold text-[14px]") #{it.fullName}
-											div(class="rounded-[8px] bg-[#F1556A] text-[white] w-max px-[10px] py-[4px]") #{it.content}
-								div(class="col-span-1")
-									- if(infoUser.id == it.userId)
-										div(class="text-right h-max flex justify-end my-[7px]")
-											div(class="bg-[#F5F5F5] w-max rounded-[8px] p-[10px]") #{it.content}
-										
-					div(class="rounded-[10px] flex flex-end border-[black]/50 border-[1px] flex items-center") 
-						input(type="text" class=`p-[10px] outline-none  bg-transparent w-full`)
-						button(type="submit" class="h-full fa-solid fa-paper-plane-top text-[20px] cursor-pointer text-[pink] px-[15px] flex items-center")
+			form(class="h-screen relative rounded-[10px] p-[10px] duration-1000" form-chat = infoUser.id)
+				div(class="h-1/2 gap-y-[10px] overflow-y-auto scoll-auto bg-[white]  scrollbarmain" appendchild)
+					each it in chats
+						- if(infoUser.id != it.userId)
+							div(class="h-max w-1/2 py-[5px]")
+								div(class="font-bold text-[14px]") #{it.fullName}
+								div(class="rounded-[8px] bg-[#F1556A] text-[white] w-max px-[10px] py-[4px]") #{it.content}
+						- if(infoUser.id == it.userId)
+							div(class="h-max w-1/2 ml-auto py-[5px]")
+								div(class="ml-auto bg-[#F5F5F5] w-max rounded-[8px] p-[10px]") #{it.content}
+								
+				div(class="rounded-[10px] border-[black]/50 border-[1px] relative flex items-center") 
+					input(type="text" class=`p-[10px] outline-none  bg-transparent w-full`)
+					button(type="submit" class="h-full fa-solid fa-paper-plane-top text-[20px] cursor-pointer text-[pink] px-[15px] flex items-center")

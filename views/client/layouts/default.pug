@@ -62,9 +62,10 @@ html(lang="vi")
 					i(class=`fa-solid fa-message-dots mx-auto`)
 					div(class="text-[10px]") Liên hệ
 		- if(infoWeb.copyRight)
-			div(class="bg-[#F5F5F5] border-t-[#333333] border-t-[1px]")
+			div(class="")
 				div(class="container")
-					div(class="flex text-center justify-center text-[#333333] items-center py-[20px]") #{infoWeb.copyRight}
+					div(class="bg-[#F5F5F5] border-t-[#333333] border-t-[1px] relative h-[50px]") 
+						div(class="flex text-center justify-center text-[#333333] items-center py-[20px]") #{infoWeb.copyRight}
 
 			
 		script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11") 
