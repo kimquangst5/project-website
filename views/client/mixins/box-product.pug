@@ -36,6 +36,6 @@ mixin box-product(array)
 						div(class=`line-clamp-1 text-[${BOX ? BOX.mauChuGiamGia : ''}] text-[11px]`) GIẢM -#{it.discountPercentage}%
 				a(href=`/product/detail/${it.slug}` class=`text-[${BOX ? BOX.mauChuSanPham : ''}] text-[${BOX ? BOX.kichCoChuSanPham : ''}px] hover:text-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}] line-clamp-1 my-[10px] lg:text-[13px] text-wrap` title=it.title) #{it.title}
 				div(class="flex w-full place-content-center gap-[10px] auto-rows-max")
-					div(class=`text-[${BOX ? BOX.mauGiaSanPham : ''}] font-[700] shrink shrink text-[${BOX ? BOX.kichCoGiaSp : ''}px] lg:text-[12px]`) #{it.priceNew}đ
+					div(class=`text-[${BOX ? BOX.mauGiaSanPham : ''}] font-[700] shrink shrink text-[${BOX ? BOX.kichCoGiaSp : ''}px] lg:text-[12px]` priceTotal = it.newPrice) #{it.priceNew}đ
 					- if(it.priceOld != it.priceNew)
 						div(class=`text-[${BOX ? BOX.mauGiaGoc : ''}] line-through shrink text-[${BOX ? BOX.kichCoGiaGoc : ''}px] lg:text-[12px]`) #{it.priceOld}đ

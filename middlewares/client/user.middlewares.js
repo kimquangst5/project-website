@@ -15,6 +15,7 @@ module.exports.user = async (req, res, next) => {
 
 module.exports.requireAuth = async (req, res, next) => {
 	if (!req.cookies.tokenUser) {
+		req.flash("error", "Vui lòng đăng nhập!")
 		res.redirect('/member/login');
 		return;
 	}

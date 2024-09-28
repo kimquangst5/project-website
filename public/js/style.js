@@ -237,6 +237,7 @@ if (calculate.length > 0) {
 		const sub = cal.querySelector('[subtraction]');
 		const stock = cal.querySelector('[stock]');
 		const price = cal.querySelector(['[priceTotal]']);
+		let quantity = 1;
 		if (add && sub) {
 			add.addEventListener('click', () => {
 				stock.value = parseInt(stock.value) + 1
@@ -264,15 +265,17 @@ if (calculate.length > 0) {
 						}
 					}
 				}
+				localStorage.setItem('quantity', parseInt(stock.value))
 
 			});
-			stock.value = parseInt(stock.value)
 			sub.addEventListener('click', () => {
 				if (parseInt(stock.value) != 1) {
 					stock.value = parseInt(stock.value) - 1
 					const getPrice = price.getAttribute("priceTotal");
 					if (getPrice) {
 						let PRICE = parseInt(parseInt(getPrice) * parseInt(stock.value))
+						console.log(stock.value)
+						quantity = stock.value
 						price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
 						price.innerHTML = parseInt(price.innerHTML);
 						PRICE = PRICE.toLocaleString('en-EN')
@@ -293,6 +296,8 @@ if (calculate.length > 0) {
 						}
 					}
 				}
+				localStorage.setItem('quantity', parseInt(stock.value))
+
 			});
 
 			stock.addEventListener('change', () => {
@@ -333,7 +338,49 @@ if (calculate.length > 0) {
 						}
 					}
 				}
+				localStorage.setItem('quantity', parseInt(stock.value))
+
 			})
+
+		}
+		const addCart = cal.querySelector('[add-cart]');
+		if (addCart) {
+			addCart.addEventListener('click', () => {
+				const link = addCart.getAttribute('add-cart');
+				if (link) {
+					const stock = document.querySelector('[stock]');
+					const quantity = localStorage.getItem('quantity');
+					console.log(quantity)
+					if (quantity) {
+						const data = {
+							quanlity: parseInt(quantity)
+						}
+						if (data) {
+							fetch(link, {
+									method: "POST",
+									headers: {
+										"Content-Type": "application/json",
+									},
+									body: JSON.stringify(data)
+								})
+								.then(res => res.json())
+								.then(dataItem => {
+									if (dataItem.code == 200) {
+										localStorage.setItem("icon-add-cart", true)
+										window.location.reload()
+
+									}
+									if (dataItem.code == 400) {
+										window.location.reload();
+									}
+								})
+						}
+					}
+
+
+				}
+
+			});
 		}
 	});
 }
@@ -346,30 +393,31 @@ if (addCart.length > 0) {
 			const link = cart.getAttribute('add-cart');
 			if (link) {
 				const stock = document.querySelector('[stock]');
+				const value = stock.innerHTML
 				const quanlity = parseInt(stock.value);
 				if (quanlity) {
 					const data = {
-						quanlity: quanlity
+						quanlity: parseInt(quanlity)
 					}
 					if (data) {
-						fetch(link, {
-								method: "POST",
-								headers: {
-									"Content-Type": "application/json",
-								},
-								body: JSON.stringify(data)
-							})
-							.then(res => res.json())
-							.then(dataItem => {
-								if (dataItem.code == 200) {
-									localStorage.setItem("icon-add-cart", true)
-									window.location.reload()
-									
-								}
-								if (dataItem.code == 400) {
-									window.location.reload();
-								}
-							})
+						// fetch(link, {
+						// 		method: "POST",
+						// 		headers: {
+						// 			"Content-Type": "application/json",
+						// 		},
+						// 		body: JSON.stringify(data)
+						// 	})
+						// 	.then(res => res.json())
+						// 	.then(dataItem => {
+						// 		if (dataItem.code == 200) {
+						// 			localStorage.setItem("icon-add-cart", true)
+						// 			window.location.reload()
+
+						// 		}
+						// 		if (dataItem.code == 400) {
+						// 			window.location.reload();
+						// 		}
+						// 	})
 					}
 				}
 
@@ -515,7 +563,6 @@ if (buttonPayment) {
 		if (body) {
 			const buttonFormPayment = body.querySelector(`button[type="submit"][button-submit-form]`);
 			if (buttonFormPayment) {
-				// console.log(buttonFormPayment)
 				buttonFormPayment.click();
 			}
 		}
@@ -616,7 +663,6 @@ if (boxMethodPayBank) {
 			} else {
 				inputMethodPay.value = "cash"
 			}
-			console.log(inputMethodPay.value)
 		})
 		const buttonpre = buttonMethodPayBank.previousElementSibling
 		buttonpre.addEventListener('click', () => {
@@ -705,9 +751,9 @@ if (viewCarts) {
 }
 
 window.addEventListener('load', () => {
-	if(localStorage.getItem('icon-add-cart') == 'true'){
+	if (localStorage.getItem('icon-add-cart') == 'true') {
 		const iconAddCart = document.querySelector('[view-carts]');
-		if(iconAddCart){
+		if (iconAddCart) {
 			iconAddCart.click();
 			localStorage.removeItem('icon-add-cart')
 		}
