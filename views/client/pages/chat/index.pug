@@ -11,11 +11,29 @@ block main
 						- if(infoUser.id != it.userId)
 							div(class="h-max w-1/2 py-[5px]")
 								div(class="font-bold text-[14px]") #{it.fullName}
-								div(class="rounded-[8px] bg-[#F1556A] text-[white] w-max px-[10px] py-[4px]") #{it.content}
+								div(class="rounded-[8px] bg-[#F1556A] text-[white] text-justify px-[10px] py-[4px]") #{it.content}
 						- if(infoUser.id == it.userId)
-							div(class="h-max w-1/2 ml-auto py-[5px]")
-								div(class="ml-auto bg-[#F5F5F5] w-max rounded-[8px] p-[10px]") #{it.content}
-								
+							div(class="h-max w-1/2 ml-auto py-[5px] truncate")
+								div(class="text-justify text-wrap bg-[#F5F5F5] rounded-[8px] p-[10px]") #{it.content}
+
+				div(class="bg-[white] h-auto" list-typing)
+					//- div(class="") 
+					//- 	div(class="") Lê văn A
+					//- 	div(class="bg-[#D0D0D0] loading-typing rounded-[10px] w-max px-[10px]" typing-animate)
+					//- 		span
+					//- 		span
+					//- 		span
+					
+					//- div(class="") 
+					//- 	div(class="") Lê văn B
+					//- 	div(class="bg-[#D0D0D0] loading-typing rounded-[10px] w-max px-[10px]" typing-animate)
+					//- 		span
+					//- 		span
+					//- 		span
+
 				div(class="rounded-[10px] border-[black]/50 border-[1px] relative flex items-center") 
-					input(type="text" class=`p-[10px] outline-none  bg-transparent w-full`)
+					input(type="text" name="content" class=`p-[10px] outline-none  bg-transparent w-full` input-chat)
+					i(class="fa-light fa-face-smile cursor-pointer px-[15px] h-auto" icon-face-smile)
 					button(type="submit" class="h-full fa-solid fa-paper-plane-top text-[20px] cursor-pointer text-[pink] px-[15px] flex items-center")
+				div(class="tooltip right-0" role="tooltip") 
+					emoji-picker(class=`light`)

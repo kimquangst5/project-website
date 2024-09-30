@@ -3,6 +3,15 @@ const User = require("../../models/user.model");
 module.exports.index = async (req, res) => {
 	io.once('connection', async (socket) => {
 		console.log('Có 1 người dùng đã kết nối', socket.id);
+		
+		socket.on("CLIENT_SEND_TYPING", (typing) => {
+			socket.broadcast.emit("SERVER_RETURN_TYPING", {
+				userId: res.locals.infoUser.id,
+				fullName: res.locals.infoUser.fullName,
+				type: typing
+			})
+		});
+
 		socket.on("CLIENT_SEND_MESSAGE", async (message) => {
 			const data = {
 				userId: res.locals.infoUser.id,
@@ -19,8 +28,11 @@ module.exports.index = async (req, res) => {
 				fullName: res.locals.infoUser.fullName,
 				content: message
 			});
-
 		});
+
+		
+
+		
 	});
 
 	const chats = await Chat.find({})
@@ -28,7 +40,10 @@ module.exports.index = async (req, res) => {
 		const user = await User.findOne({
 			_id: chat.userId
 		})
-		chat.fullName = user.fullName
+		if(user.fullName){
+			chat.fullName = user.fullName
+		}
+		
 	}
 
 

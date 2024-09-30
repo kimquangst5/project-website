@@ -7,6 +7,7 @@ html(lang="vi")
 		meta(property="og:image" content="/media/logo/LOGO.png")
 		meta(name="author", content="Trần Kim Quang")
 		meta(name="twitter:image" content="/media/logo/LOGO.png")
+		link(rel="stylesheet", href="/css/style.css")
 		script(src="https://cdn.tailwindcss.com/")
 		script(src="/tailwind.config.js")
 
@@ -72,6 +73,8 @@ html(lang="vi")
 		script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")
 		script(src="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.umd.js")
 		
+		script(type="module", src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js") 
+
 		script(src="/socket.io/socket.io.js")
-		script(src="/js/chat.js")
+		script(type="module" src="/js/chat.js")
 		script(src="/js/style.js")

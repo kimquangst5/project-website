@@ -1,6 +1,56 @@
+import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
+
 var socket = io()
 
+// Typing
+var typingTimeOut;
+const input = document.querySelector(`input[type="text"][name="content"]`);
+if (input) {
+	input.addEventListener("input", (event) => {
+		socket.emit("CLIENT_SEND_TYPING", "show")
+
+		clearTimeout(typingTimeOut)
+
+		typingTimeOut = setTimeout(() => {
+			socket.emit("CLIENT_SEND_TYPING", "hidden")
+		}, 3000);
+	});
+}
+
+
+const listTyping = document.querySelector('[list-typing]');
+socket.on("SERVER_RETURN_TYPING", (data) => {
+	const checkExsit = listTyping.querySelector(`[user-id = "${data.userId}"]`)
+
+	if (data.type == 'show') {
+		if (!checkExsit) {
+			if (listTyping) {
+				const boxTyping = document.createElement('div');
+				boxTyping.setAttribute("user-id", data.userId)
+				boxTyping.innerHTML = `
+					<div>${data.fullName}</div>
+					<div class="bg-[#D0D0D0] loading-typing rounded-[10px] w-max px-[10px]" typing-animate=""><span></span><span></span><span></span></div>
+				`
+				listTyping.appendChild(boxTyping)
+			}
+		}
+	}
+	else {
+		const deleted = listTyping.querySelector(`[user-id = "${data.userId}"]`)
+		if (deleted) {
+			listTyping.removeChild(deleted)
+
+		}
+	}
+
+});
+
+// Hết Typing
+
+
 // CLIENT_SEND_MESSAGE
+
+
 const formChat = document.querySelector('[form-chat]');
 if (formChat) {
 	formChat.addEventListener("submit", (event) => {
@@ -10,6 +60,7 @@ if (formChat) {
 			socket.emit("CLIENT_SEND_MESSAGE", message)
 		}
 		event.target.elements[0].value = ''
+		socket.emit("CLIENT_SEND_TYPING", "hidden")
 	});
 }
 // HẾT CLIENT_SEND_MESSAGE
@@ -23,41 +74,54 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 	const formChat = document.querySelector('[form-chat]');
 	if (formChat) {
 		const userId = formChat.getAttribute('form-chat');
+		let htmlFullName = "";
 		if (userId) {
+			console.log(userId)
+			console.log(data.userId)
+			const appendchild = formChat.querySelector('[appendchild]');
 			if (userId == data.userId) {
 				div.classList.add('ml-auto')
-				div.innerHTML = `
-					<div class="ml-auto bg-[#F5F5F5] w-max rounded-[8px] p-[10px]">${data.content}</div>
+				htmlFullName = `
+					<div class="text-justify text-wrap bg-[#F5F5F5] rounded-[8px] p-[10px]">${data.content}</div>
 				`
-				
-
 			} else {
-				div.innerHTML = `
-					<div class="font-bold text-[14px]">${data.fullName}</div><div class="rounded-[8px] bg-[#F1556A] text-[white] w-max px-[10px] py-[4px]">${data.content}</div>
-`
+				htmlFullName = `
+					<div class="font-bold text-[14px]">${data.fullName}</div>
+					<div class="rounded-[8px] bg-[#F1556A] text-[white] text-justify px-[10px] py-[4px]">${data.content}</div>
+				`
 			}
-			const appendchild = formChat.querySelector('[appendchild]');
+			div.innerHTML = htmlFullName
 			appendchild.appendChild(div)
 			if (userId == data.userId) {
-				const appendchild = formChat.querySelector('[appendchild]');
-				if (appendchild) {
-					console.log(appendchild.scrollTop)
-					console.log(appendchild.scrollHeight)
-					
-					appendchild.scrollTop = appendchild.scrollHeight
-
-				}
+				appendchild.scrollTop = appendchild.scrollHeight
 			}
 		}
 	}
-	// body.appendChild(fullName)
-	// body.appendChild(content)
 });
 // SEVER_RETURN_MESSAGE
 const appendchild = formChat.querySelector('[appendchild]');
 if (appendchild) {
-	// console.log(appendchild.scrollTop)
-	// console.log(appendchild.scrollHeight)
 	appendchild.scrollTop = appendchild.scrollHeight
 
+}
+
+const emojiPicker = document.querySelector('emoji-picker');
+if (emojiPicker) {
+	emojiPicker.addEventListener('emoji-click', (event) => {
+		const input = formChat.querySelector(`input`);
+		if (input) {
+			input.value = input.value + event.detail.unicode
+		}
+	});
+}
+
+const iconFaceSmile = formChat.querySelector("[icon-face-smile]");
+if (iconFaceSmile) {
+	const tooltip = formChat.querySelector('.tooltip');
+	Popper.createPopper(iconFaceSmile, tooltip);
+	tooltip.classList.toggle('hidden');
+	iconFaceSmile.addEventListener("click", () => {
+		tooltip.classList.toggle('shown');
+		tooltip.classList.toggle('hidden');
+	});
 }
