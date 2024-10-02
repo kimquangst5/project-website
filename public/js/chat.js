@@ -165,26 +165,26 @@ if (emojiPicker) {
 	});
 }
 
-import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
-if (elementChat) {
-	const form = elementChat.querySelector('form')
-	if (form) {
-		const iconFaceSmile = form.querySelector("[icon-face-smile]");
-		if (iconFaceSmile) {
+// import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
+// if (elementChat) {
+// 	const form = elementChat.querySelector('form')
+// 	if (form) {
+// 		const iconFaceSmile = form.querySelector("[icon-face-smile]");
+// 		if (iconFaceSmile) {
 
-			const tooltip = elementChat.querySelector(`[role="tooltip"]`);
-			Popper.createPopper(iconFaceSmile, tooltip);
-			// tooltip.classList.toggle('hidden');
-			iconFaceSmile.addEventListener("click", () => {
-				// tooltip.classList.toggle('shown');
-				if (tooltip) {
-					tooltip.classList.toggle('hidden');
-				}
-			});
-		}
-	}
+// 			const tooltip = elementChat.querySelector(`[role="tooltip"]`);
+// 			Popper.createPopper(iconFaceSmile, tooltip);
+// 			// tooltip.classList.toggle('hidden');
+// 			iconFaceSmile.addEventListener("click", () => {
+// 				// tooltip.classList.toggle('shown');
+// 				if (tooltip) {
+// 					tooltip.classList.toggle('hidden');
+// 				}
+// 			});
+// 		}
+// 	}
 
-}
+// }
 
 
 if (elementChat) {
