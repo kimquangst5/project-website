@@ -11,12 +11,7 @@ const {
 	Server
 } = require("socket.io");
 const server = http.createServer(app);
-const io = new Server(server, {
-	cors: {
-		origin: "https://quangkim.vercel.app/", // hoặc URL của frontend
-		methods: ["GET", "POST"]
-	}
-});
+const io = new Server(server);
 global.io = io
 // HẾT SOCKET IO
 
