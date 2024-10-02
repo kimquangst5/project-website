@@ -1,3 +1,12 @@
+var socket = io()
+
+const formChat = document.querySelector('[form-chat]');
+if (formChat) {
+	formChat.addEventListener("submit", (event) => {
+		event.preventDefault();
+	})
+}
+
 const header = document.querySelector('header');
 let last = 0;
 if (header) {

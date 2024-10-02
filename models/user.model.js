@@ -20,6 +20,8 @@ const userShema = new Schema({
 		type: Boolean,
 		default: false
 	},
+	acceptFriends: Array, // Lời mời đã nhận
+	requestFriends: Array // Lời mời đã gửi
 }, {
 	timestamps: true
 });

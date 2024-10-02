@@ -16,6 +16,7 @@ const REDIRECT_URI = `https://kim-quang.vercel.app/member/register/gmail/auth/go
 const REDIRECT_URI_LOGIN = `member/login/gmail/auth/google/callback`;
 const _ = require('lodash');
 const moment = require("moment")
+const userSocket = require('../../sockets/client/user.socket')
 
 const sendMail = require("../../utils/sendEmail.util")
 
@@ -879,4 +880,22 @@ module.exports.resetPasswordPatch = async (req, res) => {
 	})
 	req.flash("success", "Đổi mật khẩu thành công!");
 	res.redirect("/");
+}
+
+// [GET] /member/not-friend
+module.exports.notFriend = async (req, res) => {
+	userSocket(req, res);
+
+	
+	const users = await User.find({
+		_id: { $ne: res.locals.infoUser },
+		deleted: false,
+		status: 'active'
+	})
+
+
+	res.render("client/pages/user/friend/not friend.pug", {
+		pageTitle: "Danh sách người dùng",
+		users
+	})
 }

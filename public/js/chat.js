@@ -1,7 +1,5 @@
 import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
 
-var socket = io()
-
 // Typing
 var typingTimeOut;
 const input = document.querySelector(`input[type="text"][name="content"]`);
@@ -62,7 +60,6 @@ if (formChat) {
 	formChat.addEventListener("submit", (event) => {
 		event.preventDefault();
 
-		console.log(upload.cachedFileArray)
 		const message = event.target.elements[0].value || '';
 		const imgaes = upload.cachedFileArray
 		if (message || imgaes.length > 0) {
@@ -76,6 +73,11 @@ if (formChat) {
 
 		socket.emit("CLIENT_SEND_TYPING", "hidden")
 	});
+	const appendchild = formChat.querySelector('[appendchild]');
+	if (appendchild) {
+		appendchild.scrollTop = appendchild.scrollHeight
+
+	}
 }
 // HẾT CLIENT_SEND_MESSAGE
 
@@ -140,47 +142,52 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 	}
 });
 // SEVER_RETURN_MESSAGE
-const appendchild = formChat.querySelector('[appendchild]');
-if (appendchild) {
-	appendchild.scrollTop = appendchild.scrollHeight
 
-}
 
 const emojiPicker = document.querySelector('emoji-picker');
 if (emojiPicker) {
 	emojiPicker.addEventListener('emoji-click', (event) => {
-		const input = formChat.querySelector(`input`);
-		if (input) {
-			input.value = input.value + event.detail.unicode
+		const formChat = document.querySelector('[form-chat]');
+		if (formChat) {
+			const input = formChat.querySelector(`input`);
+			if (input) {
+				input.value = input.value + event.detail.unicode
+			}
 		}
+
 	});
 }
 
-const iconFaceSmile = formChat.querySelector("[icon-face-smile]");
-if (iconFaceSmile) {
-	const tooltip = formChat.querySelector(`[role="tooltip"]`);
-	Popper.createPopper(iconFaceSmile, tooltip);
-	// tooltip.classList.toggle('hidden');
-	iconFaceSmile.addEventListener("click", () => {
-		// tooltip.classList.toggle('shown');
-		tooltip.classList.toggle('hidden');
-	});
-}
-
-const iconUpImage = formChat.querySelector('[icon-up-image]');
-if(iconUpImage){
-	const input = formChat.querySelector(`input#file-upload-with-preview-upload-many-images`)
-	const dataUploadId = formChat.querySelector("[data-upload-id='upload-many-images']");
-	new Viewer(dataUploadId)
-	const lable = dataUploadId.querySelector('.label-container');
-	const inputcontai = dataUploadId.querySelector('.input-container');
-	if(inputcontai && lable){
-		lable.classList.add('hidden');
-		inputcontai.classList.add('hidden');
+if(formChat){
+	const iconFaceSmile = formChat.querySelector("[icon-face-smile]");
+	if (iconFaceSmile) {
+		const tooltip = formChat.querySelector(`[role="tooltip"]`);
+		Popper.createPopper(iconFaceSmile, tooltip);
+		// tooltip.classList.toggle('hidden');
+		iconFaceSmile.addEventListener("click", () => {
+			// tooltip.classList.toggle('shown');
+			tooltip.classList.toggle('hidden');
+		});
 	}
-	iconUpImage.addEventListener('click', () => {
-		if(input){
-			input.click();
+}
+
+
+if (formChat) {
+	const iconUpImage = formChat.querySelector('[icon-up-image]');
+	if (iconUpImage) {
+		const input = formChat.querySelector(`input#file-upload-with-preview-upload-many-images`)
+		const dataUploadId = formChat.querySelector("[data-upload-id='upload-many-images']");
+		new Viewer(dataUploadId)
+		const lable = dataUploadId.querySelector('.label-container');
+		const inputcontai = dataUploadId.querySelector('.input-container');
+		if (inputcontai && lable) {
+			lable.classList.add('hidden');
+			inputcontai.classList.add('hidden');
 		}
-	});
+		iconUpImage.addEventListener('click', () => {
+			if (input) {
+				input.click();
+			}
+		});
+	}
 }

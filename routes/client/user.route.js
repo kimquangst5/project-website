@@ -77,6 +77,8 @@ router.get('/reset-password', controller.resetPassword)
 
 router.patch('/reset-password', controller.resetPasswordPatch)
 
+router.get('/not-friend', controller.notFriend)
+
 
 
 
