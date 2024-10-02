@@ -1,5 +1,3 @@
-import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
-
 // Typing
 var typingTimeOut;
 const elementChat = document.querySelector('[element-chat]');
@@ -105,7 +103,7 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 				if (data.content) {
 					htmlContent = `<div class="text-justify text-wrap bg-[#F5F5F5] rounded-[8px] p-[10px]">${data.content}</div>`
 				}
-				if(data.images){
+				if (data.images) {
 					if (data.images.length > 0) {
 						htmlImage += `<div class="flex gap-[10px] justify-end">`
 						for (const image of data.images) {
@@ -167,19 +165,20 @@ if (emojiPicker) {
 	});
 }
 
+import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
 if (elementChat) {
 	const form = elementChat.querySelector('form')
 	if (form) {
 		const iconFaceSmile = form.querySelector("[icon-face-smile]");
 		if (iconFaceSmile) {
+
 			const tooltip = elementChat.querySelector(`[role="tooltip"]`);
 			Popper.createPopper(iconFaceSmile, tooltip);
 			// tooltip.classList.toggle('hidden');
 			iconFaceSmile.addEventListener("click", () => {
 				// tooltip.classList.toggle('shown');
-				if(tooltip){
+				if (tooltip) {
 					tooltip.classList.toggle('hidden');
-
 				}
 			});
 		}
