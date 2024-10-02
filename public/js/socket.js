@@ -1,6 +1,6 @@
-import Popper from 'https://cdn.jsdelivr.net/npm/emoji-picker-element@1.22.8/+esm'
 
 // Typing
+cosole.log("Hello")
 var typingTimeOut;
 const elementChat = document.querySelector('[element-chat]');
 const input = elementChat.querySelector(`form input`);
@@ -149,23 +149,23 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 // SEVER_RETURN_MESSAGE
 
 
-const emojiPicker = document.querySelector('emoji-picker');
-if (emojiPicker) {
-	emojiPicker.addEventListener('emoji-click', (event) => {
-		const elementChat = document.querySelector('[element-chat]');
-		if (elementChat) {
-			const form = elementChat.querySelector('form')
-			if (form) {
-				const input = form.querySelector(`input`);
-				if (input) {
-					input.value = input.value + event.detail.unicode
-				}
+// const emojiPicker = document.querySelector('emoji-picker');
+// if (emojiPicker) {
+// 	emojiPicker.addEventListener('emoji-click', (event) => {
+// 		const elementChat = document.querySelector('[element-chat]');
+// 		if (elementChat) {
+// 			const form = elementChat.querySelector('form')
+// 			if (form) {
+// 				const input = form.querySelector(`input`);
+// 				if (input) {
+// 					input.value = input.value + event.detail.unicode
+// 				}
 
-			}
-		}
+// 			}
+// 		}
 
-	});
-}
+// 	});
+// }
 
 // import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
 // if (elementChat) {
