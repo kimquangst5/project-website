@@ -1,4 +1,4 @@
-var socket = io('https://quangkim.vercel.app', {transports: ['websocket']});
+var socket = io();
 
 const elementChat = document.querySelector('[element-chat]');
 if (elementChat) {

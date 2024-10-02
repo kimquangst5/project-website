@@ -11,6 +11,7 @@ const userMiddlewares = require("../../middlewares/client/user.middlewares")
 const settingiddlewares = require("../../middlewares/client/setting.middlewares")
 
 module.exports.index = (app) => {
+	app.use(require('express-status-monitor')());
 	app.use(categoryMiddlewares.category)
 	app.use(cartMiddlewares.cart)
 	app.use(userMiddlewares.user)

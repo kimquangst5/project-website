@@ -1,47 +1,51 @@
 
 // Typing
-cosole.log("Hello")
 var typingTimeOut;
 const elementChat = document.querySelector('[element-chat]');
-const input = elementChat.querySelector(`form input`);
-if (input) {
-	input.addEventListener("input", (event) => {
-		socket.emit("CLIENT_SEND_TYPING", "show")
-
-		clearTimeout(typingTimeOut)
-
-		typingTimeOut = setTimeout(() => {
-			socket.emit("CLIENT_SEND_TYPING", "hidden")
-		}, 3000);
-	});
+if(elementChat){
+	const input = elementChat.querySelector(`form input`);
+	if (input) {
+		input.addEventListener("input", (event) => {
+			socket.emit("CLIENT_SEND_TYPING", "show")
+	
+			clearTimeout(typingTimeOut)
+	
+			typingTimeOut = setTimeout(() => {
+				socket.emit("CLIENT_SEND_TYPING", "hidden")
+			}, 3000);
+		});
+	}
 }
 
 
-const listTyping = elementChat.querySelector('[list-typing]');
-socket.on("SERVER_RETURN_TYPING", (data) => {
-	const checkExsit = listTyping.querySelector(`[user-id = "${data.userId}"]`)
-
-	if (data.type == 'show') {
-		if (!checkExsit) {
-			if (listTyping) {
-				const boxTyping = document.createElement('div');
-				boxTyping.setAttribute("user-id", data.userId)
-				boxTyping.innerHTML = `
-					<div>${data.fullName}</div>
-					<div class="bg-[#D0D0D0] loading-typing rounded-[10px] w-max px-[10px]" typing-animate=""><span></span><span></span><span></span></div>
-				`
-				listTyping.appendChild(boxTyping)
+if(elementChat){
+	const listTyping = elementChat.querySelector('[list-typing]');
+	socket.on("SERVER_RETURN_TYPING", (data) => {
+		const checkExsit = listTyping.querySelector(`[user-id = "${data.userId}"]`)
+	
+		if (data.type == 'show') {
+			if (!checkExsit) {
+				if (listTyping) {
+					const boxTyping = document.createElement('div');
+					boxTyping.setAttribute("user-id", data.userId)
+					boxTyping.innerHTML = `
+						<div>${data.fullName}</div>
+						<div class="bg-[#D0D0D0] loading-typing rounded-[10px] w-max px-[10px]" typing-animate=""><span></span><span></span><span></span></div>
+					`
+					listTyping.appendChild(boxTyping)
+				}
+			}
+		} else {
+			const deleted = listTyping.querySelector(`[user-id = "${data.userId}"]`)
+			if (deleted) {
+				listTyping.removeChild(deleted)
+	
 			}
 		}
-	} else {
-		const deleted = listTyping.querySelector(`[user-id = "${data.userId}"]`)
-		if (deleted) {
-			listTyping.removeChild(deleted)
+	
+	});
+}
 
-		}
-	}
-
-});
 
 // Hết Typing
 
