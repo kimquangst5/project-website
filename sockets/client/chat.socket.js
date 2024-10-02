@@ -15,6 +15,7 @@ module.exports = (req, res) => {
 		});
 
 		socket.on("CLIENT_SEND_MESSAGE", async (data) => {
+			console.log(data)
 			const chatData = {
 				userId: res.locals.infoUser.id,
 				content: data.message

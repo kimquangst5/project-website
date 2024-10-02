@@ -1,19 +1,17 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+// SOKET IO
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+global.io = io
+// HẾT SOCKET IO
 
 // Body Parser
 const bodyParser = require('body-parser');
 
-// SOKET IO
-const http = require('http');
-const { Server } = require("socket.io");
-const server = http.createServer(app);
-const io = new Server(server);
-// const io = require('socket.io')(server);
-
-global.io = io
-// HẾT SOCKET IO
 
 // create application/json parser
 app.use(bodyParser.json());

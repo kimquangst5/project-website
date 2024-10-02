@@ -73,7 +73,6 @@ html(lang="vi")
 						div(class="flex text-center justify-center text-[#333333] items-center py-[20px]") #{infoWeb.copyRight}
 		
 		
-		
 		script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11") 
 		
 
@@ -83,7 +82,9 @@ html(lang="vi")
 
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js") 
 
-		script(src="/socket.io/socket.io.js")
-		script(src="/js/style.js")
+		script(src="https://cdn.socket.io/4.7.2/socket.io.min.js")
+		script.
+			var socket = io()
 		script(src="/js/socket.js")
-		script(type="module" src="/js/user.js")
+		script(src="/js/style.js")
+		//- script(type="module" src="/js/user.js")

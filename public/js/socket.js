@@ -1,10 +1,10 @@
+const elementChat = document.querySelector('[element-chat]');
 
 // Typing
-var typingTimeOut;
-const elementChat = document.querySelector('[element-chat]');
 if(elementChat){
 	const input = elementChat.querySelector(`form input`);
 	if (input) {
+		var typingTimeOut;
 		input.addEventListener("input", (event) => {
 			socket.emit("CLIENT_SEND_TYPING", "show")
 	
@@ -16,7 +16,43 @@ if(elementChat){
 		});
 	}
 }
+// Hết Typing
 
+// CLIENT_SEND_MESSAGE
+if (elementChat) {
+	new Viewer(elementChat)
+	const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-many-images', {
+		multiple: true,
+		maxFileCount: 6
+	});
+
+	const form = elementChat.querySelector("form");
+	if (form) {
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+
+			const message = event.target.elements[0].value || '';
+			const imgaes = upload.cachedFileArray
+			if (message || imgaes.length > 0) {
+				socket.emit("CLIENT_SEND_MESSAGE", {
+					message: message,
+					imgaes: imgaes
+				})
+			}
+			event.target.elements[0].value = ''
+			upload.resetPreviewPanel(); // clear all selected images
+
+			socket.emit("CLIENT_SEND_TYPING", "hidden")
+		});
+		const appendchild = elementChat.querySelector('[appendchild]');
+		if (appendchild) {
+			appendchild.scrollTop = appendchild.scrollHeight
+
+		}
+	}
+
+}
+// HẾT CLIENT_SEND_MESSAGE
 
 if(elementChat){
 	const listTyping = elementChat.querySelector('[list-typing]');
@@ -42,7 +78,6 @@ if(elementChat){
 	
 			}
 		}
-	
 	});
 }
 
@@ -50,45 +85,8 @@ if(elementChat){
 // Hết Typing
 
 
-// CLIENT_SEND_MESSAGE
 
-
-if (elementChat) {
-	new Viewer(elementChat)
-	const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-many-images', {
-		multiple: true,
-		maxFileCount: 6
-	});
-
-	const form = elementChat.querySelector("form");
-	if (form) {
-		form.addEventListener("submit", (event) => {
-			event.preventDefault();
-
-			const message = event.target.elements[0].value || '';
-			const imgaes = upload.cachedFileArray
-			if (message || imgaes.length > 0) {
-				socket.emit("CLIENT_SEND_MESSAGE", {
-					message,
-					imgaes
-				})
-			}
-			event.target.elements[0].value = ''
-			upload.resetPreviewPanel(); // clear all selected images
-
-			socket.emit("CLIENT_SEND_TYPING", "hidden")
-		});
-		const appendchild = elementChat.querySelector('[appendchild]');
-		if (appendchild) {
-			appendchild.scrollTop = appendchild.scrollHeight
-
-		}
-	}
-
-}
-// HẾT CLIENT_SEND_MESSAGE
-
-// SEVER_RETURN_MESSAGE
+// // SEVER_RETURN_MESSAGE
 socket.on("SEVER_RETURN_MESSAGE", (data) => {
 	const div = document.createElement('div');
 	div.classList.add('h-max')
@@ -121,7 +119,7 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 				}
 
 				htmlFullName = `
-					${htmlContent},
+					${htmlContent}
 					${htmlImage}
 					`
 			} else {

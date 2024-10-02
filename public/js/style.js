@@ -1,16 +1,3 @@
-var socket = io();
-
-const elementChat = document.querySelector('[element-chat]');
-if (elementChat) {
-	const form = elementChat.querySelector('form');
-	if(form){
-		form.addEventListener("submit", (event) => {
-			event.preventDefault();
-		})
-
-	}
-}
-
 const header = document.querySelector('header');
 let last = 0;
 if (header) {
