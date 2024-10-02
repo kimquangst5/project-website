@@ -1,4 +1,4 @@
-var socket = io("https://quangkim.vercel.app:3000")
+var socket = io("https://quangkim.vercel.app")
 
 const elementChat = document.querySelector('[element-chat]');
 if (elementChat) {
