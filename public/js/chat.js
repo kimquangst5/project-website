@@ -1,3 +1,5 @@
+import Popper from 'https://cdn.jsdelivr.net/npm/emoji-picker-element@1.22.8/+esm'
+
 // Typing
 var typingTimeOut;
 const elementChat = document.querySelector('[element-chat]');
