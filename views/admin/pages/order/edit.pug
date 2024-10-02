@@ -33,8 +33,11 @@ block main
 							div(class="flex items-center justify-center") 
 								img(src=it.image, alt=it.title class=`rounded-[7px] aspect-square object-top object-cover h-[50px]`)
 						td(class=`border-collapse border-[1px] border-text w-max`) #{it.quantity}
-						td(class=`border-collapse border-[1px] border-text`) #{it.priceOld}đ
 						td(class=`border-collapse border-[1px] border-text`) #{it.priceNew}đ
+						td(class=`border-collapse border-[1px] border-text`) #{it.totalPrice}đ
+				tr(class=`h-[50px]`)
+					td(colspan="4" class=`border-collapse border-[1px] border-text text-center font-bold text-xanh`) TỔNG CỘNG
+					td(colspan="1" class=`text-center font-bold text-chu`) #{order.totalPrice}đ
 	div(class="flex grid grid-cols-3 gap-[10px]")
 		+khung-table("Thông tin vận chuyển (Shipping Information)")
 			div(class="flex flex-col gap-[10px]")

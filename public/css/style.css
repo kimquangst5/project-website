@@ -27,3 +27,25 @@
 		opacity: 0.1;
 	}
 }
+
+.custom-file-container .input-container {
+	display: none;
+	height: 0px;
+}
+
+.custom-file-container .label-container {
+	display: none;
+}
+
+.custom-file-container .image-preview {
+	height: auto;
+	padding: 0;
+}
+
+.custom-file-container .image-preview-item {
+	height: 100px;
+	width: 100px;
+	aspect-ratio: 1/1;
+	object-fit: cover;
+	object-position: top;
+}

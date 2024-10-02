@@ -31,4 +31,8 @@ router.get('/phone', controller.phone)
 
 router.patch('/phone', controller.phonePatch)
 
+router.get('/money', controller.money)
+
+router.patch('/money', controller.moneyPatch)
+
 module.exports = router;

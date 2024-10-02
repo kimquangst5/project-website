@@ -1,5 +1,8 @@
 const Order = require("../../models/orders.model")
 const Product = require("../../models/product.model")
+const Money  =require("../../models/money.model")
+const moneySystem = require("../../utils/money-system.util")
+const money = require("../../utils/money.util")
 const moment = require('moment')
 // [GET] /order
 module.exports.index = async (req, res) => {
@@ -66,15 +69,27 @@ module.exports.edit = async (req, res) => {
 		} else {
 			it.priceNew = it.priceNew * 1000
 		}
+		it.totalPrice = (it.priceNew * it.quantity)
 		order.totalPrice += (it.priceNew * it.quantity)
 		it.priceNew = [it.priceNew].toLocaleString('en-EN')
 		it.priceOld = [it.price].toLocaleString('en-EN')
+		it.totalPrice = [it.totalPrice].toLocaleString('en-EN')
 		const product = await Product.findOne({
 			_id: it.productId
 		})
 		it.image  = product.thumbnail
 		it.title  = product.title
 	}
+
+	const moneys = await Money.find({});
+	if(moneys[0].separator == 'comma'){
+		order.totalPrice = moneySystem.phay(order.totalPrice)
+	}
+	else{
+		order.totalPrice = moneySystem.cham(order.totalPrice)
+	}
+
+
 	res.render("admin/pages/order/edit.pug", {
 		pageTitle: "Chỉnh sửa đơn hàng",
 		order: order

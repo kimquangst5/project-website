@@ -34,8 +34,7 @@ socket.on("SERVER_RETURN_TYPING", (data) => {
 				listTyping.appendChild(boxTyping)
 			}
 		}
-	}
-	else {
+	} else {
 		const deleted = listTyping.querySelector(`[user-id = "${data.userId}"]`)
 		if (deleted) {
 			listTyping.removeChild(deleted)
@@ -53,13 +52,28 @@ socket.on("SERVER_RETURN_TYPING", (data) => {
 
 const formChat = document.querySelector('[form-chat]');
 if (formChat) {
+	new Viewer(formChat)
+	const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-many-images', {
+		multiple: true,
+		maxFileCount: 6
+	});
+
+
 	formChat.addEventListener("submit", (event) => {
 		event.preventDefault();
-		const message = event.target.elements[0].value;
-		if (event.target.elements[0].value) {
-			socket.emit("CLIENT_SEND_MESSAGE", message)
+
+		console.log(upload.cachedFileArray)
+		const message = event.target.elements[0].value || '';
+		const imgaes = upload.cachedFileArray
+		if (message || imgaes.length > 0) {
+			socket.emit("CLIENT_SEND_MESSAGE", {
+				message,
+				imgaes
+			})
 		}
 		event.target.elements[0].value = ''
+		upload.resetPreviewPanel(); // clear all selected images
+
 		socket.emit("CLIENT_SEND_TYPING", "hidden")
 	});
 }
@@ -75,23 +89,50 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 	if (formChat) {
 		const userId = formChat.getAttribute('form-chat');
 		let htmlFullName = "";
+		let htmlContent = '';
+		let htmlImage = '';
+
 		if (userId) {
-			console.log(userId)
-			console.log(data.userId)
 			const appendchild = formChat.querySelector('[appendchild]');
 			if (userId == data.userId) {
 				div.classList.add('ml-auto')
+				console.log(data)
+				if (data.content) {
+					htmlContent = `<div class="text-justify text-wrap bg-[#F5F5F5] rounded-[8px] p-[10px]">${data.content}</div>`
+				}
+
+				if (data.images.length > 0) {
+					htmlImage += `<div class="flex gap-[10px] justify-end">`
+					for (const image of data.images) {
+						htmlImage += `<img class="h-[50px] aspect-square rounded-[10px] cursor-pointer" src="${image}" alt="Kim Quang | Preview Ảnh">`
+					}
+					htmlImage += `</div>`
+				}
+
 				htmlFullName = `
-					<div class="text-justify text-wrap bg-[#F5F5F5] rounded-[8px] p-[10px]">${data.content}</div>
-				`
+					${htmlContent},
+					${htmlImage}
+					`
 			} else {
+				if (data.content) {
+					htmlContent = `<div class="rounded-[8px] bg-[#F1556A] text-[white] text-justify px-[10px] py-[4px]">${data.content}</div>`
+				}
+				if (data.images.length > 0) {
+					htmlImage += `<div class="flex gap-[10px]">`
+					for (const image of data.images) {
+						htmlImage += `<img class="h-[50px] aspect-square rounded-[10px] cursor-pointer" src="${image}" alt="Kim Quang | Preview Ảnh">`
+					}
+					htmlImage += `</div>`
+				}
 				htmlFullName = `
 					<div class="font-bold text-[14px]">${data.fullName}</div>
-					<div class="rounded-[8px] bg-[#F1556A] text-[white] text-justify px-[10px] py-[4px]">${data.content}</div>
+					${htmlContent}
+					${htmlImage}
 				`
 			}
 			div.innerHTML = htmlFullName
 			appendchild.appendChild(div)
+			new Viewer(div)
 			if (userId == data.userId) {
 				appendchild.scrollTop = appendchild.scrollHeight
 			}
@@ -117,11 +158,29 @@ if (emojiPicker) {
 
 const iconFaceSmile = formChat.querySelector("[icon-face-smile]");
 if (iconFaceSmile) {
-	const tooltip = formChat.querySelector('.tooltip');
+	const tooltip = formChat.querySelector(`[role="tooltip"]`);
 	Popper.createPopper(iconFaceSmile, tooltip);
-	tooltip.classList.toggle('hidden');
+	// tooltip.classList.toggle('hidden');
 	iconFaceSmile.addEventListener("click", () => {
-		tooltip.classList.toggle('shown');
+		// tooltip.classList.toggle('shown');
 		tooltip.classList.toggle('hidden');
+	});
+}
+
+const iconUpImage = formChat.querySelector('[icon-up-image]');
+if(iconUpImage){
+	const input = formChat.querySelector(`input#file-upload-with-preview-upload-many-images`)
+	const dataUploadId = formChat.querySelector("[data-upload-id='upload-many-images']");
+	new Viewer(dataUploadId)
+	const lable = dataUploadId.querySelector('.label-container');
+	const inputcontai = dataUploadId.querySelector('.input-container');
+	if(inputcontai && lable){
+		lable.classList.add('hidden');
+		inputcontai.classList.add('hidden');
+	}
+	iconUpImage.addEventListener('click', () => {
+		if(input){
+			input.click();
+		}
 	});
 }

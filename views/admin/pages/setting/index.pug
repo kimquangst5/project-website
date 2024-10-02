@@ -31,16 +31,16 @@ block main
 		+khung-table("Bán hàng")
 			div(class="flex grid grid-cols-4")
 				+box-setting('fa-solid fa-dice-d6', `/${admin}/product`, 'Sản phẩm', 'Thiết lập cấu hình sản phẩm')
-				+box-setting('fa-solid fa-basket-shopping', `/${admin}/accounts`, 'Đơn hàng', 'Thiết lập cấu hình đơn hàng')
-				+box-setting('fa-solid fa-print', `/${admin}/accounts`, 'Mẫu in', 'Thiết lập cấu hình mẫu in')
-				+box-setting('fa-solid fa-cart-flatbed-boxes', `/${admin}/accounts`, 'Nguồn đơn hàng', 'Thêm và quản lí nguồn tạo ra đơn hàng')
-				+box-setting('fa-solid fa-truck', `/${admin}/accounts`, 'Vận chuyển', 'Cấu hình giá và phương thức vận chuyển')
-				+box-setting('fa-solid fa-truck-fast', `/${admin}/accounts`, 'Hãng vận chuyển', 'Thiết lập hãng vận chuyển')
+				+box-setting('fa-solid fa-basket-shopping', `/${admin}/order`, 'Đơn hàng', 'Thiết lập cấu hình đơn hàng')
+				+box-setting('fa-solid fa-print', `/${admin}/dashboard`, 'Mẫu in', 'Thiết lập cấu hình mẫu in')
+				+box-setting('fa-solid fa-cart-flatbed-boxes', `/${admin}/dashboard`, 'Nguồn đơn hàng', 'Thêm và quản lí nguồn tạo ra đơn hàng')
+				+box-setting('fa-solid fa-truck', `/${admin}/dashboard`, 'Vận chuyển', 'Cấu hình giá và phương thức vận chuyển')
+				+box-setting('fa-solid fa-truck-fast', `/${admin}/dashboard`, 'Hãng vận chuyển', 'Thiết lập hãng vận chuyển')
 		
 		+khung-table("Tiền tệ")
 			div(class="flex grid grid-cols-4")
-				+box-setting('fa-solid fa-money-bills', `/${admin}/accounts`, 'Tiền tệ', 'Thiết lập tiền tệ của hệ thống')
-				+box-setting('fas fa-landmark', `/${admin}/accounts`, 'Cổng thanh toán', 'Thiết lập cổng thanh toán')
+				+box-setting('fa-solid fa-money-bills', `/${admin}/dashboard/money`, 'Tiền tệ', 'Thiết lập tiền tệ của hệ thống')
+				+box-setting('fas fa-landmark', `/${admin}/dashboard`, 'Cổng thanh toán', 'Thiết lập cổng thanh toán')
 
 
 		+khung-table("Tài khoản")

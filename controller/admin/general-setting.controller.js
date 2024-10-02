@@ -1,6 +1,7 @@
 const InfoWebsite = require("../../models/info-website.model")
 const Email = require("../../models/email.model")
 const Phone = require("../../models/phone.model")
+const Money = require("../../models/money.model")
 
 // [GET] /dashboard
 module.exports.index = (req, res) => {
@@ -89,4 +90,35 @@ module.exports.phonePatch =  async (req, res)=> {
 	}
 	req.flash("success", "Cập nhật thành công")
 	res.redirect('back');
+}
+
+// [GET] /dashboard/money
+module.exports.money =  async (req, res)=> {
+	const moneys = await Money.find({});
+	res.render("admin/pages/setting/money/index.pug", {
+		pageTitle: "Cấu hình tiền tệ",
+		moneys: moneys[0]
+	})
+}
+
+// [PATCH] /dashboard/money
+module.exports.moneyPatch =  async (req, res)=> {
+	const separator = req.body.separator
+	console.log(separator)
+	const moneys = await Money.find({});
+	if(moneys.length == 0){
+		const newMoney = new Money({
+			separator: separator
+		})
+		await newMoney.save();
+	}
+	else{
+		await Money.updateOne(moneys[0], {
+			separator: separator
+		})
+	}
+
+	req.flash("success", "Cập nhật thành công!");
+	res.redirect('back')
+
 }
