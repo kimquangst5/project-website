@@ -7,9 +7,16 @@ const bodyParser = require('body-parser');
 
 // SOKET IO
 const http = require('http');
-const { Server } = require("socket.io");
+const {
+	Server
+} = require("socket.io");
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+	cors: {
+		origin: "https://quangkim.vercel.app/", // hoặc URL của frontend
+		methods: ["GET", "POST"]
+	}
+});
 global.io = io
 // HẾT SOCKET IO
 
