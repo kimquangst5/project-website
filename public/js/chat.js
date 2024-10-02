@@ -2,7 +2,8 @@ import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm
 
 // Typing
 var typingTimeOut;
-const input = document.querySelector(`input[type="text"][name="content"]`);
+const elementChat = document.querySelector('[element-chat]');
+const input = elementChat.querySelector(`form input`);
 if (input) {
 	input.addEventListener("input", (event) => {
 		socket.emit("CLIENT_SEND_TYPING", "show")
@@ -16,7 +17,7 @@ if (input) {
 }
 
 
-const listTyping = document.querySelector('[list-typing]');
+const listTyping = elementChat.querySelector('[list-typing]');
 socket.on("SERVER_RETURN_TYPING", (data) => {
 	const checkExsit = listTyping.querySelector(`[user-id = "${data.userId}"]`)
 
@@ -48,36 +49,38 @@ socket.on("SERVER_RETURN_TYPING", (data) => {
 // CLIENT_SEND_MESSAGE
 
 
-const formChat = document.querySelector('[form-chat]');
-if (formChat) {
-	new Viewer(formChat)
+if (elementChat) {
+	new Viewer(elementChat)
 	const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-many-images', {
 		multiple: true,
 		maxFileCount: 6
 	});
 
+	const form = elementChat.querySelector("form");
+	if (form) {
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
 
-	formChat.addEventListener("submit", (event) => {
-		event.preventDefault();
+			const message = event.target.elements[0].value || '';
+			const imgaes = upload.cachedFileArray
+			if (message || imgaes.length > 0) {
+				socket.emit("CLIENT_SEND_MESSAGE", {
+					message,
+					imgaes
+				})
+			}
+			event.target.elements[0].value = ''
+			upload.resetPreviewPanel(); // clear all selected images
 
-		const message = event.target.elements[0].value || '';
-		const imgaes = upload.cachedFileArray
-		if (message || imgaes.length > 0) {
-			socket.emit("CLIENT_SEND_MESSAGE", {
-				message,
-				imgaes
-			})
+			socket.emit("CLIENT_SEND_TYPING", "hidden")
+		});
+		const appendchild = elementChat.querySelector('[appendchild]');
+		if (appendchild) {
+			appendchild.scrollTop = appendchild.scrollHeight
+
 		}
-		event.target.elements[0].value = ''
-		upload.resetPreviewPanel(); // clear all selected images
-
-		socket.emit("CLIENT_SEND_TYPING", "hidden")
-	});
-	const appendchild = formChat.querySelector('[appendchild]');
-	if (appendchild) {
-		appendchild.scrollTop = appendchild.scrollHeight
-
 	}
+
 }
 // HẾT CLIENT_SEND_MESSAGE
 
@@ -87,28 +90,30 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 	div.classList.add('h-max')
 	div.classList.add('w-1/2')
 	div.classList.add('p-[5px]')
-	const formChat = document.querySelector('[form-chat]');
-	if (formChat) {
-		const userId = formChat.getAttribute('form-chat');
+	const elementChat = document.querySelector('[element-chat]');
+	if (elementChat) {
+		const userId = elementChat.getAttribute('element-chat');
 		let htmlFullName = "";
 		let htmlContent = '';
 		let htmlImage = '';
 
 		if (userId) {
-			const appendchild = formChat.querySelector('[appendchild]');
+			const appendchild = elementChat.querySelector('[appendchild]');
 			if (userId == data.userId) {
 				div.classList.add('ml-auto')
 				console.log(data)
 				if (data.content) {
 					htmlContent = `<div class="text-justify text-wrap bg-[#F5F5F5] rounded-[8px] p-[10px]">${data.content}</div>`
 				}
-
-				if (data.images.length > 0) {
-					htmlImage += `<div class="flex gap-[10px] justify-end">`
-					for (const image of data.images) {
-						htmlImage += `<img class="h-[50px] aspect-square rounded-[10px] cursor-pointer" src="${image}" alt="Kim Quang | Preview Ảnh">`
+				if(data.images){
+					if (data.images.length > 0) {
+						htmlImage += `<div class="flex gap-[10px] justify-end">`
+						for (const image of data.images) {
+							htmlImage += `<img class="h-[50px] aspect-square rounded-[10px] cursor-pointer" src="${image}" alt="Kim Quang | Preview Ảnh">`
+						}
+						htmlImage += `</div>`
 					}
-					htmlImage += `</div>`
+
 				}
 
 				htmlFullName = `
@@ -147,36 +152,47 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 const emojiPicker = document.querySelector('emoji-picker');
 if (emojiPicker) {
 	emojiPicker.addEventListener('emoji-click', (event) => {
-		const formChat = document.querySelector('[form-chat]');
-		if (formChat) {
-			const input = formChat.querySelector(`input`);
-			if (input) {
-				input.value = input.value + event.detail.unicode
+		const elementChat = document.querySelector('[element-chat]');
+		if (elementChat) {
+			const form = elementChat.querySelector('form')
+			if (form) {
+				const input = form.querySelector(`input`);
+				if (input) {
+					input.value = input.value + event.detail.unicode
+				}
+
 			}
 		}
 
 	});
 }
 
-if(formChat){
-	const iconFaceSmile = formChat.querySelector("[icon-face-smile]");
-	if (iconFaceSmile) {
-		const tooltip = formChat.querySelector(`[role="tooltip"]`);
-		Popper.createPopper(iconFaceSmile, tooltip);
-		// tooltip.classList.toggle('hidden');
-		iconFaceSmile.addEventListener("click", () => {
-			// tooltip.classList.toggle('shown');
-			tooltip.classList.toggle('hidden');
-		});
+if (elementChat) {
+	const form = elementChat.querySelector('form')
+	if (form) {
+		const iconFaceSmile = form.querySelector("[icon-face-smile]");
+		if (iconFaceSmile) {
+			const tooltip = elementChat.querySelector(`[role="tooltip"]`);
+			Popper.createPopper(iconFaceSmile, tooltip);
+			// tooltip.classList.toggle('hidden');
+			iconFaceSmile.addEventListener("click", () => {
+				// tooltip.classList.toggle('shown');
+				if(tooltip){
+					tooltip.classList.toggle('hidden');
+
+				}
+			});
+		}
 	}
+
 }
 
 
-if (formChat) {
-	const iconUpImage = formChat.querySelector('[icon-up-image]');
+if (elementChat) {
+	const iconUpImage = elementChat.querySelector('[icon-up-image]');
 	if (iconUpImage) {
-		const input = formChat.querySelector(`input#file-upload-with-preview-upload-many-images`)
-		const dataUploadId = formChat.querySelector("[data-upload-id='upload-many-images']");
+		const input = elementChat.querySelector(`input#file-upload-with-preview-upload-many-images`)
+		const dataUploadId = elementChat.querySelector("[data-upload-id='upload-many-images']");
 		new Viewer(dataUploadId)
 		const lable = dataUploadId.querySelector('.label-container');
 		const inputcontai = dataUploadId.querySelector('.input-container');

@@ -49,3 +49,10 @@
 	object-fit: cover;
 	object-position: top;
 }
+
+[data-popper-placement]{
+	position: absolute;
+	inset: 0 !important;
+	transform: 0 !important;
+	left: 0 !important;
+}
