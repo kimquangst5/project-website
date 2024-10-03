@@ -77,9 +77,12 @@ router.get('/reset-password', controller.resetPassword)
 
 router.patch('/reset-password', controller.resetPasswordPatch)
 
-router.get('/not-friend', controller.notFriend)
+router.get('/not-friend', userMiddlewares.requireAuth, controller.notFriend)
 
+router.get('/request', userMiddlewares.requireAuth, controller.request)
 
+router.get('/accept', userMiddlewares.requireAuth, controller.accept)
 
+router.get('/friend', userMiddlewares.requireAuth, controller.friend)
 
 module.exports = router

@@ -1,3 +1,6 @@
+import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
+
+
 const elementChat = document.querySelector('[element-chat]');
 
 // Typing
@@ -151,44 +154,43 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 // SEVER_RETURN_MESSAGE
 
 
-// const emojiPicker = document.querySelector('emoji-picker');
-// if (emojiPicker) {
-// 	emojiPicker.addEventListener('emoji-click', (event) => {
-// 		const elementChat = document.querySelector('[element-chat]');
-// 		if (elementChat) {
-// 			const form = elementChat.querySelector('form')
-// 			if (form) {
-// 				const input = form.querySelector(`input`);
-// 				if (input) {
-// 					input.value = input.value + event.detail.unicode
-// 				}
+const emojiPicker = document.querySelector('emoji-picker');
+if (emojiPicker) {
+	emojiPicker.addEventListener('emoji-click', (event) => {
+		const elementChat = document.querySelector('[element-chat]');
+		if (elementChat) {
+			const form = elementChat.querySelector('form')
+			if (form) {
+				const input = form.querySelector(`input`);
+				if (input) {
+					input.value = input.value + event.detail.unicode
+				}
 
-// 			}
-// 		}
+			}
+		}
 
-// 	});
-// }
+	});
+}
 
-// import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
-// if (elementChat) {
-// 	const form = elementChat.querySelector('form')
-// 	if (form) {
-// 		const iconFaceSmile = form.querySelector("[icon-face-smile]");
-// 		if (iconFaceSmile) {
+if (elementChat) {
+	const form = elementChat.querySelector('form')
+	if (form) {
+		const iconFaceSmile = form.querySelector("[icon-face-smile]");
+		if (iconFaceSmile) {
 
-// 			const tooltip = elementChat.querySelector(`[role="tooltip"]`);
-// 			Popper.createPopper(iconFaceSmile, tooltip);
-// 			// tooltip.classList.toggle('hidden');
-// 			iconFaceSmile.addEventListener("click", () => {
-// 				// tooltip.classList.toggle('shown');
-// 				if (tooltip) {
-// 					tooltip.classList.toggle('hidden');
-// 				}
-// 			});
-// 		}
-// 	}
+			const tooltip = elementChat.querySelector(`[role="tooltip"]`);
+			Popper.createPopper(iconFaceSmile, tooltip);
+			// tooltip.classList.toggle('hidden');
+			iconFaceSmile.addEventListener("click", () => {
+				// tooltip.classList.toggle('shown');
+				if (tooltip) {
+					tooltip.classList.toggle('hidden');
+				}
+			});
+		}
+	}
 
-// }
+}
 
 
 if (elementChat) {

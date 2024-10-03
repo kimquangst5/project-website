@@ -325,13 +325,13 @@ module.exports.otp = async (req, res) => {
 		const user = await User.findOne({
 			email: email
 		})
-	
+
 		if (!user) {
 			req.flash("error", "Email không tồn tại!!!");
 			res.redirect("back");
 			return;
 		}
-	
+
 		res.render("client/pages/user/otp.pug", {
 			pageTitle: "Nhập mã OTP",
 			user: user
@@ -845,13 +845,13 @@ module.exports.resetPasswordPatch = async (req, res) => {
 	console.log(old)
 	console.log(pass)
 	console.log(again)
-	if(!req.body.passwordOld || !req.body.passwordNew || !req.body.confirmPassword){
+	if (!req.body.passwordOld || !req.body.passwordNew || !req.body.confirmPassword) {
 		req.flash("error", "Dữ liệu trống");
 		res.redirect("back");
 		return;
 	}
 
-	if(pass != again){
+	if (pass != again) {
 		req.flash("error", "Xác nhận mật khẩu không giống!");
 		res.redirect("back");
 		return;
@@ -860,13 +860,13 @@ module.exports.resetPasswordPatch = async (req, res) => {
 	const passold = await User.findOne({
 		tokenUser: req.cookies.tokenUser
 	})
-	if(!passold){
+	if (!passold) {
 		req.flash("error", "Vui lòng đăng nhập!");
 		res.redirect("back");
 		return;
 	}
 
-	if(md5(old) != passold.password){
+	if (md5(old) != passold.password) {
 		req.flash("error", "Mật khẩu cũ không đúng!");
 		res.redirect("back");
 		return;
@@ -882,13 +882,35 @@ module.exports.resetPasswordPatch = async (req, res) => {
 	res.redirect("/");
 }
 
+// $ne: not equal
+// $nin: not equal
+// $and
 // [GET] /member/not-friend
 module.exports.notFriend = async (req, res) => {
 	userSocket(req, res);
 
-	
+	const requestFriends = res.locals.infoUser.requestFriends
+	const acceptFriends = res.locals.infoUser.acceptFriends
+
 	const users = await User.find({
-		_id: { $ne: res.locals.infoUser },
+
+		$and: [{
+				_id: {
+					$ne: res.locals.infoUser
+				}
+			},
+			{
+				_id: {
+					$nin: requestFriends
+				}
+			},
+			{
+				_id: {
+					$nin: acceptFriends
+				}
+			},
+
+		],
 		deleted: false,
 		status: 'active'
 	})
@@ -896,6 +918,94 @@ module.exports.notFriend = async (req, res) => {
 
 	res.render("client/pages/user/friend/not friend.pug", {
 		pageTitle: "Danh sách người dùng",
+		users: users
+	})
+}
+
+// $ne: not equal
+// $nin: not equal
+// $and
+// [GET] /member/request
+module.exports.request = async (req, res) => {
+	userSocket(req, res);
+
+	const requestFriends = res.locals.infoUser.requestFriends
+	const acceptFriends = res.locals.infoUser.acceptFriends
+	const users = await User.find({
+		_id: {
+			$in: requestFriends
+		},
+		deleted: false,
+		status: 'active'
+		// $and: [
+		// 	{ _id: { $ne: res.locals.infoUser } },
+		// 	{ _id: { $nin: requestFriends } },
+		// 	{ _id: { $nin: acceptFriends } },
+		// ],
+
+	})
+
+
+	res.render("client/pages/user/friend/request.pug", {
+		pageTitle: "Lời mời đã gửi",
 		users
 	})
 }
+
+
+// $ne: not equal
+// $nin: not equal
+// $and
+// [GET] /member/request
+module.exports.accept = async (req, res) => {
+	userSocket(req, res);
+
+	const requestFriends = res.locals.infoUser.requestFriends
+	const acceptFriends = res.locals.infoUser.acceptFriends
+	const users = await User.find({
+		_id: {
+			$in: acceptFriends
+		},
+		deleted: false,
+		status: 'active'
+		// $and: [
+		// 	{ _id: { $ne: res.locals.infoUser } },
+		// 	{ _id: { $nin: requestFriends } },
+		// 	{ _id: { $nin: acceptFriends } },
+		// ],
+
+	})
+
+
+	res.render("client/pages/user/friend/accept.pug", {
+		pageTitle: "Lời mời đã nhận",
+		users: users
+	})
+}
+
+
+// $ne: not equal
+// $nin: not equal
+// $and
+// [GET] /member/request
+module.exports.friend = async (req, res) => {
+	userSocket(req, res);
+
+	const requestFriends = res.locals.infoUser.requestFriends
+	const acceptFriends = res.locals.infoUser.acceptFriends
+	const friendsList = res.locals.infoUser.friendsList
+	const users = await User.find({
+		_id: {
+			$in: friendsList
+		}
+	})
+
+
+	res.render("client/pages/user/friend/friend.pug", {
+		pageTitle: "Danh sách bạn bè",
+		users: users
+	})
+}
+
+
+

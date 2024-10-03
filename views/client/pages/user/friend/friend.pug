@@ -1,0 +1,15 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/dieu-huong.pug
+
+block main
+	+dieu-huong("Lời mời đã nhận")
+
+	include ../../../partials/friend-btn.pug
+
+	div(class="")
+		div(class="container")
+			each it in users
+				div(class="" box-user)
+					div(class="") #{it.fullName}
+					button() Nhắn tin
+					button() Xóa
