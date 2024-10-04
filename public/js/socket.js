@@ -17,6 +17,9 @@ if(elementChat){
 				socket.emit("CLIENT_SEND_TYPING", "hidden")
 			}, 3000);
 		});
+		input.addEventListener("blur", (event) => {
+			socket.emit("CLIENT_SEND_TYPING", "hidden")
+		});
 	}
 }
 // Hết Typing
@@ -91,6 +94,7 @@ if(elementChat){
 
 // // SEVER_RETURN_MESSAGE
 socket.on("SEVER_RETURN_MESSAGE", (data) => {
+	console.log(data)
 	const div = document.createElement('div');
 	div.classList.add('h-max')
 	div.classList.add('w-1/2')
@@ -106,7 +110,6 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 			const appendchild = elementChat.querySelector('[appendchild]');
 			if (userId == data.userId) {
 				div.classList.add('ml-auto')
-				console.log(data)
 				if (data.content) {
 					htmlContent = `<div class="text-justify text-wrap bg-[#F5F5F5] rounded-[8px] p-[10px]">${data.content}</div>`
 				}
@@ -129,19 +132,23 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 				if (data.content) {
 					htmlContent = `<div class="rounded-[8px] bg-[#F1556A] text-[white] text-justify px-[10px] py-[4px]">${data.content}</div>`
 				}
-				if (data.images.length > 0) {
-					htmlImage += `<div class="flex gap-[10px]">`
-					for (const image of data.images) {
-						htmlImage += `<img class="h-[50px] aspect-square rounded-[10px] cursor-pointer" src="${image}" alt="Kim Quang | Preview Ảnh">`
+				if(data.images){
+					if (data.images.length > 0) {
+						htmlImage += `<div class="flex gap-[10px]">`
+						for (const image of data.images) {
+							htmlImage += `<img class="h-[50px] aspect-square rounded-[10px] cursor-pointer" src="${image}" alt="Kim Quang | Preview Ảnh">`
+						}
+						htmlImage += `</div>`
 					}
-					htmlImage += `</div>`
 				}
+				
 				htmlFullName = `
 					<div class="font-bold text-[14px]">${data.fullName}</div>
 					${htmlContent}
 					${htmlImage}
 				`
 			}
+			console.log(htmlFullName)
 			div.innerHTML = htmlFullName
 			appendchild.appendChild(div)
 			new Viewer(div)
@@ -212,3 +219,4 @@ if (elementChat) {
 		});
 	}
 }
+

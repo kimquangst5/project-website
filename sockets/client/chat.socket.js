@@ -3,11 +3,12 @@ const streamUpload = require("../../utils/streamUpload.util")
 
 
 module.exports = (req, res) => {
+	const roomChatId = req.params.roomChatId
 	io.once('connection', async (socket) => {
 		console.log('Có 1 người dùng đã kết nối', socket.id);
-
+		socket.join(roomChatId);
 		socket.on("CLIENT_SEND_TYPING", (typing) => {
-			socket.broadcast.emit("SERVER_RETURN_TYPING", {
+			socket.broadcast.to(roomChatId).emit("SERVER_RETURN_TYPING", {
 				userId: res.locals.infoUser.id,
 				fullName: res.locals.infoUser.fullName,
 				type: typing
@@ -18,7 +19,8 @@ module.exports = (req, res) => {
 			console.log(data)
 			const chatData = {
 				userId: res.locals.infoUser.id,
-				content: data.message
+				content: data.message,
+				roomChatId: roomChatId
 			}
 
 			let listLinkImages = [];
@@ -36,7 +38,7 @@ module.exports = (req, res) => {
 			await newChats.save();
 
 			// Trả tin NHẮN về cho mọi người
-			io.emit("SEVER_RETURN_MESSAGE", {
+			io.to(roomChatId).emit("SEVER_RETURN_MESSAGE", {
 				userId: res.locals.infoUser.id,
 				fullName: res.locals.infoUser.fullName,
 				content: data.message,

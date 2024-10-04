@@ -1,12 +1,12 @@
 extends ../../layouts/default.pug
 include ../../mixins/dieu-huong.pug
+include ../../mixins/friend-btn.pug
 
 
 block main
 	+dieu-huong("Nhắn tin")
 
-	include ../../partials/friend-btn.pug
-
+	+friend-btn(infoUser)
 	div(class="my-[10px]")
 		div(class="container")
 			div(class="h-auto relative rounded-[10px] p-[10px] duration-1000" element-chat = infoUser.id)

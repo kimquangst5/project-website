@@ -1,23 +1,28 @@
 include ../mixins/alear.pug
+include ../mixins/header.pug
+include ../mixins/footer.pug
+include ../mixins/copyright.pug
+include ../mixins/shopping-cart.pug
+
 doctype html
-html(lang="vi")
+html(lang=`vi`)
 	head
-		meta(charset="UTF-8")
-		link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/file-upload-with-preview@6.1.2/dist/style.min.css")
-		meta(name="viewport", content="width=device-width, initial-scale=1.0")
-		meta(property="og:image" content="/media/logo/LOGO.png")
-		meta(name="author", content="Trần Kim Quang")
-		meta(name="twitter:image" content="/media/logo/LOGO.png")
+		meta(charset=`UTF-8`)
+		meta(name=`viewport`, content=`width=device-width, initial-scale=1.0`)
+		meta(property=`og:image` content=`/media/logo/LOGO.png`)
+		meta(name=`author`, content=`Trần Kim Quang`)
+		meta(name=`twitter:image` content=`/media/logo/LOGO.png`)
 
-		link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css")
-		link(rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css")
-		link(href="/media/logo/logo.svg", rel="icon", type="image/x-icon")
+		link(rel=`stylesheet`, href=`https://cdn.jsdelivr.net/npm/file-upload-with-preview@6.1.2/dist/style.min.css`)
+		link(rel=`stylesheet`, href=`https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css`)
+		link(rel=`stylesheet` href=`https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css`)
+		link(href=`/media/logo/logo.svg`, rel=`icon`, type=`image/x-icon`)
 
-		link(rel="stylesheet", href="/css/style.css")
-		link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css")
+		link(rel=`stylesheet`, href=`/css/style.css`)
+		link(rel=`stylesheet`, href=`https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css`)
 
-		script(src="https://cdn.tailwindcss.com/")
-		script(src="/tailwind.config.js")
+		script(src=`https://cdn.tailwindcss.com/`)
+		script(src=`/tailwind.config.js`)
 
 		title #{pageTitle}
 
@@ -25,66 +30,36 @@ html(lang="vi")
 		+alert-success(2000)
 		+alert-error(2000)
 
-		div(class="fixed w-screen h-screen hidden  truncate z-[100] flex justify-end items-center w-100 duration-1000 bg-[black]/40 truncate" list-cart)
-			div(class="bg-[white]/80 p-[20px] mr-[-80px] opacity-0 duration-1000 rounded-[10px] shadow-2xl shadow-cyan-500/50 w-1/3 h-full ")
-				div(class="flex justify-between items-center py-[10px]") 
-					div(class="uppercase font-bold text-[#333333]") Giỏ hàng của bạn
-					//- div(class="bg-chu text-[white] rounded-[100%] w-[30px] h-[30px] text-[15px] cursor-pointer flex items-center justify-center" exsit)
-					//- 	div(class="") x
-				div(class="flex flex-col gap-y-[10px] h-3/5 overflow-y-auto scroll-auto scrollbar") 
-					each it in shoopings_cart
-						div(class="flex p-[10px] items-center gap-x-[15px] grid grid-cols-5 bg-[white] rounded-[8px]")
-							a(href=`/product/detail/${it.slug}` class="col-span-1") 
-								img(src=it.thumbnail, alt=it.title class=`w-full h-auto object-cover object-top aspect-square rounded-[7px]`)
-							div(class="col-span-4 flex flex-col justify-between h-full text-left grow w-full")
-								a(href=`/product/detail/${it.slug}` class="hover:text-chu line-clamp-1 duration-500 font-bold text-[#333333] text-[15px] text-wrap") #{it.title}
-								div(class="flex items-center gap-[5px] text-[15px]")
-									//- div(class="text-[#333333]")  Số lượng:
-									div(class="font-bold text-[#333333]") #{it.quanlityProduct}
-									div(class="text-[12px]") x
-									div(class="font-bold text-xanh")  #{it.priceOrigin}
-								div(class="font-bold text-[16px] text-do" priceTotal = it.newPrice) #{it.priceItem}
-									span đ
-				div(class="flex justify-between items-center py-[20px]")
-					div(class="text-[#333333] font-bold") Giá tạm tính:
-					div(class="text-do font-bold text-[20px]") #{shoopings_cart.totalPrice}
-						sup đ
-				div(class="flex items-center justify-center flex-col gap-[10px]")
-					a(href="/order/cart-info" class=`border-[1px] text-chu border-chu rounded-[7px] text-[18px] font-bold text-center text-[#333333] px-[15px] w-1/2 py-[20px]`) Xem giỏ hàng
 
-					a(href="/payment" class=`bg-chu rounded-[7px] text-[18px] font-bold text-center text-[white] px-[15px] w-1/2 py-[20px]`) Thanh toán ngay
-					
-				
+		+header(infoWeb)
+		+shopping-cart(shoopings_cart)
 		include ../partials/box-login.pug
 
-		include ../partials/header.pug
 		block main
 
-		a(href="/chat" class="fixed bottom-[30px] right-[30px] aspect-square")
-			span(class="animate-ping absolute inline-flex aspect-square w-full place-content-center rounded-full bg-sky-400 opacity-75")
-			span(class="relative inline-flex rounded-full aspect-square place-content-center bg-[#DA0808]")
-				div(class="flex flex-col place-content-center justify-center px-[10px] text-[white] gap-[5px]")
+		+footer(infoWeb)
+		+copyright(infoWeb)
+		
+		a(href=`/chat` class=`fixed bottom-[30px] right-[30px] aspect-square`)
+			span(class=`animate-ping absolute inline-flex aspect-square w-full place-content-center rounded-full bg-sky-400 opacity-75`)
+			span(class=`relative inline-flex rounded-full aspect-square place-content-center bg-[#DA0808]`)
+				div(class=`flex flex-col place-content-center justify-center px-[10px] text-[white] gap-[5px]`)
 					i(class=`fa-solid fa-message-dots mx-auto`)
-					div(class="text-[10px]") Liên hệ
-		- if(infoWeb.copyRight)
-			div(class="")
-				div(class="container")
-					div(class="bg-[#F5F5F5] border-t-[#333333] border-t-[1px] relative h-[50px]") 
-						div(class="flex text-center justify-center text-[#333333] items-center py-[20px]") #{infoWeb.copyRight}
-		
-		
-		script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11") 
+					div(class=`text-[10px]`) Liên hệ
+
+
+		script(src=`https://cdn.jsdelivr.net/npm/sweetalert2@11`) 
 		
 
 
-		script(type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js")
-		script(src="https://cdn.jsdelivr.net/npm/file-upload-with-preview@6.1.2/dist/index.iife.min.js")
+		script(type=`module` src=`https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js`)
+		script(src=`https://cdn.jsdelivr.net/npm/file-upload-with-preview@6.1.2/dist/index.iife.min.js`)
 
-		script(src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js") 
+		script(src=`https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js`) 
 
-		script(src="https://cdn.socket.io/4.7.2/socket.io.min.js")
+		script(src=`https://cdn.socket.io/4.7.2/socket.io.min.js`)
 		script.
 			var socket = io()
-		script(src="/js/style.js")
-		script(type="module" src="/js/socket.js")
-		script(type="module" src="/js/user.js")
+		script(src=`/js/style.js`)
+		script(type=`module` src=`/js/socket.js`)
+		script(type=`module` src=`/js/user.js`)

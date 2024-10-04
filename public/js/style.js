@@ -630,6 +630,7 @@ if (boxShowMenuProfile) {
 	const next = boxShowMenuProfile.nextElementSibling;
 	if (next) {
 		boxShowMenuProfile.addEventListener('click', () => {
+			next.classList.toggle('hidden')
 			next.classList.toggle('mt-[50px]')
 			setTimeout(() => {
 				next.classList.toggle('opacity-0')

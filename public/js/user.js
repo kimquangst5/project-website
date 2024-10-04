@@ -52,3 +52,43 @@ if(boxUser.length > 0){
 		}
 	});
 }
+
+socket.on("SEVER_RETURN_REQUEST_LENGTH", (data) => {
+	console.log(data)
+	const idData = data.id
+	const lengthData = data.length
+	if(data){
+		const lisFriend = document.querySelector('[list-friend]');
+		if(lisFriend) {
+			const idRequestEle =  lisFriend.querySelector('[id-request]');
+			if(idRequestEle){
+				const idRequest = idRequestEle.getAttribute('id-request');
+				if(idRequest){
+					if(idRequest == idData){
+						idRequestEle.innerHTML = lengthData
+					}
+				}
+			}
+		}
+	}
+})
+
+socket.on("SEVER_RETURN_ACCEPT_LENGTH", (data) => {
+	console.log(data)
+	const idData = data.id
+	const lengthData = data.length
+	if(data){
+		const lisFriend = document.querySelector('[list-friend]');
+		if(lisFriend) {
+			const idAcceptEle =  lisFriend.querySelector('[id-accept]');
+			if(idAcceptEle){
+				const idAccept = idAcceptEle.getAttribute('id-accept');
+				if(idAccept){
+					if(idAccept == idData){
+						idAcceptEle.innerHTML = lengthData
+					}
+				}
+			}
+		}
+	}
+})

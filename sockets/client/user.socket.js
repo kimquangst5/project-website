@@ -1,4 +1,5 @@
 const User = require("../../models/user.model");
+const RoomChat = require("../../models/rooms-chat.model");
 const streamUpload = require("../../utils/streamUpload.util")
 
 
@@ -7,14 +8,14 @@ module.exports = (req, res) => {
 	io.once('connection', async (socket) => {
 		console.log('Có 1 người dùng đã kết nối', socket.id);
 		socket.on("CLIENT_ADD_FRIEND", async (id) => {
-			console.log(id)
 			// lời mời đã nhận
 			const user = await User.findOne({
 				_id: id,
 				acceptFriends: MY_USER
 			})
 
-			if(!user){
+			
+			if (!user) {
 				await User.updateOne({
 					_id: id,
 				}, {
@@ -23,15 +24,14 @@ module.exports = (req, res) => {
 					}
 				})
 			}
-
+			
 			// lời mời đã gửi
 			const my_user = await User.findOne({
 				_id: MY_USER,
 				requestFriends: id
 			})
-			console.log(my_user)
-
-			if(!my_user){
+			
+			if (!my_user) {
 				await User.updateOne({
 					_id: MY_USER,
 				}, {
@@ -40,17 +40,35 @@ module.exports = (req, res) => {
 					}
 				})
 			}
+
+			const my_user_req = await User.findOne({
+				_id: MY_USER,
+				requestFriends: id
+			})
+			socket.emit("SEVER_RETURN_REQUEST_LENGTH", {
+				id: my_user_req.id,
+				length: my_user_req.requestFriends.length
+			})
+			const my_user_ace = await User.findOne({
+				_id: id,
+				acceptFriends: MY_USER
+			})
+			console.log(my_user_ace)
+			socket.broadcast.emit("SEVER_RETURN_ACCEPT_LENGTH", {
+				id: my_user_ace.id,
+				length: my_user_ace.acceptFriends.length
+			})
+			
 		});
 
 		socket.on("CLIENT_CANCEL_FRIEND", async (id) => {
-			console.log(id)
 			// lời mời đã nhận
 			const user = await User.findOne({
 				_id: id,
 				acceptFriends: MY_USER
 			})
 
-			if(user){
+			if (user) {
 				await User.updateOne({
 					_id: id,
 				}, {
@@ -65,9 +83,8 @@ module.exports = (req, res) => {
 				_id: MY_USER,
 				requestFriends: id
 			})
-			console.log(my_user)
 
-			if(my_user){
+			if (my_user) {
 				await User.updateOne({
 					_id: MY_USER,
 				}, {
@@ -79,14 +96,13 @@ module.exports = (req, res) => {
 		});
 
 		socket.on("CLIENT_REFUSE_FRIEND", async (id) => {
-			console.log(id)
 			// lời mời đã nhận
 			const user = await User.findOne({
 				_id: MY_USER,
 				acceptFriends: id
 			})
 
-			if(user){
+			if (user) {
 				await User.updateOne({
 					_id: MY_USER,
 				}, {
@@ -101,9 +117,8 @@ module.exports = (req, res) => {
 				_id: id,
 				requestFriends: MY_USER
 			})
-			console.log(my_user)
 
-			if(my_user){
+			if (my_user) {
 				await User.updateOne({
 					_id: id,
 				}, {
@@ -115,19 +130,40 @@ module.exports = (req, res) => {
 		});
 
 		socket.on("CLIENT_ACCEPT_FRIEND", async (id) => {
-			
-			console.log(MY_USER)
+
 			const user = await User.findOne({
 				_id: MY_USER,
 				acceptFriends: id
 			})
 
-			if(user){
+			const newRoomChat = new RoomChat({
+				// avatar: String,
+				typeRoom: "friend",
+				users: [
+					{
+						userId: MY_USER,
+						role: "superAdmin",
+						// name: String
+					},
+					{
+						userId: id,
+						role: "superAdmin",
+						// name: String
+					}
+				]
+				
+			})
+			await newRoomChat.save();
+
+			if (user) {
 				await User.updateOne({
 					_id: MY_USER,
 				}, {
 					$push: {
-						friendsList: id
+						friendsList: {
+							userId: id,
+							roomChatId: newRoomChat.id,
+						}
 					},
 					$pull: {
 						acceptFriends: id
@@ -137,13 +173,17 @@ module.exports = (req, res) => {
 
 			const my_user = await User.findOne({
 				_id: id,
+				friendsList: MY_USER
 			})
-			if(my_user){
+			if (!my_user) {
 				await User.updateOne({
 					_id: id,
 				}, {
 					$push: {
-						friendsList: MY_USER
+						friendsList: {
+							userId: MY_USER,
+							roomChatId: newRoomChat.id,
+						}
 					},
 					$pull: {
 						requestFriends: MY_USER

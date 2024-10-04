@@ -4,7 +4,7 @@ const { Schema } = mongoose
 
 const chatSchema = new Schema({
 	userId: String,
-	// roomChatId: String,
+	roomChatId: String,
 	content: String,
 	images: Array
 }, {

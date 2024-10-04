@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+
 // SOKET IO
 const http = require('http');
 const server = http.createServer(app);

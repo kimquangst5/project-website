@@ -10,6 +10,10 @@ const userShema = new Schema({
 	confirmPassword: String,
 	phone: String,
 	tokenUser: String,
+	avatar: {
+		type: String,
+		default: "https://res.cloudinary.com/djp6njpi7/image/upload/v1727712011/t4zn8pou7attrc00a0ib.png"
+	},
 	birthday: Date,
 	sex: String,
 	status: {

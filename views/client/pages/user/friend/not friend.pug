@@ -1,11 +1,11 @@
 extends ../../../layouts/default.pug
 include ../../../mixins/dieu-huong.pug
+include ../../../mixins/friend-btn.pug
 
 block main
 	+dieu-huong("Danh sách người dùng")
 
-	include ../../../partials/friend-btn.pug
-
+	+friend-btn(infoUser)
 	div(class="")
 		div(class="container")
 			each it in users

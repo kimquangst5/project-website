@@ -891,7 +891,10 @@ module.exports.notFriend = async (req, res) => {
 
 	const requestFriends = res.locals.infoUser.requestFriends
 	const acceptFriends = res.locals.infoUser.acceptFriends
+	const friendsList = res.locals.infoUser.friendsList;
+	
 
+	const friendsListId = friendsList.map(it => it.userId)
 	const users = await User.find({
 
 		$and: [{
@@ -909,6 +912,11 @@ module.exports.notFriend = async (req, res) => {
 					$nin: acceptFriends
 				}
 			},
+			{
+				_id: {
+					$nin: friendsListId
+				}
+			}
 
 		],
 		deleted: false,
@@ -918,7 +926,9 @@ module.exports.notFriend = async (req, res) => {
 
 	res.render("client/pages/user/friend/not friend.pug", {
 		pageTitle: "Danh sách người dùng",
-		users: users
+		users: users,
+		requestFriends: requestFriends,
+		acceptFriends: acceptFriends
 	})
 }
 
@@ -937,12 +947,6 @@ module.exports.request = async (req, res) => {
 		},
 		deleted: false,
 		status: 'active'
-		// $and: [
-		// 	{ _id: { $ne: res.locals.infoUser } },
-		// 	{ _id: { $nin: requestFriends } },
-		// 	{ _id: { $nin: acceptFriends } },
-		// ],
-
 	})
 
 
@@ -956,11 +960,11 @@ module.exports.request = async (req, res) => {
 // $ne: not equal
 // $nin: not equal
 // $and
-// [GET] /member/request
+// [GET] /member/accept
 module.exports.accept = async (req, res) => {
 	userSocket(req, res);
-
-	const requestFriends = res.locals.infoUser.requestFriends
+	console.log("ok")
+	// const requestFriends = res.locals.infoUser.requestFriends
 	const acceptFriends = res.locals.infoUser.acceptFriends
 	const users = await User.find({
 		_id: {
@@ -968,11 +972,6 @@ module.exports.accept = async (req, res) => {
 		},
 		deleted: false,
 		status: 'active'
-		// $and: [
-		// 	{ _id: { $ne: res.locals.infoUser } },
-		// 	{ _id: { $nin: requestFriends } },
-		// 	{ _id: { $nin: acceptFriends } },
-		// ],
 
 	})
 
@@ -994,11 +993,22 @@ module.exports.friend = async (req, res) => {
 	const requestFriends = res.locals.infoUser.requestFriends
 	const acceptFriends = res.locals.infoUser.acceptFriends
 	const friendsList = res.locals.infoUser.friendsList
+	const friendsListId = friendsList.map(it => it.userId)
+	
 	const users = await User.find({
 		_id: {
-			$in: friendsList
+			$in: friendsListId
 		}
+	}).select('-tokenUser -password -birthday')
+	
+	users.forEach(user => {
+		console.log(user.id)
+		const friend = friendsList.find(friend => friend.userId == user.id)
+		user.roomChatId = friend.roomChatId
+		console.log(user.roomChatId)
 	})
+	// console.log(friendsList)
+	// forof
 
 
 	res.render("client/pages/user/friend/friend.pug", {
