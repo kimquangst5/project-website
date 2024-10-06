@@ -20,7 +20,7 @@ module.exports.cartInfo = async (req, res) => {
 						$sortArray: {
 							input: "$products",
 							sortBy: {
-								position: -1
+								position: 1
 							} // Sắp xếp giảm dần theo position
 						}
 					}
