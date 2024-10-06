@@ -110,8 +110,10 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 			const appendchild = elementChat.querySelector('[appendchild]');
 			if (userId == data.userId) {
 				div.classList.add('ml-auto')
+				div.classList.add('flex')
+				div.classList.add('justify-end')
 				if (data.content) {
-					htmlContent = `<div class="text-justify text-wrap bg-[#F5F5F5] rounded-[8px] p-[10px]">${data.content}</div>`
+					htmlContent = `<div class="w-max text-justify text-wrap text-[white] bg-[#F9005A] rounded-[15px] p-[10px] select-all">${data.content}</div>`
 				}
 				if (data.images) {
 					if (data.images.length > 0) {
@@ -130,7 +132,7 @@ socket.on("SEVER_RETURN_MESSAGE", (data) => {
 					`
 			} else {
 				if (data.content) {
-					htmlContent = `<div class="rounded-[8px] bg-[#F1556A] text-[white] text-justify px-[10px] py-[4px]">${data.content}</div>`
+					htmlContent = `<div class="rounded-[8px] bg-[#F6F6F6] text-justify px-[10px] py-[4px]">${data.content}</div>`
 				}
 				if(data.images){
 					if (data.images.length > 0) {

@@ -13,16 +13,17 @@ if(boxUser.length > 0){
 					socket.emit("CLIENT_ADD_FRIEND", id)
 				}
 			});
-			cancel.addEventListener('click', () => {
-				add.classList.toggle('hidden')
-				cancel.classList.toggle('hidden')
-				const id = cancel.getAttribute('btn-cancel-friend');
-				if(id){
-					console.log(id)
-					socket.emit("CLIENT_CANCEL_FRIEND", id)
-				}
-			});
 		}
+		cancel.addEventListener('click', () => {
+			console.log(cancel)
+			add.classList.toggle('hidden')
+			cancel.classList.toggle('hidden')
+			const id = cancel.getAttribute('btn-cancel-friend');
+			if(id){
+				console.log(id)
+				socket.emit("CLIENT_CANCEL_FRIEND", id)
+			}
+		});
 
 		const accept = box.querySelector("[btn-accept-friend]");
 		const refuse = box.querySelector("[btn-refuse-friend]");

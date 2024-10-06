@@ -4,7 +4,10 @@ const { Schema } = mongoose
 
 const roomsChatShema = new Schema({
 	title: String,
-	avatar: String,
+	avatar: {
+		type: String,
+		default: 'https://res.cloudinary.com/djp6njpi7/image/upload/v1727712011/t4zn8pou7attrc00a0ib.png'
+	},
 	typeRoom: String,
 	users: [
 		{
