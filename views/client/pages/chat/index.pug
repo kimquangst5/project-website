@@ -7,6 +7,13 @@ block main
 	+dieu-huong("Nhắn tin")
 
 	+friend-btn(infoUser)
+	div(class=``)
+		div(class=`container`)
+			div(class=`flex gap-[10px] items-center`)
+				div(class=`h-[70px] p-[3px] border-[1px] border-[black] rounded-[50%]`)
+					img(src=user.avatar, alt=user.fullName class=`aspect-[1/1] rounded-[50%] h-full w-auto`)
+				div(class=``)
+					div(class=`font-bold text-[20px] text-xanh`) #{user.fullName}
 	div(class="my-[10px]")
 		div(class="container")
 			div(class="h-auto relative rounded-[10px] p-[10px] duration-1000" element-chat = infoUser.id)

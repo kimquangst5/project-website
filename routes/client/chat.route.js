@@ -4,7 +4,7 @@ const controller = require("../../controller/client/chat.controller")
 const roomChatMiddlewares = require('../../middlewares/client/roomChat-middleware')
 
 router.get(
-	'/:roomChatId',
+	'/:roomChatId/:userId',
 	roomChatMiddlewares,
 	controller.index)
 
