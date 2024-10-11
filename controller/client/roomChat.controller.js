@@ -33,27 +33,33 @@ module.exports.create = async (req, res) => {
 
 // [POST] /roomchat/create
 module.exports.createPost = async (req, res) => {
-	const myUser = res.locals.infoUser
+	try {
+		const myUser = res.locals.infoUser
 
-	const title = req.body.title
-	const listMember = req.body.listMember
-	const dataRoomChat = {
-		title: title,
-		typeRoom: 'group',
-		users: []
-	}
-	dataRoomChat.users.push({
-		userId: myUser.id,
-		role: 'supperAdmin',
-	})
-	listMember.forEach(userId => {
+		const title = req.body.title
+		const listMember = req.body.listMember
+		console.log(req.body)
+		const dataRoomChat = {
+			title: title,
+			typeRoom: 'group',
+			users: []
+		}
 		dataRoomChat.users.push({
-			userId: userId,
-			role: 'member',
+			userId: myUser.id,
+			role: 'supperAdmin',
 		})
-	})
-	console.log(dataRoomChat)
-	const newRoom = new RoomChat(dataRoomChat);
-	await newRoom.save();
-	res.redirect(`/chat/${newRoom.id}`);
+		listMember.forEach(userId => {
+			dataRoomChat.users.push({
+				userId: userId,
+				role: 'member',
+			})
+		})
+		console.log(dataRoomChat)
+		const newRoom = new RoomChat(dataRoomChat);
+		await newRoom.save();
+		res.redirect(`/chat/${newRoom.id}`);
+	} catch (error) {
+
+	}
+
 };
