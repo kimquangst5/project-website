@@ -2,7 +2,6 @@ const streamUpload = require("../../utils/streamUpload.util")
 
 module.exports.deleteSingle = (nameImage) => {
 	cloudinary.uploader.destroy(nameImage, { invalidate: true }, (result) => {
-
 	});
 }
 
@@ -11,7 +10,6 @@ module.exports.deleteMulti = (nameImage) => {
 		
 	});
 }
-
 
 module.exports.uploadSingle = (req, res, next) => {
 	if (req.file) {
