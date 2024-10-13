@@ -761,6 +761,68 @@ window.addEventListener('load', () => {
 	}
 })
 
+const swipperProductDetail = document.querySelector('[swipper-product-detail]');
+if(swipperProductDetail){
+	var swiper = new Swiper(".mySwiper", {
+		loop: true,
+		spaceBetween: 10,
+		slidesPerView: 4,
+		freeMode: true,
+		watchSlidesProgress: true,
+		speed: 1000 // Thời gian chuyển động giữa các slide là 1000ms (1 giây)
+	});
+	var swiper2 = new Swiper(".mySwiper2", {
+		loop: true,
+		spaceBetween: 5,
+		navigation: {
+			nextEl: ".swiper-button-next",
+			prevEl: ".swiper-button-prev",
+		},
+		thumbs: {
+			swiper: swiper,
+		},
+		speed: 1000, // Thời gian chuyển động giữa các slide là 1000ms (1 giây)
+		slideToClickedSlide: true, // Cho phép chuyển đến slide được click từ thumbnail
+	});
+}
+
+
+
+const autoSlick = document.querySelector('[autoplay-slick]');
+if(autoSlick){
+	var swiper = new Swiper(".mySwiper", {
+		loop: true,
+		autoplay: {
+			delay: 2500,
+			disableOnInteraction: false,
+		   },
+		slidesPerView: 'auto',
+		spaceBetween: 10,
+		pagination: {
+			el: ".swiper-pagination",
+			clickable: true,
+		},
+		breakpoints: {
+			"@0.00": {
+				slidesPerView: 1,
+				spaceBetween: 10,
+			},
+			"@0.75": {
+				slidesPerView: 2,
+				spaceBetween: 20,
+			},
+			"@1.00": {
+				slidesPerView: 3,
+				spaceBetween: 40,
+			},
+			"@1.50": {
+				slidesPerView: 4,
+				spaceBetween: 50,
+			},
+		},
+	});
+}
+
 
 // console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
 // console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');

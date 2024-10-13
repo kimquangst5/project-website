@@ -32,8 +32,10 @@ router.get('/create', controller.create);
 
 router.post(
 	'/create',
-	upload.single('thumbnail'),
-	uploadCloudMiddleWares.uploadSingle,
+	// upload.single('thumbnail'),
+	upload.fields([{ name: 'thumbnail', maxCount: 10 }]),
+	uploadCloudMiddleWares.uploadFields,
+	// uploadCloudMiddleWares.uploadSingle,
 	validate.createPost,
 	controller.createPost
 );
@@ -42,8 +44,10 @@ router.get('/edit/:id', controller.edit);
 
 router.patch(
 	'/edit/:id',
-	upload.single('thumbnail'),
-	uploadCloudMiddleWares.uploadSingle,
+	upload.fields([{ name: 'thumbnail', maxCount: 10 }]),
+	uploadCloudMiddleWares.uploadFields,
+	// upload.single('thumbnail'),
+	// uploadCloudMiddleWares.uploadSingle,
 	validate.createPost,
 	controller.editPatch
 );

@@ -13,11 +13,13 @@ block main
 						div(class="uppercase text-[25px] font-[700] w-max flex flex-col justify-center mb-[20px]") SẢN PHẨM THUỘC DANH MỤC #{titleCategory}
 							div(class=`border-[1px] border-[${BOX ? BOX.mauGiaGoc : ''}] w-[50%] mx-auto my-[10px]`)
 				
-				div(class="grid grid-cols-4 flex gap-x-[10px] gap-y-[15px]")
-					- if(featuredProducts)
-						+box-product(featuredProducts)
-					- if(productsCategory)
-						+box-product(productsCategory)
+				div(class="swiper mySwiper grid grid-cols-4 flex " autoplay-slick)
+					div(class=`swiper-wrapper gap-x-[50px] `) 
+						- if(featuredProducts)
+							+box-product(featuredProducts)
+						- if(productsCategory)
+							+box-product(productsCategory)
+					//- div(class=`swiper-pagination`) 
 
 
 	- if(newproducts)

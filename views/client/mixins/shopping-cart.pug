@@ -10,7 +10,7 @@ mixin shopping-cart(shoopings_cart)
 					each it in shoopings_cart
 						div(class=`flex p-[10px] items-center gap-x-[15px] grid grid-cols-5 bg-[white] rounded-[8px]`)
 							a(href=`/product/detail/${it.slug}` class=`col-span-1`) 
-								img(src=it.thumbnail, alt=it.title class=`w-full h-auto object-cover object-top aspect-square rounded-[7px]`)
+								img(src=it.thumbnail[0], alt=it.title class=`w-full h-auto object-cover object-top aspect-square rounded-[7px]`)
 							div(class=`col-span-4 flex flex-col justify-between h-full text-left grow w-full`)
 								a(href=`/product/detail/${it.slug}` class=`hover:text-chu line-clamp-1 duration-500 font-bold text-[#333333] text-[15px] text-wrap`) #{it.title}
 								div(class=`flex items-center gap-[5px] text-[15px]`)

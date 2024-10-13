@@ -24,7 +24,7 @@ block main
 						div(class=`font-bold text-[14px] [&>*]:text-center flex justify-between grid grid-cols-5 py-[10px] h-auto` calculate)
 							div(class="flex col-span-2 grid grid-cols-5 gap-x-[10px] truncate") 
 								a(href=`/product/detail/${it.slug}` class=`col-span-1`) 
-									img(src=it.thumbnail, alt=it.title class=` rounded-[8px] aspect-square w-full h-auto object-cover object-top`)
+									img(src=it.thumbnail[0], alt=it.title class=` rounded-[8px] aspect-square w-full h-auto object-cover object-top`)
 								div(class="flex flex-col justify-between col-span-4")
 									a(href=`/product/detail/${it.slug}`  class="hover:text-chu line-clamp-2 text-left") #{it.title}
 									a(href=`/order/cart-delete/${it.id}` class="text-[#da0808] font-bold text-left") Xóa

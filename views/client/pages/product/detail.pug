@@ -15,12 +15,26 @@ block main
 		div(class="container")
 			div(class="text-chu text-[25px] font-[700] py-[30px]") #{product.title}
 			div(class="flex grid grid-cols-2 gap-[20px]")
-				div(class="w-full rounded-[10px] truncate bg-[white] py-[10px]")
-					img(
-						src=product.thumbnail
-						alt=product.title
-						class=`w-[full] h-auto`
-					)
+				div(class="w-full  truncate bg-[white]")
+					//- img(
+					//- 	src=product.thumbnail[0]
+					//- 	alt=product.title
+					//- 	class=`w-full h-auto aspect-square object-cover object-top`
+					//- )
+					div(style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff", class="swiper mySwiper2" swipper-product-detail)
+						div(class="swiper-wrapper")
+							each img in product.thumbnail
+								div(class="swiper-slide")
+									img(src=img class=`w-full h-auto aspect-square object-cover object-top`)
+							
+						div(class="swiper-button-next")
+						div(class="swiper-button-prev")
+					div(thumbsSlider='', class="swiper mySwiper")
+						div(class="swiper-wrapper")
+							each img in product.thumbnail
+								div(class="swiper-slide")
+									img(src=img class=`w-full h-auto aspect-square object-cover object-top`)
+
 				div(class="w-full h-max flex flex-col gap-y-[20px]")
 					div(class="w-full rounded-[10px] truncate bg-[white] p-[20px]")
 						div(class="flex items-center gap-[15px]") 

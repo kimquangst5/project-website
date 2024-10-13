@@ -7,4 +7,5 @@ tinymce.init({
 	],
 	// skin: 'oxide-dark',
 	images_upload_url: '/admin/upload',
+	skin: "oxide-dark",
 });

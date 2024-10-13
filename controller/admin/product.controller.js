@@ -101,13 +101,13 @@ module.exports.index = async (req, res) => {
 		.sort(sort)
 
 	priceNew(product)
-	
+
 
 	for (const it of product) {
 		const account = await Account.findOne({
 			_id: it.createdBy
 		})
-		if(account){
+		if (account) {
 			it.createdBy = account.fullName
 		}
 		it.createdAtFormat = moment(it.createdAt).format('DD/MM HH:mm');
@@ -321,11 +321,16 @@ module.exports.createPost = async (req, res) => {
 			}
 
 			req.body.createdBy = res.locals.account.id
-			const newProduct = new Product(req.body);
-			await newProduct.save();
 
-			req.flash('success', 'Thêm mới sản phẩm thành công!')
-			res.redirect(`/${process.env.admin}/product`)
+
+
+
+			console.log(req.body)
+			// const newProduct = new Product(req.body);
+			// await newProduct.save();
+
+			// req.flash('success', 'Thêm mới sản phẩm thành công!')
+			// res.redirect(`/${process.env.admin}/product`)
 		} catch (error) {
 			res.redirect(`/${process.env.admin}/product`)
 		}
@@ -420,7 +425,10 @@ module.exports.detail = async (req, res) => {
 				_id: product.updatedBy
 			}).select("fullName")
 			product.updatedAtFormat = moment(product.updatedAt).format('[Ngày ]DD[ tháng ]MM[ năm ]YYYY [Vào lúc ]HH[ giờ ]mm[ phút ]ss[ giây ]')
-			product.updatedBy = nameUpdated.fullName
+			if (nameUpdated.fullName) {
+				product.updatedBy = nameUpdated.fullName
+
+			}
 		} else {
 			product.updatedAtFormat = product.createdAtFormat
 			product.updatedBy = name.fullName
@@ -443,24 +451,26 @@ module.exports.detail = async (req, res) => {
 // [patch] /admin/product/display-product
 module.exports.displayProduct = async (req, res) => {
 	// console.log(req.body)
-	const { total, limit } = req.body
+	const {
+		total,
+		limit
+	} = req.body
 	// console.log(total)
 	// console.log(limit)
-	if(limit > total){
+	if (limit > total) {
 		req.flash("error", "Nhập sai!");
 		res.redirect('back')
 		return;
 	}
 	const displayProductDatabase = await DisplayProduct.find({});
 	// console.log(displayProductDatabase[0].id)
-	if(displayProductDatabase.length == 0){
+	if (displayProductDatabase.length == 0) {
 		const newDisplayProduct = new DisplayProduct({
 			total: total,
 			limit: limit
 		})
 		await newDisplayProduct.save();
-	}
-	else{
+	} else {
 		// console.log(req.body)
 		// console.log(displayProductDatabase)
 		await DisplayProduct.updateOne(displayProductDatabase[0], req.body)

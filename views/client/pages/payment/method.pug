@@ -70,7 +70,7 @@ block main
 								each it in carts
 									div(class="flex items-center gap-[15px]")
 										div(class="w-[70px] ") 
-											img(src=it.thumbnail, alt=it.title class=`w-full h-auto object-cover object-top`)
+											img(src=it.thumbnail[0], alt=it.title class=`w-full h-auto object-cover object-top`)
 										div(class="flex flex-col justify-between h-full gap-y-[9px] text-left grow w-full")
 											div(class="font-bold text-[#333333] text-[15px]") #{it.title}
 											div(class="flex items-center gap-[5px] text-[15px]")

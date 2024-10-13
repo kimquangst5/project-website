@@ -72,7 +72,7 @@ block main
 							
 						div(class="bg-bgimage relative aspect-[224/224] truncate")
 							a(href=`/${admin}/product/edit/${it.id}`) 
-								img(src=it.thumbnail, alt="" class=`mx-auto my-auto w-full h-auto object-cover` nameImageImg = it.nameImage)
+								img(src=it.thumbnail[0], alt="" class=`mx-auto my-auto w-full h-auto object-cover` nameImageImg = it.nameImage)
 							nav(class=`absolute top-0 right-0 duration-500 flex gap-[5px]` edit-delete)
 								- if(role.permisstion.includes(`products_edit`))
 									a(
