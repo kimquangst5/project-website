@@ -54,11 +54,14 @@ html(lang=`vi`)
 		script(type=`module` src=`https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js`)
 		script(src=`https://cdn.jsdelivr.net/npm/file-upload-with-preview@6.1.2/dist/index.iife.min.js`)
 
+		script(src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js") 
+
 		script(src=`https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js`) 
 
 		script(src=`https://cdn.socket.io/4.7.2/socket.io.min.js`)
 		script.
 			var socket = io()
+		script(type="module" src=`/js/animation.js`)
 		script(src=`/js/style.js`)
 		script(type=`module` src=`/js/socket.js`)
 		script(type=`module` src=`/js/user.js`)
