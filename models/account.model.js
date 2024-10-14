@@ -14,7 +14,10 @@ const accountShema = new Schema({
 	token: String,
 	birthday: Date,
 
-	avatar: String,
+	avatar: {
+		type: String,
+		default: 'https://res.cloudinary.com/djp6njpi7/image/upload/v1728882513/photo_ncmgdo.png'
+	},
 
 	aboutMe: String,
 

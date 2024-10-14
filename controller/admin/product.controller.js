@@ -325,12 +325,11 @@ module.exports.createPost = async (req, res) => {
 
 
 
-			console.log(req.body)
-			// const newProduct = new Product(req.body);
-			// await newProduct.save();
+			const newProduct = new Product(req.body);
+			await newProduct.save();
 
-			// req.flash('success', 'Thêm mới sản phẩm thành công!')
-			// res.redirect(`/${process.env.admin}/product`)
+			req.flash('success', 'Thêm mới sản phẩm thành công!')
+			res.redirect(`/${process.env.admin}/product`)
 		} catch (error) {
 			res.redirect(`/${process.env.admin}/product`)
 		}

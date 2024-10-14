@@ -1,5 +1,3 @@
-import Flip from 'number-flip';
-
 const countJs = document.querySelector('[section-1]');
 if (countJs) {
 	const listCountJs = countJs.querySelectorAll('[count-js-section-1]');
@@ -19,4 +17,19 @@ if (countJs) {
 			}
 		})
 	}
+	
 }
+
+const logo = document.querySelector('[logo-website]');
+	if(logo){
+		console.log(logo)
+		// anime({
+		// 	targets: logo.src,
+		// 	strokeDashoffset: [anime.setDashoffset, 0],
+		// 	easing: 'easeInOutSine',
+		// 	duration: 1500,
+		// 	delay: function(el, i) { return i * 250 },
+		// 	direction: 'alternate',
+		// 	loop: true
+		//    });
+	}

@@ -1,28 +1,52 @@
 const Product = require('../../models/product.model');
 const ProductCategory = require("../../models/product-category.model")
+const priceNew = require("../../utils/price-new.util")
 module.exports.index = async (req, res) => {
-
-
-	const product = await Product
-		.find({
+	try {
+		let find = {
 			deleted: false
-		})
-		.sort({
-			position: 'desc'
+		}
+	
+		const totalProduct = await Product.countDocuments({
+			deleted: false,
+			status: 'active'
 		});
-
-	for (const it of product) {
-		it.priceNew = it.price - (it.price * it.discountPercentage) / 100
-		it.priceNew = it.priceNew.toFixed(2);
+		let pagination = {
+			current: 1,
+			limit: 8,
+			skip: 0
+		}
+		pagination.totalPage = Math.ceil(totalProduct / pagination.limit)
+		if (req.query.page) {
+			if (parseInt(req.query.page) <= pagination.totalPage && parseInt(req.query.page) >= 1) {
+				pagination.current = parseInt(req.query.page)
+				pagination.skip = (parseInt(req.query.page) - 1) * pagination.limit
+			}
+	
+		}
+	
+		const product = await Product
+			.find(find)
+			.sort({
+				position: 'desc'
+			})
+			.limit(pagination.limit)
+			.skip(pagination.skip)
+	
+		priceNew(product)
+	
+	
+			console.log(pagination)
+		res.render('client/pages/product/index.pug', {
+			pageTitle: 'Danh sách sản phẩm',
+			product: product,
+			pagination: pagination
+	
+		})
+	} catch (error) {
+		res.redirect('back')
 	}
-
-
-
-	res.render('client/pages/product/index.pug', {
-		pageTitle: 'Trang sản phẩm',
-		product: product
-
-	})
+	
 };
 
 module.exports.detail = async (req, res) => {
@@ -49,7 +73,7 @@ module.exports.detail = async (req, res) => {
 			product.priceNew = product.priceNew * 1000
 		}
 		product.priceNew = [product.priceNew].toLocaleString('en-EN')
-		
+
 		product.priceOld = [product.price].toLocaleString('en-EN')
 
 		res.render('client/pages/product/detail.pug', {

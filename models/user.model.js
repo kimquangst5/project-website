@@ -12,7 +12,7 @@ const userShema = new Schema({
 	tokenUser: String,
 	avatar: {
 		type: String,
-		default: "https://res.cloudinary.com/djp6njpi7/image/upload/v1727712011/t4zn8pou7attrc00a0ib.png"
+		default: 'https://res.cloudinary.com/djp6njpi7/image/upload/v1728882513/photo_ncmgdo.png'
 	},
 	birthday: Date,
 	sex: String,

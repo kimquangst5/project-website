@@ -1,5 +1,3 @@
-
-
 const header = document.querySelector('header');
 let last = 0;
 if (header) {
@@ -112,24 +110,28 @@ if (listCategory) {
 						if (con.length > 0) {
 							con.forEach(iy => {
 								if (iy != item) {
-									const allLI = iy.nextElementSibling.querySelectorAll('li');
+									const next = iy.nextElementSibling;
+									if(next){
+										const allLI = next.querySelectorAll('li');
 
-									if (allLI.length > 0) {
-										allLI.forEach(element => {
-											const h = element.clientHeight
-											if (!element.className.includes(`mt-[-${h}px]`)) {
-												element.classList.toggle(`mt-[-${h}px]`)
+										if (allLI.length > 0) {
+											allLI.forEach(element => {
+												const h = element.clientHeight
+												if (!element.className.includes(`mt-[-${h}px]`)) {
+													element.classList.toggle(`mt-[-${h}px]`)
+												}
+											});
+											const iconn = iy.querySelector('i');
+											if (iconn) {
+												if (iconn.className.includes(`-rotate-90`)) {
+													iconn.classList.toggle(`-rotate-90`)
+	
+												}
+	
 											}
-										});
-										const iconn = iy.querySelector('i');
-										if (iconn) {
-											if (iconn.className.includes(`-rotate-90`)) {
-												iconn.classList.toggle(`-rotate-90`)
-
-											}
-
 										}
 									}
+									
 								}
 							});
 						}
@@ -276,7 +278,6 @@ if (calculate.length > 0) {
 					const getPrice = price.getAttribute("priceTotal");
 					if (getPrice) {
 						let PRICE = parseInt(parseInt(getPrice) * parseInt(stock.value))
-						console.log(stock.value)
 						quantity = stock.value
 						price.innerHTML = parseInt(getPrice) * parseInt(stock.value)
 						price.innerHTML = parseInt(price.innerHTML);
@@ -352,7 +353,6 @@ if (calculate.length > 0) {
 				if (link) {
 					const stock = document.querySelector('[stock]');
 					const quantity = localStorage.getItem('quantity');
-					console.log(quantity)
 					if (quantity) {
 						const data = {
 							quanlity: parseInt(quantity)
@@ -794,7 +794,7 @@ const autoSlick = document.querySelectorAll('[autoplay-slick]');
 if (autoSlick.length > 0) {
 	autoSlick.forEach(autoSlick => {
 		if (autoSlick) {
-			const swiper = new Swiper(".mySwiper", {
+			new Swiper(".mySwiper", {
 				loop: true,
 				autoplay: {
 					delay: 2500,
@@ -826,9 +826,100 @@ if (autoSlick.length > 0) {
 				},
 			});
 		}
-
 	})
+}
 
+const productNew = document.querySelector('[product-new]');
+if (productNew) {
+	const top = productNew.getBoundingClientRect().top + window.pageYOffset
+	const button = document.querySelector('[button-section-1]');
+	if (button) {
+		button.addEventListener('click', () => {
+			if (button) {
+				window.scrollTo({
+					top: top,
+					behavior: 'smooth' // Cuộn mượt mà
+				});
+
+			}
+		})
+	}
+
+}
+
+const pagination = document.querySelector('[totalPage]');
+if (pagination) {
+	const listPage = pagination.querySelectorAll('[button-pagination]');
+	const totalPage = parseInt(pagination.getAttribute('totalPage'))
+	let url = new URL(window.location.href);
+	const page = parseInt(url.searchParams.get('page'));
+	if (listPage.length > 0) {
+		listPage.forEach(page => {
+			page.addEventListener('click', () => {
+				const value = parseInt(page.getAttribute("button-pagination"));
+				if (value == 1 || value > totalPage || value < 1) {
+					url.searchParams.delete("page");
+				} else {
+					url.searchParams.set("page", value);
+				}
+				window.location.href = url.href
+			})
+
+		})
+	}
+	if (page) {
+		const button = document.querySelector(`[button-pagination = '${page}']`)
+		if (button) {
+			button.classList.toggle('rounded-[50%]')
+		}
+	} else {
+		const button = document.querySelector(`[button-pagination = '1']`)
+		if (button) {
+			button.classList.toggle('rounded-[50%]')
+		}
+	}
+	const right = pagination.querySelector('[button-angle-right]');
+	if (right) {
+		right.addEventListener('click', () => {
+			if (page) {
+				if (page < totalPage)
+					url.searchParams.set("page", page + 1);
+			} else {
+				url.searchParams.set("page", 2);
+			}
+			window.location.href = url.href
+		})
+	}
+	const left = pagination.querySelector('[button-angle-left]');
+	if (left) {
+		left.addEventListener('click', () => {
+			if (page) {
+				if (page > 2) {
+					url.searchParams.set("page", page - 1);
+				} else if (page == 2) {
+					url.searchParams.delete("page");
+				}
+				window.location.href = url.href
+			}
+		})
+	}
+	const lefts = pagination.querySelector('[button-angles-left]');
+	if (lefts) {
+		lefts.addEventListener('click', () => {
+			if (page) {
+				url.searchParams.delete("page");
+				window.location.href = url.href
+			}
+		})
+	}
+
+	const rights = pagination.querySelector('[button-angles-right]');
+	if (rights) {
+		rights.addEventListener('click', () => {
+			url.searchParams.set("page", totalPage);
+			window.location.href = url.href
+		})
+	}
 }
 
 

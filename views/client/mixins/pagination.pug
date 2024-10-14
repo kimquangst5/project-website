@@ -1,0 +1,70 @@
+mixin pagination(pagination)
+	ul(
+		class=`flex gap-[10px] justify-center items-center py-[20px]`
+		phanTrang = pagination.totalProduct
+		totalPage = pagination.totalPage
+	)
+		- if(pagination.current != 1 && pagination.totalPage > 1)
+			li(
+				class=`aspect-square w-auto h-auto min-w-[35px] rounded-[50%] border-[2px] border-[#FA6B04] flex items-center justify-center cursor-pointer`
+				button-angles-left
+			)
+				button(
+					class=`text-[#FA6B04] font-bold px-[5px] text-[20px] fa-solid fa-angles-left`
+				)
+			li(
+				class=`aspect-square w-auto h-auto min-w-[35px] rounded-[50%] border-[2px] border-[#FA6B04] flex items-center justify-center`
+				button-angle-left = pagination.current
+			)
+				button(
+					class=`text-[#FA6B04] font-bold px-[5px] text-[20px] fa-solid fa-angle-left`
+				)
+		- else
+			li(
+				class=`aspect-square w-auto h-auto min-w-[35px] rounded-[50%] border-[2px] border-[#FA6B04]/50 flex items-center justify-center select-none`
+			)
+				button(
+					class=`text-[#FA6B04]/50 font-bold px-[5px] text-[20px] fa-solid fa-angles-left cursor-default`
+				)
+			li(
+				class=`aspect-square w-auto h-auto min-w-[35px] rounded-[50%] border-[2px] border-[#FA6B04]/50 flex items-center justify-center select-none select-none`
+			)
+				button(
+					class=`text-[#FA6B04]/50 font-bold px-[5px] text-[20px] fa-solid fa-angle-left cursor-default`
+				)
+		- for(let i = Math.max(1, pagination.current - 5); i <= Math.min(pagination.totalPage, pagination.current + 5); i++)
+			li(
+				class=`aspect-square w-auto h-auto min-w-[35px] rounded-[50%] border-[2px] border-[#FA6B04] flex items-center justify-center hover:bg-[#FA6B04] text-[#FA6B04] hover:text-[white] cursor-pointer`
+				button-pagination = i
+			)
+				button(
+					class=`font-bold px-[5px] `
+				) #{i}
+		- if(pagination.current != pagination.totalPage)
+			li(
+				class=`aspect-square w-auto h-auto min-w-[35px] rounded-[50%] border-[2px] border-[#FA6B04] flex items-center justify-center`
+				button-angle-right = pagination.current
+			)
+				button(
+					class=`text-[#FA6B04] font-bold px-[5px] text-[20px] fa-solid fa-angle-right`
+				)
+			li(
+				class=`aspect-square w-auto h-auto min-w-[35px] rounded-[50%] border-[2px] border-[#FA6B04] flex items-center justify-center cursor-pointer`
+				button-angles-right = pagination.totalPage
+			)
+				button(
+					class=`text-[#FA6B04] font-bold px-[5px] text-[20px] fa-solid fa-angles-right`
+				)
+		- else
+			li(
+				class=`aspect-square w-auto h-auto min-w-[35px] rounded-[50%] border-[2px] border-[#FA6B04]/50 flex items-center justify-center select-none`
+			)
+				button(
+					class=`text-[#FA6B04]/50 font-bold px-[5px] text-[20px] fa-solid fa-angle-right cursor-default`
+				)
+			li(
+				class=`aspect-square w-auto h-auto min-w-[35px] rounded-[50%] border-[2px] border-[#FA6B04]/50 flex items-center justify-center select-none select-none`
+			)
+				button(
+					class=`text-[#FA6B04]/50 font-bold px-[5px] text-[20px] fa-solid fa-angles-right cursor-default`
+				)

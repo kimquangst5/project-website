@@ -11,7 +11,10 @@ const productCategoryShema = new Schema({
 		default: ''
 	},
 	description: String,
-	thumbnail: String,
+	thumbnail: {
+		type: String,
+		default: 'https://res.cloudinary.com/djp6njpi7/image/upload/v1728882513/photo_ncmgdo.png'
+	},
 	status: String,
 	position: Number,
 	createdBy: String,

@@ -44,7 +44,7 @@ router.get('/edit/:id', controller.edit);
 
 router.patch(
 	'/edit/:id',
-	upload.fields([{ name: 'thumbnail', maxCount: 10 }]),
+	upload.fields([{ name: 'thumbnail', maxCount: 20 }]),
 	uploadCloudMiddleWares.uploadFields,
 	// upload.single('thumbnail'),
 	// uploadCloudMiddleWares.uploadSingle,

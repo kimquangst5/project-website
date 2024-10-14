@@ -23,6 +23,7 @@ mixin header(infoWeb)
 							src=infoWeb.logo
 							alt=""
 							class=`h-full w-auto`
+							logo-website
 						)
 				form(method="get" class=`grow flex border-[2px] border-[${BOX ? BOX.mauGiaGoc : ''}] rounded-[8px] truncate`
 					form-search = `tim-kiem`
@@ -87,7 +88,7 @@ mixin header(infoWeb)
 				div(class="flex items-center justify-start flex-1  [&>div]:hover:cursor-pointer [&>div]:px-[10px] [&>div]:text-center [&>div]:h-[70px] [&>a]:h-[70px] [&>*]:px-[20px] [&>*]:duration-700")
 					a(href=`/` class=" place-content-center block relative group truncate" animation) TRANG CHỦ
 						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
-					div(class="place-content-center relative group truncate" animation) SẢN PHẨM
+					a(href=`/product` class="place-content-center relative group truncate" animation) SẢN PHẨM
 						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
 					div(class=" place-content-center relative group truncate" animation) GIỚI THIỆU
 						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000" animation)

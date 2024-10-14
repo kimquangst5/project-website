@@ -107,9 +107,12 @@ module.exports.uploadFields = async (req, res, next) => {
 				await uploadToCloudinary(image.buffer)
 			}
 		}
-
 		await uploadFullImage(req.files.thumbnail);
+		console.log(req.body.thumbnail)
 		
+		next();
+	}
+	else{
 		next();
 	}
 }

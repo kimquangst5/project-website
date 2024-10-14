@@ -6,7 +6,9 @@ const chatSchema = new Schema({
 	userId: String,
 	roomChatId: String,
 	content: String,
-	images: Array
+	avatar: {
+		type: Array,
+	},
 }, {
 	timestamps: true
 });
