@@ -57,7 +57,6 @@ module.exports.detail = async (req, res) => {
 	})
 
 	if (product) {
-		console.log(product.product_category_id)
 		const titleCategory = await ProductCategory.findOne({
 			_id: product.product_category_id,
 			deleted: false,
@@ -75,7 +74,6 @@ module.exports.detail = async (req, res) => {
 		product.priceNew = [product.priceNew].toLocaleString('en-EN')
 
 		product.priceOld = [product.price].toLocaleString('en-EN')
-
 		res.render('client/pages/product/detail.pug', {
 			pageTitle: 'Trang chi tiết sản phẩm',
 			product: product,
@@ -92,8 +90,10 @@ module.exports.category = async (req, res) => {
 		category
 	} = req.params
 	const slugProductCategory = await ProductCategory.findOne({
-		slug: category
-	})
+		slug: category,
+		deleted: false,
+		status: 'active',
+	}).select('id title')
 	const id = slugProductCategory.id
 
 
@@ -126,28 +126,14 @@ module.exports.category = async (req, res) => {
 			position: "desc"
 		})
 		.limit(4)
-	for (const it of productsCategory) {
-		it.priceNew = it.price - (it.price * it.discountPercentage) / 100
-		it.priceNew = it.priceNew.toFixed(0);
-		it.priceNew = parseInt(it.priceNew / 1000)
-		if (it.priceNew % 1000 <= 100) {
-			it.priceNew = parseInt(it.priceNew / 1000) - 1
-			it.priceNew = (1000 * it.priceNew + 990) * 1000
-		} else {
-			it.priceNew = it.priceNew * 1000
-		}
-		it.priceNew = [it.priceNew].toLocaleString('en-EN')
+	priceNew(productsCategory)
 
+	console.log(slugProductCategory)
 
-	}
-	for (const it of productsCategory) {
-		it.priceOld = [it.price].toLocaleString('en-EN')
-	}
-
-	res.render('client/pages/home/index.pug', {
-		pageTitle: 'Trang chủ',
+	res.render('client/pages/product-category/index.pug', {
+		pageTitle: 'Sản phẩm theo danh mục',
 		productsCategory: productsCategory,
-		titleCategory: slugProductCategory.title
+		titleCategory: slugProductCategory
 	})
 
 }

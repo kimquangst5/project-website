@@ -153,3 +153,7 @@ body {
 	display: flex !important;
 	flex-direction: column !important;
  }
+
+ [option-fillter]{
+	outline: 0 !important;
+ }

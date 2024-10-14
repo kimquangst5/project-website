@@ -146,6 +146,7 @@ tailwind.config = {
 			fontFamily: {
 				font_main: ['Poppins', 'sans-serif'],
 				THAI_CONG: ['Montserrat', 'sans-serif'],
+				KIM_QUANG: ["Quicksand", 'sans-serif']
 			},
 			backgroundImage: {
 				'section7': 'linear-gradient(to bottom, white 50%, #0000001A 50%)',
