@@ -27,30 +27,32 @@ block main
 					- if(room.title)
 						div(class=``)
 							div(class=`font-bold text-[20px] text-xanh`) #{room.title}
+	
 	div(class="my-[10px]")
 		div(class="container")
 			div(class="h-auto relative rounded-[10px] p-[10px] duration-1000" element-chat = infoUser.id)
 				div(class="h-[350px] gap-y-[10px] overflow-y-auto scoll-auto bg-[white]  scrollbarmain px-[10px]" appendchild)
-					each it in chats
-						- if(infoUser.id != it.userId)
-							- if(it.content)
-								div(class="h-max w-1/2 py-[5px] flex flex-col")
+					- if(chats && chats.length > 0)
+						each it in chats
+							- if(infoUser.id != it.userId)
+								- if(it.content)
+									div(class="h-max w-1/2 py-[5px] flex flex-col")
+										div(class="font-bold text-[14px]") #{it.fullName}
+										div(class="rounded-[8px] bg-[#F5F5F5] text-justify px-[10px] py-[4px] w-max max-w-full text-wrap") #{it.content}
+								- if(it.images.length > 0)
 									div(class="font-bold text-[14px]") #{it.fullName}
-									div(class="rounded-[8px] bg-[#F5F5F5] text-justify px-[10px] py-[4px] w-max max-w-full text-wrap") #{it.content}
-							- if(it.images.length > 0)
-								div(class="font-bold text-[14px]") #{it.fullName}
-								div(class="flex gap-[10px]")
-									each image in it.images
-										img(src=image, alt="Kim Quang | Preview Ảnh" class=`h-[50px] aspect-square rounded-[10px] cursor-pointer`)
+									div(class="flex gap-[10px]")
+										each image in it.images
+											img(src=image, alt="Kim Quang | Preview Ảnh" class=`h-[50px] aspect-square rounded-[10px] cursor-pointer`)
 
-						- if(infoUser.id == it.userId)
-							- if(it.content)
-								div(class="h-max w-1/2 ml-auto py-[5px] truncate flex justify-end")
-									div(class="w-max text-justify text-wrap text-[white] bg-[#F9005A] rounded-[15px] p-[10px] select-all") #{it.content}
-							- if(it.images.length > 0)
-								div(class="flex gap-[10px] justify-end")
-									each image in it.images
-										img(src=image, alt="Kim Quang | Preview Ảnh" class=`h-[50px] aspect-square rounded-[10px] cursor-pointer`)
+							- if(infoUser.id == it.userId)
+								- if(it.content)
+									div(class="h-max w-1/2 ml-auto py-[5px] truncate flex justify-end")
+										div(class="w-max text-justify text-wrap text-[white] bg-[#F9005A] rounded-[15px] p-[10px] select-all") #{it.content}
+								- if(it.images.length > 0)
+									div(class="flex gap-[10px] justify-end")
+										each image in it.images
+											img(src=image, alt="Kim Quang | Preview Ảnh" class=`h-[50px] aspect-square rounded-[10px] cursor-pointer`)
 
 				div(class="bg-[white] h-auto" list-typing)
 

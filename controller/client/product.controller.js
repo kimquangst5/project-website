@@ -128,7 +128,6 @@ module.exports.category = async (req, res) => {
 		.limit(4)
 	priceNew(productsCategory)
 
-	console.log(slugProductCategory)
 
 	res.render('client/pages/product-category/index.pug', {
 		pageTitle: 'Sản phẩm theo danh mục',

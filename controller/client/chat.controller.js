@@ -5,24 +5,26 @@ const RoomChat = require("../../models/rooms-chat.model");
 const chatSocket = require('../../sockets/client/chat.socket')
 module.exports.index = async (req, res) => {
 	try {
-		console.log(req.params)
-		const roomChatId = req.params.roomChatId
-
-
-		chatSocket(req, res)
-		const chats = await Chat.find({
-			roomChatId: roomChatId
-		})
-		console.log(chats)
-		for (const chat of chats) {
-			const user = await User.findOne({
-				_id: chat.userId
+		if(req.params.roomChatId){
+			console.log(req.params.roomChatId)
+			const roomChatId = req.params.roomChatId
+	
+	
+			chatSocket(req, res)
+			const chats = await Chat.find({
+				roomChatId: roomChatId
 			})
-			if (user.fullName) {
-				chat.fullName = user.fullName
+			for (const chat of chats) {
+				const user = await User.findOne({
+					_id: chat.userId
+				})
+				if (user.fullName) {
+					chat.fullName = user.fullName
+				}
+	
 			}
-
 		}
+		
 
 		const userId = req.query.user
 		if(userId){
@@ -31,21 +33,19 @@ module.exports.index = async (req, res) => {
 			}).select('fullName avatar')
 			res.render("client/pages/chat/index.pug", {
 				pageTitle: "Nhắn ti",
-				chats: chats,
 				user: user
 			})
 		}
 		else{
+			const roomChatId = req.params.roomChatId
 			const room = await RoomChat.findOne({
 				_id: roomChatId,
 				deleted: false
 			}).select('title')
 			res.render("client/pages/chat/index.pug", {
-				pageTitle: "Nhắn ti",
-				chats: chats,
+				pageTitle: "Nhắn tin",
 				room: room
 			})
-			console.log(room)
 		}
 
 		
