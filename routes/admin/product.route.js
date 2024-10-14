@@ -33,7 +33,7 @@ router.get('/create', controller.create);
 router.post(
 	'/create',
 	// upload.single('thumbnail'),
-	upload.fields([{ name: 'thumbnail', maxCount: 10 }]),
+	upload.fields([{ name: 'thumbnail', maxCount: 20 }]),
 	uploadCloudMiddleWares.uploadFields,
 	// uploadCloudMiddleWares.uploadSingle,
 	validate.createPost,
