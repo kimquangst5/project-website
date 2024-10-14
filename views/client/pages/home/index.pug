@@ -3,7 +3,8 @@ include ../../mixins/box-product.pug
 include ../../mixins/section-1.pug
 
 block main
-	+section-1()
+	- if(featuredProducts)
+		+section-1()
 	div(class="select-none py-[40px]" product-new)
 		div(class="container")
 			div(class=`p-[28px] bg-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}] rounded-[7px]`)
