@@ -40,7 +40,7 @@ block main
 							+box-product(featuredProducts, 'swiper-slide')
 						- if(productsCategory)
 							+box-product(productsCategory, 'swiper-slide')
-					//- div(class=`swiper-pagination`) 
+						
 
 
 	- if(newproducts)
@@ -60,3 +60,5 @@ block main
 						div(class=`swiper-wrapper gap-x-[50px] `) 
 							- if(newproducts)
 								+box-product(newproducts, 'swiper-slide')
+					div(class=`flex justify-center py-[20px]`) 
+						a(href="/product" class=`border-[#DDE1EF] border-[1px] w-1/2 text-center text-[#333333] py-[7px] rounded-[7px]`)  Xem thêm

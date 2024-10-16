@@ -111,7 +111,7 @@ if (listCategory) {
 							con.forEach(iy => {
 								if (iy != item) {
 									const next = iy.nextElementSibling;
-									if(next){
+									if (next) {
 										const allLI = next.querySelectorAll('li');
 
 										if (allLI.length > 0) {
@@ -125,13 +125,13 @@ if (listCategory) {
 											if (iconn) {
 												if (iconn.className.includes(`-rotate-90`)) {
 													iconn.classList.toggle(`-rotate-90`)
-	
+
 												}
-	
+
 											}
 										}
 									}
-									
+
 								}
 							});
 						}
@@ -923,7 +923,7 @@ if (pagination) {
 }
 
 const sort = document.querySelector('[option-fillter]');
-if(sort){
+if (sort) {
 	const url = new URL(window.location.href);
 	sort.addEventListener('change', (event) => {
 		const value = event.target.value;
@@ -937,15 +937,37 @@ if(sort){
 	})
 	const sortKeyCurrent = url.searchParams.get('sortKey')
 	const sortValueCurrent = url.searchParams.get('sortValue')
-	if(sortKeyCurrent && sortValueCurrent){
+	if (sortKeyCurrent && sortValueCurrent) {
 		console.log(sortKeyCurrent)
 		console.log(sortValueCurrent)
 		const option = sort.querySelector(`option[value='${sortKeyCurrent}-${sortValueCurrent}']`);
-		if(option){
+		if (option) {
 			option.selected = true
 		}
 	}
 }
+
+// const buttonGsap = document.querySelector("[button-gsap]");
+// if (buttonGsap) {
+// 	buttonGsap.addEventListener("mouseenter", () => {
+// 		gsap.to(buttonGsap, {
+// 			backgroundColor: "#ff7b54",
+// 			duration: 0.5,
+// 			ease: "power2.out",
+// 			backgroundPosition: "right top", // Di chuyển nền từ dưới trái đến trên phải
+// 		});
+// 	});
+
+// 	buttonGsap.addEventListener("mouseleave", () => {
+// 		gsap.to(buttonGsap, {
+// 			backgroundColor: "#FFC234",
+// 			duration: 0.5,
+// 			backgroundPosition: "left bottom", // Di chuyển nền từ dưới trái đến trên phải
+// 			ease: "power2.out"
+// 		});
+// 	});
+// }
+
 
 
 console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');

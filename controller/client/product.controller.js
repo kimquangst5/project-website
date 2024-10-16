@@ -6,7 +6,7 @@ module.exports.index = async (req, res) => {
 		let find = {
 			deleted: false
 		}
-	
+
 		const totalProduct = await Product.countDocuments({
 			deleted: false,
 			status: 'active'
@@ -22,31 +22,77 @@ module.exports.index = async (req, res) => {
 				pagination.current = parseInt(req.query.page)
 				pagination.skip = (parseInt(req.query.page) - 1) * pagination.limit
 			}
-	
+
 		}
-	
+
+		let sort = {};
+		if (req.query.sortKey && req.query.sortValue) {
+			let value = -1
+			if (req.query.sortValue == 'asc') {
+				value = 1
+			}
+			if (req.query.sortValue == 'desc') {
+				value = -1
+			}
+			if (req.query.sortKey == 'price') {
+				req.query.sortKey = 'giaMoi'
+			}
+			sort[req.query.sortKey] = value
+		} else {
+			sort.position = -1 // -1 là Sắp xếp giảm dần
+		}
+		// console.log(sort)
 		const product = await Product
-			.find(find)
-			.sort({
-				position: 'desc'
-			})
-			.limit(pagination.limit)
-			.skip(pagination.skip)
-	
+			.aggregate(
+				[{
+						$addFields: {
+							giaMoi: {
+								$subtract: ["$price",
+									{
+										$multiply: ["$price",
+											{
+												$divide: ["$discountPercentage", 100]
+											}
+										]
+										// price - (price * (discountPercentage / 100))
+									}
+								]
+							}
+						}
+					},
+					{
+
+						$match: find
+					},
+					{
+						$sort: sort
+					},
+					{
+						$limit: pagination.limit
+					},
+					{
+						$skip: pagination.skip
+					}
+				]
+			)
+		// .find(find)
+		// .limit(pagination.limit)
+		// .skip(pagination.skip)
+		// .sort(sort)
 		priceNew(product)
-	
-	
-			console.log(pagination)
+		console.log(product)
+
 		res.render('client/pages/product/index.pug', {
 			pageTitle: 'Danh sách sản phẩm',
 			product: product,
 			pagination: pagination
-	
+
 		})
 	} catch (error) {
+		console.log(error)
 		res.redirect('back')
 	}
-	
+
 };
 
 module.exports.detail = async (req, res) => {
@@ -113,29 +159,81 @@ module.exports.category = async (req, res) => {
 	console.log(req.query)
 
 	let sort = {};
-	if(req.query.sortKey && req.query.sortValue){
-		sort[req.query.sortKey] = req.query.sortValue
-	}
-	else{
-		sort.position = 'desc'
+	if (req.query.sortKey && req.query.sortValue) {
+		let value = -1
+		if (req.query.sortValue == 'asc') {
+			value = 1
+		}
+		if (req.query.sortValue == 'desc') {
+			value = -1
+		}
+		if (req.query.sortKey == 'price') {
+			req.query.sortKey = 'giaMoi'
+		}
+		sort[req.query.sortKey] = value
+	} else {
+		sort.position = -1 // -1 là Sắp xếp giảm dần
 	}
 	const productsCategory = await Product
-		.find({
-			product_category_id: {
-				$in: [
-					id,
-					...subCategory,
-				]
+		.aggregate(
+			[	
+				{
+					$addFields: {
+						giaMoi: {
+							$subtract: ["$price",
+								{
+									$multiply: ["$price",
+										{
+											$divide: ["$discountPercentage", 100]
+										}
+									]
+									// price - (price * (discountPercentage / 100))
+								}
+							]
+						}
+					},
+				
 			},
-			status: "active",
-			deleted: false
-		})
-		.select("-description")
-		.sort(sort)
-		// .limit(4)
+			{
+				$match: {
+					product_category_id: {
+						$in: [
+							id,
+							...subCategory,
+						]
+					},
+					status: "active",
+					deleted: false
+				}
+			},
+			{
+				$project: {
+					description: 0,
+				}
+			},
+			{
+				$sort: sort
+			}
+		 ]
+		)
+
+
+		// .find({
+		// 	product_category_id: {
+		// 		$in: [
+		// 			id,
+		// 			...subCategory,
+		// 		]
+		// 	},
+		// 	status: "active",
+		// 	deleted: false
+		// })
+		// .select("-description")
+		// .sort(sort)
+	// .limit(4)
 	priceNew(productsCategory)
 
-
+		console.log(productsCategory)
 	res.render('client/pages/product-category/index.pug', {
 		pageTitle: 'Sản phẩm theo danh mục',
 		productsCategory: productsCategory,
