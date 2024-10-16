@@ -110,6 +110,15 @@ module.exports.category = async (req, res) => {
 		}
 	};
 	await getSubCategory(id);
+	console.log(req.query)
+
+	let sort = {};
+	if(req.query.sortKey && req.query.sortValue){
+		sort[req.query.sortKey] = req.query.sortValue
+	}
+	else{
+		sort.position = 'desc'
+	}
 	const productsCategory = await Product
 		.find({
 			product_category_id: {
@@ -122,10 +131,8 @@ module.exports.category = async (req, res) => {
 			deleted: false
 		})
 		.select("-description")
-		.sort({
-			position: "desc"
-		})
-		.limit(4)
+		.sort(sort)
+		// .limit(4)
 	priceNew(productsCategory)
 
 

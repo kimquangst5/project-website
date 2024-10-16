@@ -922,10 +922,35 @@ if (pagination) {
 	}
 }
 
+const sort = document.querySelector('[option-fillter]');
+if(sort){
+	const url = new URL(window.location.href);
+	sort.addEventListener('change', (event) => {
+		const value = event.target.value;
+		const sortKey = value.split('-')[0]
+		const sortValue = value.split('-')[1]
+		console.log(sortKey)
+		console.log(sortValue)
+		url.searchParams.set('sortKey', sortKey)
+		url.searchParams.set('sortValue', sortValue)
+		window.location.href = url.href
+	})
+	const sortKeyCurrent = url.searchParams.get('sortKey')
+	const sortValueCurrent = url.searchParams.get('sortValue')
+	if(sortKeyCurrent && sortValueCurrent){
+		console.log(sortKeyCurrent)
+		console.log(sortValueCurrent)
+		const option = sort.querySelector(`option[value='${sortKeyCurrent}-${sortValueCurrent}']`);
+		if(option){
+			option.selected = true
+		}
+	}
+}
 
-// console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-// console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
 
-// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
+
+console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');

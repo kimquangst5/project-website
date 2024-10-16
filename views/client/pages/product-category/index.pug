@@ -18,17 +18,16 @@ block main
 							div(class=`ml-auto flex gap-[10px] items-center h-full` ) 
 								div(class=``) Sắp xếp theo
 								select(name=`sort` class=`px-[15px] outline-none border-[1px] rounded-[10px] text-[#333333] h-full border-[#dde1ef] rounded-[7px] relative outline-0` option-fillter)
-									option(value=`${titleCategory.id}-featured`) Sản phẩm nổi bật
-									option(value=`price-desc`) Giá: Tăng dần
-									option(value=`price-asc`) Giá: Giảm dần
+									option(value=`position-desc`) Mới nhất
+									option(value=`position-asc`) Cũ nhất
+									option(value=`price-asc`) Giá: Tăng dần
+									option(value=`price-desc`) Giá: Giảm dần
 									option(value=`title-asc`) Tên: A-Z
 									option(value=`title-desc`) Tên: Z-A
-									option(value=`featured`) Cũ nhất
-									option(value=`featured`) Mới nhất
-									option(value=`featured`) Bán chạy nhất
+									//- option(value=`featured`) Bán chạy nhất
 							
 				
-				div(class=`grid grid-cols-4 flex gap-x-[20px] `)
+				div(class=`grid grid-cols-4 flex gap-[20px] flex-gap`)
 					- if(productsCategory)
 						+box-product(productsCategory)
 

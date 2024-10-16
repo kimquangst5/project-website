@@ -2,8 +2,6 @@
 mixin box-product(array, swiper)
 	each it, i in array
 		div(class=(`rounded-[${BOX ? BOX.boGoc : 7}px] bg-[${BOX ? BOX.mauNen : 'white'}] hover:shadow-2xl hover:shadow-[#ffc234] p-[5px] group relative truncate ${swiper} `) calculate carts-choose)
-
-
 			div(class=`absolute hidden mt-[-50px] opacity-0 duration-1000 bg-[#F9F9F9]  rounded-[7px] w-[95%] flex justify-center items-center z-[99] flex flex-col gap-[20px] h-[70%] ` box-cart)
 				div(class="absolute top-0 right-0 text-chu px-[10px] cursor-pointer" exit) x
 				include ../partials/adddition - subtraction.pug
