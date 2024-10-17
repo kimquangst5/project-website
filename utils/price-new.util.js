@@ -1,15 +1,15 @@
 module.exports = (array) => {
 	array.totalPrice = 0
 	for (const it of array) {
-		it.priceNew = it.price - (it.price * it.discountPercentage) / 100
-		it.priceNew = it.priceNew.toFixed(0);
-		it.priceNew = parseInt(it.priceNew / 1000)
-		if (it.priceNew % 1000 <= 100) {
-			it.priceNew = parseInt(it.priceNew / 1000) - 1
-			it.priceNew = (1000 * it.priceNew + 990) * 1000
-		} else {
-			it.priceNew = it.priceNew * 1000
-		}
+		it.priceNew = parseInt(((it.price - (it.price * it.discountPercentage) / 100).toFixed(0))/1000) * 1000
+		// if (it.priceNew % 1000 <= 100) {
+		// 	it.priceNew = parseInt(it.priceNew / 1000) - 1
+		// 	it.priceNew = (1000 * it.priceNew + 990) * 1000
+		// } else {
+		// 	it.priceNew = it.priceNew * 1000
+		// }
+
+
 		it.priceOrigin = it.priceNew
 		it.newPrice = it.priceNew
 		array.totalPrice += (it.priceNew * it.quanlityProduct)

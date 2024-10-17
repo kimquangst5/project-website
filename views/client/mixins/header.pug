@@ -25,8 +25,8 @@ mixin header(infoWeb)
 							class=`h-full w-auto`
 							logo-website
 						)
-				form(method="get" class=`grow flex border-[2px] border-[${BOX ? BOX.mauGiaGoc : ''}] rounded-[8px] truncate`
-					form-search = `tim-kiem`
+				form(method="get" class=`grow flex border-[2px] border-[${BOX ? BOX.mauGiaGoc : ''}] rounded-[8px] relative`
+					form-search = `/tim-kiem/result`
 				)
 					input(
 						type="text"
@@ -39,6 +39,7 @@ mixin header(infoWeb)
 						type="submit"
 						class=`px-[20px] bg-[${BOX ? BOX.mauGiaGoc : ''}] text-main flex items-center justify-center flex-end fa-solid fa-magnifying-glass hover:bg-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}] hover:text-[${BOX ? BOX.mauGiaGoc : ''}] duration-500`
 					)
+					div(class=`absolute top-[70px] bg-[white] rounded-[10px] z-[99] w-full ` form-search-quick)
 				div(class="h-full")
 					div(view-carts class="h-full relative w-auto hover:text-chu duration-500") 
 						i(class=`fa-thin fa-bag-shopping text-[25px] h-full`)

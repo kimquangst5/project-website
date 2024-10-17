@@ -213,6 +213,48 @@ if (formSearch) {
 			}
 		});
 	}
+
+	const input = formSearch.querySelector('input');
+	if (input) {
+		input.addEventListener("input", () => {
+			
+			fetch(`/tim-kiem/suggest?key=${input.value}`, {
+					method: "GET",
+					headers: {
+						'Content-Type': 'application/json'
+					},
+
+				})
+				.then(res => res.json())
+				.then(data => {
+					if (data.code == 200) {
+						const formSeachQuick = formSearch.querySelector('[form-search-quick]');
+						if (input.value.trim().length < 2) {
+							formSeachQuick.innerHTML = ''
+						} else {
+							if (data.products.length > 0) {
+								formSeachQuick.classList.toggle('py-[20px]')
+							}
+							const products = data.products.map(it =>
+								`
+								<div class="flex gap-[10px] border-[1px] border-[#DDE1EF] rounded-[10px]">
+									<a class="h-[70px] rounded-[9px] truncate" href='/product/detail/${it.slug}'><img class="aspect-square h-full object-cover" src=${it.thumbnail[0]} alt="" /></a>
+									<div>
+										<a class="font-bold line-clamp-1 text-chu" href='/product/detail/${it.slug}'>${it.title}</a>
+										<div class="font-bold line-clamp-1">Giá: ${(parseInt(((it.price - (it.price * it.discountPercentage) / 100).toFixed(0))/1000) * 1000).toLocaleString()}đ</div>
+										<div class="font-bold line-clamp-1">Giảm: ${it.discountPercentage}%</div>
+									</div>
+								</div>
+							`
+							)
+							formSeachQuick.innerHTML = products.join("")
+						}
+
+					}
+				})
+
+		})
+	}
 }
 
 const linkCart = document.querySelectorAll('[link-cart]');

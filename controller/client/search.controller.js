@@ -1,44 +1,52 @@
 const Product = require("../../models/product.model")
+const unidecode = require('unidecode');
+const priceNew = require('../../utils/price-new.util');
 
 module.exports.index = async (req, res) => {
+	console.log(req.params)
+	const type = req.params.type
 	let find = {
 		deleted: false,
 		status: "active"
 	}
-	if(req.query.key){
-		const regex = new RegExp(req.query.key, 'i')
-		find.title = regex
-	}
+	let key = req.query.key
+	let keySlug = key.trim().replace(/\s+/g, '-')
+	keySlug = unidecode(keySlug)
 
+	const regexTitle = new RegExp(key, 'i');
+	const regexSlug = new RegExp(keySlug, 'i');
 	const products = await Product
-		.find(find)
+		.find({
+			$or: [{
+					title: regexTitle
+				},
+				{
+					slug: regexSlug
+				}
+			],
+			deleted: false,
+			status: "active"
+		})
 		.sort({
 			position: "desc"
 		})
-		.select("-description")
+		// .select("title price discountPercentage thumbnail")
 
-		for (const it of products) {
-			it.priceNew = it.price - (it.price * it.discountPercentage) / 100
-			it.priceNew = it.priceNew.toFixed(0);
-			it.priceNew = parseInt(it.priceNew / 1000)
-			if(it.priceNew % 1000 <= 100){
-				it.priceNew = parseInt(it.priceNew / 1000) - 1
-				it.priceNew = (1000 * it.priceNew + 990) * 1000
-			}
-			else{
-				it.priceNew = it.priceNew * 1000
-			}
-			it.priceNew = [it.priceNew].toLocaleString('en-EN')
-			
-	
-		}
-		for (const it of products) {
-			it.priceOld = [it.price].toLocaleString('en-EN')
-		}
-		products.key = req.query.key
-	res.render("client/pages/search/index.pug", {
-		pageTitle: "Tìm kiếm",
-		products: products,
-		key: products.key
-	})
+	priceNew(products)
+	products.key = req.query.key.trim()
+	console.log(products)
+	if (type == 'result') {
+		res.render("client/pages/search/index.pug", {
+			pageTitle: "Tìm kiếm",
+			products: products,
+			key: products.key
+		})
+	}
+	else{
+		res.json({
+			code: 200,
+			products: products
+		})
+	}
+
 };
