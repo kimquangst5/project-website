@@ -231,6 +231,7 @@ if (formSearch) {
 						const formSeachQuick = formSearch.querySelector('[form-search-quick]');
 						if (input.value.trim().length < 2) {
 							formSeachQuick.innerHTML = ''
+							formSeachQuick.classList.toggle('py-[20px]')
 						} else {
 							if (data.products.length > 0) {
 								formSeachQuick.classList.toggle('py-[20px]')
