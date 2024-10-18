@@ -217,7 +217,7 @@ if (formSearch) {
 	const input = formSearch.querySelector('input');
 	if (input) {
 		input.addEventListener("input", () => {
-			
+
 			fetch(`/tim-kiem/suggest?key=${input.value}`, {
 					method: "GET",
 					headers: {
@@ -229,27 +229,36 @@ if (formSearch) {
 				.then(data => {
 					if (data.code == 200) {
 						const formSeachQuick = formSearch.querySelector('[form-search-quick]');
-						if (input.value.trim().length < 2) {
-							formSeachQuick.innerHTML = ''
-							formSeachQuick.classList.toggle('py-[20px]')
-						} else {
-							if (data.products.length > 0) {
-								formSeachQuick.classList.toggle('py-[20px]')
+						if(formSeachQuick){
+							const length = input.value.trim().replace(/\s+/g, ' ').length
+							if(length > 2){
+								if(!formSeachQuick.className.includes('py-[20px]')){
+									formSeachQuick.classList.toggle('py-[20px]')
+								}
+								const products = data.products.map(it =>
+									`
+										<div class="flex gap-[10px] border-[1px] border-[#DDE1EF] rounded-[10px]">
+											<a class="h-[70px] rounded-[9px] truncate" href='/product/detail/${it.slug}'><img class="aspect-square h-full object-cover" src=${it.thumbnail[0]} alt="" /></a>
+											<div>
+												<a class="font-bold line-clamp-1 text-chu" href='/product/detail/${it.slug}'>${it.title}</a>
+												<div class="font-bold line-clamp-1">Giá: ${(parseInt(((it.price - (it.price * it.discountPercentage) / 100).toFixed(0))/1000) * 1000).toLocaleString()}đ</div>
+												<div class="font-bold line-clamp-1">Giảm: ${it.discountPercentage}%</div>
+											</div>
+										</div>
+									`
+								)
+								formSeachQuick.innerHTML = products.join("")
 							}
-							const products = data.products.map(it =>
-								`
-								<div class="flex gap-[10px] border-[1px] border-[#DDE1EF] rounded-[10px]">
-									<a class="h-[70px] rounded-[9px] truncate" href='/product/detail/${it.slug}'><img class="aspect-square h-full object-cover" src=${it.thumbnail[0]} alt="" /></a>
-									<div>
-										<a class="font-bold line-clamp-1 text-chu" href='/product/detail/${it.slug}'>${it.title}</a>
-										<div class="font-bold line-clamp-1">Giá: ${(parseInt(((it.price - (it.price * it.discountPercentage) / 100).toFixed(0))/1000) * 1000).toLocaleString()}đ</div>
-										<div class="font-bold line-clamp-1">Giảm: ${it.discountPercentage}%</div>
-									</div>
-								</div>
-							`
-							)
-							formSeachQuick.innerHTML = products.join("")
+							else{
+								formSeachQuick.innerHTML = '';
+								if(formSeachQuick.className.includes('py-[20px]')){
+									formSeachQuick.classList.toggle('py-[20px]')
+								}
+							}
+							
 						}
+						
+						
 
 					}
 				})
@@ -808,6 +817,7 @@ window.addEventListener('load', () => {
 
 const swipperProductDetail = document.querySelector('[swipper-product-detail]');
 if (swipperProductDetail) {
+	new Viewer(swipperProductDetail)
 	var swiper = new Swiper(".mySwiper", {
 		loop: true,
 		spaceBetween: 10,

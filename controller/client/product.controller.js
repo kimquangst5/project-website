@@ -41,7 +41,6 @@ module.exports.index = async (req, res) => {
 		} else {
 			sort.position = -1 // -1 là Sắp xếp giảm dần
 		}
-		// console.log(sort)
 		const product = await Product
 			.aggregate(
 				[{
@@ -80,7 +79,6 @@ module.exports.index = async (req, res) => {
 		// .skip(pagination.skip)
 		// .sort(sort)
 		priceNew(product)
-		console.log(product)
 
 		res.render('client/pages/product/index.pug', {
 			pageTitle: 'Danh sách sản phẩm',
@@ -89,7 +87,6 @@ module.exports.index = async (req, res) => {
 
 		})
 	} catch (error) {
-		console.log(error)
 		res.redirect('back')
 	}
 
@@ -156,7 +153,6 @@ module.exports.category = async (req, res) => {
 		}
 	};
 	await getSubCategory(id);
-	console.log(req.query)
 
 	let sort = {};
 	if (req.query.sortKey && req.query.sortValue) {
@@ -233,7 +229,6 @@ module.exports.category = async (req, res) => {
 	// .limit(4)
 	priceNew(productsCategory)
 
-		console.log(productsCategory)
 	res.render('client/pages/product-category/index.pug', {
 		pageTitle: 'Sản phẩm theo danh mục',
 		productsCategory: productsCategory,

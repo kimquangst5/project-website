@@ -10,3 +10,8 @@
 html{
 	margin: 0;
 } */
+
+#myChart{
+	width: 100% !important;
+	height: 100% !important;
+}

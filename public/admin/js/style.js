@@ -464,7 +464,7 @@ if (upploadImage) {
 	const images = upploadImage.querySelector(`img`);
 	input.addEventListener('change', () => {
 		const file = input.files[0];
-		
+
 		if (file) {
 			images.src = URL.createObjectURL(file)
 		}
@@ -1197,23 +1197,23 @@ if (imageUpload) {
 }
 
 const buttonChangeStatusMethodPay = document.querySelectorAll('[button-change-status-method-pay]');
-if(buttonChangeStatusMethodPay.length > 0){
+if (buttonChangeStatusMethodPay.length > 0) {
 	buttonChangeStatusMethodPay.forEach(buttonChangeStatusMethodPay => {
 		const listButton = buttonChangeStatusMethodPay.querySelectorAll('button');
-		if(listButton.length > 0){
+		if (listButton.length > 0) {
 			listButton.forEach(button => {
 				button.addEventListener('click', () => {
 					const link = button.getAttribute('link');
-					if(link){
+					if (link) {
 						fetch(link, {
-							method: "PATCH",
-							headers: {
-								"Content-Type": "application/json",
-							},
-						})
+								method: "PATCH",
+								headers: {
+									"Content-Type": "application/json",
+								},
+							})
 							.then(res => res.json())
 							.then(data => {
-								if(data.code == 200){
+								if (data.code == 200) {
 									window.location.reload();
 								}
 							})
@@ -1222,39 +1222,39 @@ if(buttonChangeStatusMethodPay.length > 0){
 			});
 		}
 	});
-	
+
 }
 
 
 
 const inputChangeQuantityProduct = document.querySelector("[input-change-quantity-product]");
-if(inputChangeQuantityProduct){
+if (inputChangeQuantityProduct) {
 	const total = inputChangeQuantityProduct.getAttribute('input-change-quantity-product');
 	// if(total){
 	// 	inputChangeQuantityProduct.max = total
 	// }
 	inputChangeQuantityProduct.addEventListener('change', () => {
 		let value = inputChangeQuantityProduct.value;
-		if(value){
-			if(parseInt(value) > parseInt(total)){
+		if (value) {
+			if (parseInt(value) > parseInt(total)) {
 				value = parseInt(total)
 			}
-			if(parseInt(value) < 1){
+			if (parseInt(value) < 1) {
 				value = 1
 			}
 			fetch(`/admin/product/display-product`, {
-				method: "PATCH",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					total: parseInt(total),
-					limit: parseInt(value)
-				}),
-			})
+					method: "PATCH",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						total: parseInt(total),
+						limit: parseInt(value)
+					}),
+				})
 				.then(res => res.json())
 				.then(data => {
-					if(data.code == 200){
+					if (data.code == 200) {
 						Swal.fire({
 							position: "top-end",
 							icon: "success",
@@ -1269,9 +1269,46 @@ if(inputChangeQuantityProduct){
 	});
 }
 
-console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
+const ctx = document.getElementById('myChart');
 
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+new Chart(ctx, {
+	type: 'doughnut',
+	data: {
+		labels: [
+			'Hoạt động',
+			'Dừng hoạt động',
+			'Đã xóa'
+		],
+		datasets: [{
+			label: 'Số lượng: ',
+			data: [7, 0, 1],
+			backgroundColor: [
+				'rgb(255, 99, 132)',
+				'rgb(54, 162, 235)',
+				'rgb(255, 205, 86)'
+			],
+			hoverOffset: 4
+		}]
+	},
+	options: {
+		responsive: true, // Cho phép thay đổi kích thước theo màn hình
+		scales: {
+			y: {
+				beginAtZero: true
+			}
+		},
+		aspectRatio: 1, // Tỉ lệ chiều rộng/chiều cao, 1 = hình tròn
+		plugins: {
+			legend: {
+				// position: 'top', // Vị trí của legend
+			}
+		},
+	}
+});
+
+// console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
+
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');

@@ -18,8 +18,8 @@ block main
 					div(style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff", class="swiper mySwiper2" swipper-product-detail)
 						div(class="swiper-wrapper")
 							each img in product.thumbnail
-								div(class="swiper-slide")
-									img(src=img class=`w-full h-auto aspect-square object-cover object-top`)
+								div(class="swiper-slide image-hover-zoom" scale="2.0")
+									img(src=img class=`w-full h-auto aspect-square object-cover object-top` title="Click vào đây!")
 							
 						div(class="swiper-button-next")
 						div(class="swiper-button-prev")

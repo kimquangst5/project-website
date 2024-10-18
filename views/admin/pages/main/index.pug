@@ -3,7 +3,11 @@ include ../../mixins/khung-table.pug
 include ../../mixins/box-dashboard.pug
 
 block main
-	div(class="flex grid grid-cols-3 gap-[10px]")
+	div(class=`w-1/2`)
+		canvas(id="myChart" class=`w-full h-full`)
+	div(class="flex grid grid-cols-2 gap-[10px] truncate")
+			
+				
 		+khung-table("Sản phẩm")
 			div(class="")
 				+box-dashboard('Số lượng', dashboard.product.total)
