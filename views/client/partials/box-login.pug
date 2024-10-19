@@ -1,0 +1,32 @@
+div(class="fixed w-screen mt-[-30px] hidden opacity-0 h-screen z-[100] flex justify-center items-center duration-1000" box-login)
+	div(class="bg-[pink] p-[20px] bg-[white] rounded-[10px] shadow-2xl shadow-cyan-500/50 w-auto")
+		div(class="flex justify-between items-center py-[10px]") 
+			div(class="uppercase font-bold text-[#333333]") đăng nhập
+			div(class="text-chu text-[19px] cursor-pointer" exit) x
+		div(class="bg-[black]/50 w-full h-[2px]") 
+		form(action="/member/login" method="POST" class="flex flex-col gap-[15px]  w-full")
+				div(class="flex flex-col gap-y-[10px] w-[500px]") 
+					label(for="email" class=`text-chu`) Email
+						span(class=`text-[red] text-[18px]`)  *
+					div(class="border-[1px] border-[black]/30 rounded-[5px] flex gap-[10px] items-center px-[5px] py-[10px]")
+						i(class="fa-regular fa-user text-[black]/80 icon px-[10px]")
+						input(type="email", id="email" name="email" class=`outline-none w-full bg-[transparent]` required placeholder="Ví dụ: kimquangst5@gmail.com")
+				div(class="flex flex-col gap-y-[10px]") 
+					label(for="password" class=`text-chu`) Mật khẩu
+						span(class=`text-[red] text-[18px]`)  *
+					div(class="border-[1px] border-[black]/30 rounded-[5px] flex gap-[10px] items-center px-[5px] py-[10px]")
+						i(class="fa-regular fa-unlock text-[black]/80 icon px-[10px]")
+						input(type="password", id="password" name="password" 	class=`outline-none w-full bg-[transparent]` required placeholder="Mật khẩu")
+						i(class="fa-light fa-eye-slash mr-[10px] hover:cursor-pointer" icon-eye = "icon")
+				//- div(class="g-recaptcha" data-sitekey="6LfxE2UqAAAAAHHDoGeu3NQ1vrlEsejf_rhQ53Eh" data-action="submit") 
+				a(href="/member/forgot-password" class=`text-[blue]/50`) Quên mật khẩu?
+				div(class="bg-chu text-[white] p-[15px] text-center rounded-[6px]" button-submit-box-login) Đăng nhập
+				button(type="submit" class="hidden bg-chu text-[white] p-[15px] text-center rounded-[6px]" ) Đăng nhập
+
+				div(class="w-full flex justify-center") 
+						a(href="/member/login/gmail/auth/google" url-login-gmail) 
+							img(src="/images/google.png", alt="" class=`h-[30px]`)
+				
+				div(class="flex justify-center items-center gap-[10px]")
+					div(class="") Bạn chưa có tài khoản?
+					a(href=`/member/register` class="font-bold text-chu") Đăng ký ngay

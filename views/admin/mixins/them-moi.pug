@@ -1,0 +1,5 @@
+mixin them-moi(title, link, attributes)
+	div(class="h-[50px] flex items-center justify-end gap-[10px]")
+		a(href=link class="inline-flex gap-[10px] text-[12px] px-[10px] py-[5px] border-[0px] bg-do hover:bg-dohover text-main rounded-[5px] items-center w-max hover:cursor-pointer")&attributes(attributes)
+			i(class=`fa-solid fa-circle-plus`)
+			p  #{title}

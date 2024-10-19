@@ -1,0 +1,11 @@
+mixin dieu-huong(title, navigation)
+	div(class="container bg-[white] px-[10px]") 
+		div(class="h-[40px] text-[black] flex items-center justify-between select-none")
+			nav(class="text-[14px] flex gap-[10px] items-center ml-auto flex-end")
+				a(href=`/`) Trang chủ
+				i(class=`fa-solid fa-angle-right text-[7px]`)
+				if(navigation && navigation.length > 0)
+					each it in navigation
+						a(href=it.link) #{it.title}
+						i(class=`fa-solid fa-angle-right text-[7px]`)
+				p(class=`text-chu font-bold`) #{title}

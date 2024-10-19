@@ -1,0 +1,70 @@
+extends ../../layouts/default.pug
+include ../../mixins/pagination.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/setting-box.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/them-moi.pug
+
+
+//- block header
+	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
+
+block main
+	- if(role.permisstion.includes('dashboard_view'))
+		+khung-table("Cài đặt chung")
+			div(class="flex grid grid-cols-4 gap-x-[20px]")
+				+box-setting('fa-solid fa-circle-info', `/${admin}/dashboard/website-info`, 'Thông tin website', 'Thiết lập thông tin website')
+				+box-setting('fa-solid fa-language', `/${admin}/roles`, 'Ngôn ngữ', 'Thiết lập ngôn ngữ website')
+				+box-setting('fa-solid fa-envelopes', `/${admin}/dashboard/email`, 'Cấu hình email', 'Thiết lập cấu hình email')
+				+box-setting('fa-solid fa-city', `/${admin}/roles`, 'Tỉnh thành', 'Thiết lập tỉnh, thành phố')
+				+box-setting('fa-solid fa-address-card', `/${admin}/roles`, 'Form liên hệ', 'Quản lí thông tin form liên hệ')
+				+box-setting('fa-solid fa-indent', `/${admin}/roles`, 'Danh sách thuộc tính', 'Tùy chỉnh các thuộc tính mở rộng của sản phẩm và bài viết')
+				+box-setting('fa-brands fa-facebook', `/${admin}/roles`, 'Mạng xã hội', 'Cấu hình các thông tin liên quan đến các trang mạng xã hội')
+				+box-setting('fa-solid fa-message-code', `/${admin}/roles`, 'Mã nhúng', 'Quản lí mã nhúng')
+				+box-setting('fa-solid fa-phone', `/${admin}/dashboard/phone`, 'Cấu hình số điện thoại', 'Quản lí các đầu số điện thoại')
+		
+		+khung-table("Danh mục")
+			div(class="flex grid grid-cols-4")
+				+box-setting('fa-solid fa-list-check', `/${admin}/accounts`, 'Thuộc tính áp dụng theo danh mục', 'Thiết lập tài khoản')
+				+box-setting('fa-solid fa-tags', `/${admin}/roles`, 'Thương hiệu áp dụng theo danh mục', 'Thiết lập nhóm quyền')
+			
+		+khung-table("Bán hàng")
+			div(class="flex grid grid-cols-4")
+				+box-setting('fa-solid fa-dice-d6', `/${admin}/product`, 'Sản phẩm', 'Thiết lập cấu hình sản phẩm')
+				+box-setting('fa-solid fa-basket-shopping', `/${admin}/order`, 'Đơn hàng', 'Thiết lập cấu hình đơn hàng')
+				+box-setting('fa-solid fa-print', `/${admin}/dashboard`, 'Mẫu in', 'Thiết lập cấu hình mẫu in')
+				+box-setting('fa-solid fa-cart-flatbed-boxes', `/${admin}/dashboard`, 'Nguồn đơn hàng', 'Thêm và quản lí nguồn tạo ra đơn hàng')
+				+box-setting('fa-solid fa-truck', `/${admin}/dashboard`, 'Vận chuyển', 'Cấu hình giá và phương thức vận chuyển')
+				+box-setting('fa-solid fa-truck-fast', `/${admin}/dashboard`, 'Hãng vận chuyển', 'Thiết lập hãng vận chuyển')
+		
+		+khung-table("Tiền tệ")
+			div(class="flex grid grid-cols-4")
+				+box-setting('fa-solid fa-money-bills', `/${admin}/dashboard/money`, 'Tiền tệ', 'Thiết lập tiền tệ của hệ thống')
+				+box-setting('fas fa-landmark', `/${admin}/dashboard`, 'Cổng thanh toán', 'Thiết lập cổng thanh toán')
+
+
+		+khung-table("Tài khoản")
+			div(class="flex grid grid-cols-4")
+				+box-setting('fa-solid fa-users', `/${admin}/accounts`, 'Danh sách tài khoản', 'Thiết lập tài khoản')
+				+box-setting('fa-solid fa-users-gear', `/${admin}/roles`, 'Nhóm quyền', 'Thiết lập nhóm quyền')
+				+box-setting('fa-solid fa-user-pen', `/${admin}/roles/permissions`, 'Phân quyền', 'Thiết lập phân quyền')
+				+box-setting('fa-solid fa-pen-to-square', `/${admin}/roles`, 'Duyệt bài viết', 'Thiết lập quyền duyệt bài viết')
+				
+		+khung-table("hệ thống")
+			div(class="flex grid grid-cols-4")
+				+box-setting('fa-brands fa-dev', `/${admin}/roles`, 'Đổi chế độ', 'Thay đổi chế độ website')
+				+box-setting('fa-solid fa-trash-can', `/${admin}/roles`, 'Xóa cache', 'Xóa bộ nhớ lưu trữ tạm thời của website')
+				+box-setting('fa-solid fa-code-branch', `/${admin}/roles`, 'Chuyển hướng', 'Chuyển hướng đường dẫn website')
+		
+		+khung-table("kết nối")
+			div(class="flex grid grid-cols-4")
+				+box-setting('fab fa-battle-net', `/${admin}/roles`, 'API', 'Thiết lập thông tin API')
+				+box-setting('fa-solid fa-comment-dots', `/${admin}/roles`, 'Gửi tin nhắn', 'Thiết lập gửi tin nhắn')
+				+box-setting('fa-solid fa-comment-sms', `/${admin}/roles`, 'Sms Brandname', 'Thiết lập cấu hình sms brandname')
+		
+		+khung-table("bảo mật")
+			div(class="flex grid grid-cols-4")
+				+box-setting('fa-solid fa-user-shield', `/${admin}/roles`, 'Khách hàng', 'Thiết lập cấu hình khách hàng')
+				+box-setting('fab fa-expeditedssl', `/${admin}/roles`, 'reCAPTCH v3', 'Chống span và bảo mật thông tin dữ liệu')
+	- else
+		div(no-view-permission)

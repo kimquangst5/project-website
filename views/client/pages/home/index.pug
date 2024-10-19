@@ -1,0 +1,64 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-product.pug
+include ../../mixins/section-1.pug
+
+block main
+	- if(featuredProducts)
+		+section-1()
+	div(class=`select-none py-[40px]` product-new)
+		div(class=`container`)
+			div(class=`p-[28px] bg-[white] rounded-[7px]`)
+
+				div(class=`text-[${BOX ? BOX.mauGiaGoc : ''}] `)
+					- if(featuredProducts)
+						div(class=`uppercase text-[25px] font-[700] w-max flex flex-col justify-center mb-[20px]`) thời trang nổi bật
+					
+					- if(productsCategory)
+						div(class=`flex items-center grid grid-cols-2 justify-between pb-[20px] `) 
+							div(class=`flex items-center gap-[10px]`) 
+								div(class=`text-[25px] font-[700] w-max flex flex-col justify-center `) #{titleCategory.title}
+								div(class=``) 
+									span(class=`font-bold`) (  
+									span sản phẩm)
+							div(class=`ml-auto flex gap-[10px] items-center h-full` ) 
+								div(class=``) Sắp xếp theo
+								select(name=`sort` class=`px-[15px] outline-none border-[1px] rounded-[10px] text-[#333333] h-full border-[#dde1ef] rounded-[7px] relative outline-0` option-fillter)
+									option(value=`${titleCategory.id}-featured`) Sản phẩm nổi bật
+									option(value=`price-desc`) Giá: Tăng dần
+									option(value=`price-asc`) Giá: Giảm dần
+									option(value=`title-asc`) Tên: A-Z
+									option(value=`title-desc`) Tên: Z-A
+									option(value=`featured`) Cũ nhất
+									option(value=`featured`) Mới nhất
+									option(value=`featured`) Bán chạy nhất
+							
+						//- div(class=`border-[1px] border-[${BOX ? BOX.mauGiaGoc : ''}] w-[50%] mx-auto my-[10px]`)
+				
+				div(class=`swiper mySwiper grid grid-cols-4 flex ` autoplay-slick)
+					div(class=`swiper-wrapper gap-x-[50px] `) 
+						- if(featuredProducts)
+							+box-product(featuredProducts, 'swiper-slide')
+						- if(productsCategory)
+							+box-product(productsCategory, 'swiper-slide')
+						
+
+
+	- if(newproducts)
+		div(class=`select-none py-[40px]`)
+			div(class=`container`)
+				div(class=`p-[28px] bg-[white] rounded-[7px]`)
+
+					div(class=`text-[${BOX ? BOX.mauGiaGoc : ''}] flex justify-center`) 
+						div(class=`uppercase text-[25px] font-[700] w-max flex flex-col justify-center`) thời trang mới nhất
+							div(class=`border-[1px] border-[${BOX ? BOX.mauGiaGoc : ''}]] w-[50%] mx-auto my-[10px]`)
+					
+					- if(newproducts)
+						div(class=`grid grid-cols-4 flex gap-x-[10px] gap-y-[15px]` autoplay-slick)
+							div(class=`swiper-wrapper gap-x-[50px] `) 
+				
+					div(class=`swiper mySwiper grid grid-cols-4 flex ` autoplay-slick)
+						div(class=`swiper-wrapper gap-x-[50px] `) 
+							- if(newproducts)
+								+box-product(newproducts, 'swiper-slide')
+					div(class=`flex justify-center py-[20px]`) 
+						a(href="/product" class=`border-[#DDE1EF] border-[1px] w-1/2 text-center text-[#333333] py-[7px] rounded-[7px]`)  Xem thêm

@@ -1,0 +1,124 @@
+extends ../../layouts/default.pug
+include ../../mixins/pagination.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/setting-box.pug
+include ../../mixins/dieu-huong.pug
+include ../../mixins/cap-nhat.pug
+
+block main
+	-
+		let array = [
+			{
+				link: `/${admin}/accounts`,
+				title: `Tài khoản`
+			}
+		]
+	+dieu-huong("Thêm tài khoản", array)
+	+cap-nhat("Tạo tài khoản")(button-submit-form-create = "")
+	+khung-table('Thông tin tài khoản')
+		form(
+			action=`/${admin}/accounts/create`
+			method="POST"
+			target=''
+			autocomplete = "on"
+			class="py-[20px]"
+		)
+			div(class=`flex flex-col gap-y-[10px]`)
+				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+					label(
+						for="useName"
+						class=`text-[14px]`
+					) Tên đăng nhập
+						span(class="text-[red]")  *
+					input(
+						type="text", name="useName" id="useName"
+						class=`p-[5px] rounded-[5px] bg-transparent text-[12px] border-[1px] border-adminColorHeadline outline-none col-span-2`
+						placeholder="Nhập tên tài khoản..."
+						required
+					)
+				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+					label(
+						for="password"
+						class=`text-[14px]`
+					) Mật khẩu:
+						span(class="text-[red]")  *
+					input(
+						type="password", name="password" id="password"
+						class=`p-[5px] rounded-[5px] bg-transparent text-[12px] border-[1px] border-adminColorHeadline outline-none col-span-2`
+						placeholder="Nhập mật khẩu..."
+						required
+					)
+				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+					label(
+						for="confirmPassword"
+						class=`text-[14px]`
+					) Xác minh mật khẩu:
+						span(class="text-[red]")  *
+					input(
+						type="password", name="confirmPassword" id="confirmPassword"
+						class=`p-[5px] rounded-[5px] bg-transparent text-[12px] border-[1px] border-adminColorHeadline outline-none col-span-2`
+						placeholder="Xác minh mật khẩu..."
+						required
+					)
+				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+					label(
+						for="email"
+						class=`text-[14px]`
+					) Email
+						span(class="text-[red]")  *
+					input(
+						type="email", name="email" id="email"
+						class=`p-[5px] rounded-[5px] bg-transparent text-[12px] border-[1px] border-adminColorHeadline outline-none col-span-2`
+						placeholder="Nhập email của bạn..."
+						required
+					)
+				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+					label(
+						for="email"
+						class=`text-[14px]`
+					) Nhóm quyền
+						span(class="text-[red]")  *
+					select(name="role_id" id="role_id" class=`p-[5px] rounded-[5px] bg-transparent text-[12px] border-[1px] border-adminColorHeadline outline-none col-span-2`)
+						option(value="") ---Chọn nhóm quyền---
+						- if(roles)
+							each it in roles
+								option(value=it.id id="role_id") #{it.title}
+				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+					label(
+						for="fullName"
+						class=`text-[14px]`
+					) Họ và tên:
+						span(class="text-[red]")  *
+					input(
+						type="text", name="fullName" id="fullName"
+						class=`p-[5px] rounded-[5px] bg-transparent text-[12px] border-[1px] border-adminColorHeadline outline-none col-span-2`
+						placeholder="Họ và tên đầy đủ ..."
+						required
+					)
+				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+					label(
+						for="phone"
+						class=`text-[14px]`
+					) Số điện thoại
+						span(class="text-[red]")  *
+					input(
+						type="number", name="phone" id="phone"
+						class=`p-[5px] rounded-[5px] bg-transparent text-[12px] border-[1px] border-adminColorHeadline outline-none col-span-2`
+						placeholder="Nhập số điện thoại..."
+						required
+						length = "10"
+						pattern = "[0-9]{10}"
+					)
+				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+					label(
+						for="birthday"
+						class=`text-[14px]`
+					) Ngày sinh
+					input(
+						type="date", name="birthday" id="birthday"
+						class=`p-[5px] rounded-[5px] bg-transparent text-[12px] border-[1px] border-adminColorHeadline outline-none col-span-2`
+						placeholder="Ngày sinh: dd/mm/yyyy"
+					)
+			button(type="submit"
+				class=`hidden text-[12px] px-[12px] bg-xanh text-main rounded-[7px] py-[7px] block mx-auto my-[10px] hover:bg-xanhhover`
+			) Tạo tài khoản

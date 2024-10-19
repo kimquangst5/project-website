@@ -1,0 +1,49 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/khung-table.pug
+include ../../../mixins/dieu-huong.pug
+
+block main
+	- if(role.permisstion.includes(`trash_views_account`))
+		-
+			let array = [
+				{
+					link: `/${admin}/trash`,
+					title: `Thùng rác`
+				}
+			]
+		+dieu-huong("Tài khoản", array)
+		- if(accounts.length > 0)
+			+khung-table("Tài khoản đã xóa")
+				table(class=`w-full text-center mt-[5px]`)
+					thead(class=`h-[50px]`)
+						tr
+							th() Tài khoản 
+							th(class=`text-left`) Chủ nhân tài khoản
+							th Xóa bởi
+					tbody
+						each it, i in accounts
+							tr(class=`border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20`)
+								td(class=`text-left py-[5px] text-[14px]`) #{it.useName}
+									div(class="opacity-[0%] hover:opacity-100 flex gap-[10px]") 
+										button(
+											type="button" class=`fa-solid fa-trash-can-undo rounded-[10px] text-[12px] hover:text-xanhhover text-xanh`
+											restore = it.id
+											linkRestore = `/${admin}/trash/accounts/${it.id}`
+											title="Khôi phục nhóm quyền"
+										)
+										button(
+											type="button" 
+											class=`fa-solid fa-trash-xmark rounded-[10px] text-[12px] hover:text-dohover text-do`
+											nameImage = it.nameImage
+											permanently-delete = `/${admin}/trash/accounts/${it.id}`
+											title="Xóa vĩnh viễn nhóm quyền"
+										)
+								td(class=`text-left`)
+									div(class="text-[10px]") #{it.fullName}
+								td
+									div(class="text-[10px]") #{it.deletedBy}
+									div(class="text-[10px]") #{it.updatedAtFormat}
+		- else
+			+khung-table("Không có tài khoản nào được xóa!")
+	- else
+		div(no-view-permission)

@@ -1,0 +1,10 @@
+mixin select-tree(array, level = '', id)
+	each it in array
+		option(
+				value=it.id
+				selected = (it.id == id ? true : false)
+				class=(level == '' ? "font-bold" : "")
+				class=(level == '--' ? "text-[#06BC84]" : "")
+			) #{level} #{it.title}
+		if(it.children)
+			+select-tree(it.children, level + "--", id)

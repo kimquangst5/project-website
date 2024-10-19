@@ -1,0 +1,200 @@
+extends ../../layouts/default.pug
+include ../../mixins/select-tree.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/them-moi.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/cap-nhat.pug
+include ../../mixins/dieu-huong.pug
+
+//- block header
+//- 	+quay-lai("Quay lại danh sách sản phẩm", `/${admin}/product`)
+	+cap-nhat("Cập nhật")(button-submit-form="")
+block main
+	- if(role.permisstion.includes('products_edit'))
+		-
+			let array = [
+				{
+					link: `/${admin}/product`,
+					title: `Danh sách sản phẩm`
+				}
+			]
+		+dieu-huong(`${product.title}`, array)
+		+cap-nhat("Cập nhật")(button-submit-form="")
+		+khung-table("Chỉnh sửa sản phẩm")
+			form(
+				action=`/${admin}/product/edit/${product.id}?_method=PATCH`
+				method="POST"
+				target=''
+				autocomplete = "on"
+				enctype="multipart/form-data"
+			)
+				div(class=`flex flex-col gap-y-[10px]`)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="title"
+							class=`text-[14px]`
+						) Tiêu đề
+							span(class="text-[red]")  *
+						input(
+							type="text", name="title" id="title"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Nhập tiêu đề sản phẩm..."
+							required
+							value = product.title
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="product_category_id"
+							class=`text-[14px] text-adminColorHeadline`
+						) Danh mục
+							span(class="text-[red]")  *
+						select(id='product_category_id' name='product_category_id' 
+						class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`)
+							option(value='') --- Chọn danh mục ---
+							+select-tree(category, '', product.product_category_id)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="status"
+							class=`text-[14px] text-adminColorHeadline`
+						) Sản phẩm nổi bật
+						div(class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2 flex justify-between`)
+							div(class=`flex flex-row gap-[10px]`)
+								input(
+									type="radio", name='featured' value="active" id="active"
+									class=``
+									required
+									checked = (product.featured == 'active' ? true : false)
+								)
+								label(
+									for="active"
+								) Có
+							div(class=`flex flex-row gap-[10px]`)
+								input(
+									type="radio", name='featured' value="inactive" id="inactive"
+									required
+									checked = (product.featured == 'inactive' ? true : false)
+								)
+								label(
+									for="inactive"
+								) Không
+							
+					div(class=`flex flex-col items-left gap-y-[10px]`)
+						label(
+							for="description"
+							class=`text-[14px] text-adminColorHeadline`
+						) Mô tả
+						textarea(
+							id="description" name="description" 
+							placeholder="Nhập mô tả sản phẩm..."
+							class="textarea-mce:bg-transparent"
+							textarea-mce 
+						) !{product.description}
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="price"
+							class=`text-[14px] text-adminColorHeadline`
+						) Giá
+							span(class="text-[red]")  *
+						input(
+							type="number", name="price" id="price"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							min='0'
+							placeholder="Nhập giá sản phẩm..."
+							required
+							value = product.price
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="discountPercentage"
+							class=`text-[14px] text-adminColorHeadline`
+						) % giảm giá
+							span(class="text-[red]")  *
+						input(
+							type="number", name="discountPercentage" id="discountPercentage"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							min='0'
+							max='100'
+							placeholder="Nhập phần trăm giảm giá..."
+							value = product.discountPercentage
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="stock"
+							class=`text-[14px] text-adminColorHeadline`
+						) Số lượng
+							span(class="text-[red]")  *
+						input(
+							type="number", name="stock" id="stock"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							min='1'
+							placeholder="Nhập số lượng sản phẩm..."
+							required
+							value = product.stock
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4` upload-image)
+						label(
+							for="thumbnail"
+							class=`text-[14px] text-adminColorHeadline`
+						) Ảnh
+						input(
+							type="file", name="thumbnail" id="thumbnail"
+							class=`text-[12px] bg-transparent p-[5px] rounded-[5px] text-adminColorHeadline border-[1px] border-adminColorHeadline outline-adminColorHeadline col-span-2 file:bg-[#06BC84] file:border-[0] file:rounded-[10px] file:px-[10px] file:py-[5px] file:hover:cursor-pointer hover:cursor-pointer file:hover:rounded-[10px] file:text-[white]`
+							placeholder="Nhập ảnh sản phẩm..."
+							accept='image/*'
+							multiple
+							upload-image-input
+						)
+						img(src=product.thumbnail, alt=""
+							class=`w-[25%] h-auto rounded-[10px] cursor-pointer`
+							upload-image-preview)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="position"
+							class=`text-[14px] text-adminColorHeadline`
+						) Vị trí
+							span(class="text-[red]")  *
+						input(
+							type="number", name="position" id="position"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Tự động tăng..."
+							value = product.position
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="status"
+							class=`text-[14px] text-adminColorHeadline`
+						) Trạng thái
+						div(class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2 flex justify-between`)
+							div(class=`flex flex-row gap-[10px]`)
+								input(
+									type="radio", name='status' value="active" id="active"
+									class=``
+									required
+									checked = (product.status == 'active' ? true : false)
+								)
+								label(
+									for="active"
+								) Hoạt động
+							div(class=`flex flex-row gap-[10px]`)
+								input(
+									type="radio", name='status' value="inactive" id="inactive"
+									required
+									checked = (product.status == 'inactive' ? true : false)
+								)
+								label(
+									for="inactive"
+								) dừng Hoạt động
+				button(type="submit"
+					class=`hidden text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto hidden`
+				) Cập nhật
+
+		div(class="mx-auto flex gap-[10px] items-center") 
+			span(class="inline-flex gap-[10px] text-[12px] px-[10px] py-[5px] border-[0px] bg-do hover:bg-dohover text-main rounded-[5px] items-center w-max h-max" delete-product = `/${admin}/product/delete/${product.id}`)
+				i(class=`fa-solid fa-trash`)
+				button(
+					type="submit"
+					class=`inline` 
+				) Xóa sản phẩm
+			
+	- else
+		div(class="" no-view-permission) 

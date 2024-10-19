@@ -1,0 +1,17 @@
+extends ../../layouts/default.pug
+include ../../mixins/dieu-huong.pug
+include ../../mixins/option-input.pug
+
+block main
+	+dieu-huong(`Tạo phòng chat`)
+	div(class=`p-[10px]`)
+		div(class=`container`)
+			form(action=`/roomchat/create` method=`post`) 
+				+option-input('Tên phòng', 'title', 'yes', 'fa-regular fa-users', 'Tên phòng chat...', type = `text`)
+				div(class=`py-[20px]  font-bold text-[#333333]`) Danh sách thành viên
+					each it in friendsList
+						div(class=`flex gap-[10px]`) 
+							input(type=`checkbox`, name=`listMember` id=`user-${it.userId}` value=it.userId)
+							label(for=`user-${it.userId}`) #{it.fullName}
+
+				button(type="submit" class=`bg-chu text-[white] font-bold px-[20px] py-[5px] text-[13px] rounded-[7px]`) Tạo ngay

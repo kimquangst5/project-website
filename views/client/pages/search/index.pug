@@ -1,0 +1,20 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-product.pug
+
+block main
+
+
+	- if(products)
+		div(class="select-none py-[40px]")
+			div(class="container")
+				div(class="p-[28px] rounded-[7px]")
+
+					div(class="text-[#333333] flex justify-center") 
+						div(class="uppercase text-[25px] font-[700] w-max flex flex-col justify-center") KẾT QUẢ TÌM kiếm sản phẩm
+							div(class="border-[1px] border-[#333333] w-[50%] mx-auto my-[10px]")
+					
+					div(class="grid grid-cols-4 flex gap-x-[10px] gap-y-[15px]")
+						- if(products.length > 0)
+							+box-product(products)
+						- else
+							div(class="") Không có

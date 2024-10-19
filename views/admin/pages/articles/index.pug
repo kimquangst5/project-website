@@ -1,0 +1,24 @@
+extends ../../layouts/default.pug
+include ../../mixins/dieu-huong.pug
+include ../../mixins/them-moi.pug
+include ../../mixins/khung-table.pug
+
+
+block main
+	+dieu-huong("Bài viết")
+	+them-moi("Thêm mới", `/${admin}/articles/create`)
+
+	+khung-table('Danh sách')
+		table(class=`w-full`)
+			thead(class=`py-[10px]`)
+				tr(class=`py-[10px]`)
+					td(class=`w-1/3`) Tiêu đề
+					td
+						i(class="fa-solid fa-image")
+					td SEO/Từ khóa
+					td Lượt xem
+					td Vị trí
+					td Trạng thái
+					td Tạo bởi
+			tbody
+				tr

@@ -1,0 +1,102 @@
+extends ../../layouts/default.pug
+include ../../mixins/dieu-huong.pug
+include ../../mixins/cap-nhat.pug
+include ../../mixins/khung-table.pug
+
+
+block main
+	-
+		let array = [
+			{
+				link: `/${admin}/articles`,
+				title: 'Bài viết'
+			}
+		]
+	+dieu-huong("Thêm bài viết", array)
+	+cap-nhat("Thêm mới")(button-submit-form-create = "")
+	
+	div(class="flex grid grid-cols-2 gap-[20px] text-[12px]")
+		+khung-table('Chung')
+			div(class="flex flex-col gap-[15px]") 
+				div(class="flex flex-col gap-[5px]") 
+					label(for="title") Tiêu đề
+						span(class="text-[red]")  *
+					input(
+						id="title"
+						type="text"
+						required
+						class=`w-full outline-none px-[10px] py-[5px] bg-transparent rounded-[6px] border-text border-[1px]` placeholder="Nhập tiêu đề...."
+					)
+				div(class="flex flex-col gap-[5px]") 
+					label(for="categories") Danh mục
+						span(class="text-[red]")  *
+					input(
+						id="categories"
+						type="text"
+						class=`w-full outline-none px-[10px] py-[5px] bg-transparent rounded-[6px] border-text border-[1px]` placeholder="Chọn danh mục...."
+					)
+				div(class="flex flex-col gap-[5px]") 
+					label(for="content") Nội dung
+						span(class="text-[red]")  *
+					textarea(
+						id="content"
+						type="text"
+						class=`w-full outline-none px-[10px] py-[5px] bg-transparent rounded-[6px] border-text border-[1px]` placeholder="Chọn danh mục...."
+						textarea-mce
+					)
+				div(class="flex flex-col gap-[5px]") 
+					label(for="status" ) Trạng thái
+						span(class="text-[red]")  *
+					div(class="flex justify-between") 
+						div(class="flex flex-row gap-[10px]") 
+							input(
+								type="radio", 
+								name="status" 
+								id="active"
+								value="active"
+								class=`checked:bg-text`
+								checked
+							)
+							label(for="active")  Hoạt động
+						div(class="flex flex-row gap-[10px]") 
+							input(
+								type="radio", 
+								name="status" 
+								id="inactive"
+								value="inactive"
+								class=`checked:bg-text`
+								input-checked
+							)
+							label(for="inactive")  Dừng hoạt động
+				//- div(class="flex flex-row gap-[10px]") 
+		div(class="flex flex-col gap-[10px]") 
+			+khung-table('Hình ảnh đại diện')
+				div(class="border-[2px] border-text border-dashed p-[20px] rounded-[10px]" image-upload) 
+					div(class="flex flex-col justify-center items-center gap-y-[10px] text-[16px] py-[20px]") 
+						i(class=`fa-solid fa-cloud-arrow-up text-[30px]`)
+						div(class="") Thả tập tin vào đây hoặc nhấp để tải lên.
+
+			+khung-table('Meta Data')
+				div(class="flex flex-col gap-[15px] ") 
+					div(class="flex flex-col gap-[5px]") 
+						label(for="title_meta") Tiêu đề
+						input(
+							id="title_meta"
+							type="text"
+							class=`w-full outline-none px-[10px] py-[5px] bg-transparent rounded-[6px] border-text border-[1px]` placeholder="Nhập tiêu đề...."
+						)
+					div(class="flex flex-col gap-[5px]") 
+						label(for="keyword_meta") Từ khóa
+						input(
+							id="keyword_meta"
+							type="text"
+							class=`w-full outline-none px-[10px] py-[5px] bg-transparent rounded-[6px] border-text border-[1px]` placeholder="Nhập từ khóa...."
+						)
+					div(class="flex flex-col gap-[5px]") 
+						label(for="desc_meta") Mô tả
+						textarea(
+							id="desc_meta"
+							type="text"
+							class=`w-full outline-none px-[10px] py-[5px] bg-transparent rounded-[6px] border-text border-[1px]` placeholder="Nhập mô tả...."
+							rows="5"
+						)

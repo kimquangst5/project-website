@@ -1,0 +1,18 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/dieu-huong.pug
+include ../../../mixins/friend-btn.pug
+
+block main
+	+dieu-huong(`Lời mời đã nhận`)
+
+	+friend-btn(infoUser)
+	div(class=``)
+		div(class=`container`)
+			div(class=`grid grid-cols-3 gap-[10px]`) 
+				each it in users
+					div(class=`flex items-center gap-[15px] border-[#ddd] border-[1px] rounded-[8px] p-[10px]`) 
+						div(class=`h-[50px]`)
+							img(src=it.avatar, alt=it.title class=`aspect-square h-full`)
+						div(class=`h-max`) 
+							div(class=`font-bold text-[#333333] text-[14px]`) #{it.fullName}
+							a(href=`/chat/${it.roomChatId}?user=${it.id}` class=`w-max text-[12px] px-[10px] py-[4px] bg-chu text-[white] font-bold rounded-[6px]`) Nhắn tin

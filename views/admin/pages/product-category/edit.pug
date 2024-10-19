@@ -1,0 +1,123 @@
+extends ../../layouts/default.pug
+include ../../mixins/select-tree.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/them-moi.pug
+include ../../mixins/cap-nhat.pug
+include ../../mixins/dieu-huong.pug
+
+
+//- block header
+	+quay-lai("Quay lại danh sách danh mục", `/${admin}/product-category`)
+	+cap-nhat("Cập nhật")(button-submit-form="")
+
+
+block main
+	- if(role.permisstion.includes(`product-category_edit`))
+		-
+			let array = [
+				{
+					link: `/${admin}/product-category`,
+					title: `Danh mục sản phẩm`
+				}
+			]
+		+dieu-huong(product.title, array)
+		+cap-nhat("Cập nhật")(button-submit-form="")
+		+khung-table("Danh mục sản phẩm")
+			form(
+				action=`/${admin}/product-category/edit/${product.id}?_method=PATCH`
+				method="POST"
+				target=''
+				autocomplete = "on"
+				enctype="multipart/form-data"
+				formUpdateCategory
+			)
+				div(class=`flex flex-col gap-y-[10px]`)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="title"
+							class=`text-[14px]`
+						) Tên danh mục
+						input(
+							type="text", name="title" id="title"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Nhập tiêu đề danh mục..."
+							required
+							value = product.title
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="parent_id"
+							class=`text-[14px]`
+						) Danh mục cha
+						select(id='parent_id' name='parent_id' 
+						class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`)
+							//- if(product.parent_id == category.id) #{category.title}
+							option(value='') -- Chọn danh mục cha---
+							
+							if(category)
+								+select-tree(category, '', product.parent_id)
+					//- div(class=`flex flex-col gap-y-[10px]`)
+						label(
+							for="description"
+							class=`text-[14px]`
+						) Mô tả
+						textarea(
+							id="description" name="description" cols="3" rows="3"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Nhập mô tả sản phẩm..."
+							textarea-mce
+						) !{product.description}
+					div(class=`flex flex-col gap-y-[10px]` upload-image)
+						label(
+							for="thumbnail"
+							class=`text-[14px]`
+						) Ảnh
+						input(
+							type="file", name="thumbnail" id="thumbnail"
+							class=`p-[5px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2 file:bg-[#06BC84] file:border-[0] file:rounded-[10px] file:px-[10px] file:py-[5px] file:hover:cursor-pointer hover:cursor-pointer file:hover:rounded-[20px] file:text-[white]`
+							placeholder="Nhập ảnh sản phẩm..."
+							accept='image/*'
+							upload-image-input
+						)
+						img(src=product.thumbnail, alt=product.title
+							class=`w-[25%] h-auto rounded-[10px] cursor-pointer`
+							)
+					div(class=`flex flex-col gap-y-[20px]`)
+						label(
+							for="position"
+							class=`text-[14px]`
+						) vị trí
+						input(
+							type="number", name="position" id="position"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Tự động tăng..."
+							value = product.position
+						)
+					div(class=`flex justify-center gap-[20px]`)
+						div(class=`flex flex-row gap-[10px]`)
+							input(
+								type="radio", name='status' value="active" id="active"
+								class=``
+								required
+								checked = (product.status == 'active' ? true : false)
+							)
+							label(
+								for="active"
+								class=`font-bold text-[20px] capitalize`
+							) Hoạt động
+						div(class=`flex flex-row gap-[10px]`)
+							input(
+								type="radio", name='status' value="inactive" id="inactive"
+								required
+								checked = (product.status == 'inactive' ? true : false)
+							)
+							label(
+								for="inactive"
+								class=`font-bold text-[20px] capitalize`
+							) Dừng Hoạt động
+				button(type="submit"
+					class=`hidden text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto`
+				) Cập nhật danh mục
+	- else
+		div(no-view-permission)

@@ -1,0 +1,38 @@
+extends ../../layouts/default.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/setting-box.pug
+include ../../mixins/dieu-huong.pug
+
+
+block main
+	+dieu-huong("Đơn hàng")
+	+khung-table("Danh sách đơn hàng")
+		div(class="text-[13px]")
+			div(class="flex grid grid-cols-7 h-[50px] items-center")
+				div(class="") Các sản phẩm
+				div(class="") Ngày đặt
+				div(class="w-max")
+					div(class="w-max text-wrap") Trạng thái thanh toán
+				div(class="") Tổng tiền
+				div(class="") Phương thức thanh toán
+				div(class="") Trạng thái đơn hàng
+				div(class="") Điều khiển
+			each it in orders
+				div(class="flex grid grid-cols-7 [&>*]:h-[50px] [&>*]:items-center [&>*]:flex")
+					div(class="h-[30px] flex gap-[10px]") 
+						each item in it.products
+							a(href=`/${admin}/product/edit/${item.idProduct}` item.slug title=item.title)
+								img(src=item.thumbnail, alt="" class=`h-[30px]`)
+					div(class="") #{it.createdAtFormat}
+					div(class="") #{it.products.slug}
+					div(class="") #{it.products.totalPrice} đ
+					div(class="text-[10px]" button-change-status-method-pay)
+						- if(it.methodPay == 'cash')
+							button(class=`rounded-[7px] bg-xanh text-[white] px-[14px] py-[3px] mx-auto hover:bg-xanhhover` link = `/${admin}/order/change-status-payment-method/transfer/${it.id}`) Tiền mặt
+						- if(it.methodPay == 'transfer' )
+							button(class=`rounded-[7px] bg-do text-[white] px-[14px] py-[3px] mx-auto hover:bg-dohover` link = `/${admin}/order/change-status-payment-method/cash/${it.id}`) Chuyển khoản
+					div(class="") Trạng thái đơn hàng
+					div(class="flex items-center justify-between")
+						a(href=`/${admin}/order/detail/${it.id}` class="fa-solid fa-eye" title="Xem chi tiết đơn hàng")
+						a(href=`/${admin}/order/edit/${it.id}` class="fa-solid fa-pencil" title="Chỉnh sửa đơn hàng")
+						a(href=`/${admin}/order/delete/${it.id}` class="fa-solid fa-trash-can-plus" title="Chỉnh sửa đơn hàng")

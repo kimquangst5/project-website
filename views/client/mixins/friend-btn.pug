@@ -1,0 +1,17 @@
+mixin friend-btn(infoUser)
+	div(class="my-[10px]" list-friend)
+		div(class="container")
+			div(class="flex justify-between")
+				a(href="/member/not-friend") Danh sách người dùng
+				a(href="/member/friend" class=``)
+					div(class=`flex gap-[10px] items-center`) 
+						div(class=`w-max`)  Danh sách bạn bè
+						div(class=`aspect-square w-[20px] h-[20px] font-bold rounded-[50%] bg-chu text-[#333333] flex items-center justify-center` id-friend = infoUser.id) #{infoUser.friendsList ? (infoUser.friendsList.length ? infoUser.friendsList.length : '0')  : ''}
+				a(href="/member/request" class=``)
+					div(class=`flex gap-[10px] items-center`) 
+						div(class=`w-max`)  Lời mời đã gửi
+						div(class=`aspect-square w-[20px] h-[20px] font-bold rounded-[50%] bg-chu text-[#333333] flex items-center justify-center` id-request = infoUser.id) #{infoUser.requestFriends ? (infoUser.requestFriends.length ? infoUser.requestFriends.length : '0')  : ''}
+				a(href="/member/accept" class=``)
+					div(class=`flex gap-[10px] items-center`)
+						div(class=`w-max`)  Lời mời đã nhận
+						div(class=`aspect-square w-[20px] h-[20px] font-bold rounded-[50%] bg-chu text-[#333333] flex items-center justify-center` id-accept = infoUser.id) #{infoUser.acceptFriends ? (infoUser.acceptFriends.length ? infoUser.acceptFriends.length : '0')  : ''}

@@ -1,0 +1,37 @@
+mixin option-input-image(title, name, bat_buoc, icon, placeholder, type = "text", image)
+	div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4` upload-image)
+		div(class="flex gap-[10px] items-center") 
+			i(class=icon)
+			label(
+				for=name
+				class=`text-[14px]`
+			) #{title}
+				- if(bat_buoc.toLowerCase() == "yes")
+					span(class="text-[red]")  *
+		- if(bat_buoc.toLowerCase() == "yes")
+			input(
+				type=type, name=name id=name
+				class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+				placeholder=placeholder
+				require
+				value = `${infoWebsite ? infoWebsite.nameWeb : ''}`
+				accept='image/*'
+				upload-image-input
+			)
+			- if(type == 'file')
+				img(src=image, alt=""
+					class=`w-[25%] h-auto rounded-[10px] cursor-pointer`
+				)
+		- else
+			input(
+				type=type, name=name id=name
+				class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+				placeholder=placeholder
+				value = `${infoWebsite ? infoWebsite.nameWeb : ''}`
+				accept='image/*'
+				upload-image-input
+			)
+			- if(type == 'file')
+				img(src=image, alt=""
+					class=`w-[25%] h-auto rounded-[10px] cursor-pointer`
+				)

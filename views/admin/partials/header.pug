@@ -1,0 +1,36 @@
+header(class=`select-none sticky h-[70px] top-0 flex justify-between bg-header z-[100] transition-all  duration-1000 ease-in-out items-center px-[24px] text-adminColorHeadline` height = "70px")
+	nav(class="flex items-center justify-center gap-[10px]")
+		a(href="") 
+			img(src=`/admin/images/logo 1.svg`, alt="KIM QUANG" class=`h-[20px] w-auto`)
+		div(class="fa-solid fa-bars-staggered hover:cursor-pointer" mui-ten-logo)
+	div(class="flex gap-[20px] items-center")
+		input(type="search", name="" class=`bg-bginput outline-none placeholder:text-adminColorHeadline placeholder:text-[12px] rounded-[10px] px-[10px] py-[5px] text-[12px]` placeholder="Nhập gì đó để tìm...")
+		div(class=`fa-expand fa-solid  hover:text-textHover duration-500 hover:cursor-pointer ` expland)
+		div(class=`hover:text-textHover duration-500 hover:cursor-pointer `)
+			img(src=`/${admin}/images/vn.svg`, alt="KIM QUANG" class=`h-[25px] w-auto`)
+		div(class=`fa-solid fa-bell  hover:text-textHover relative duration-500 hover:cursor-pointer`)
+			div(class="rounded-[50%]  bg-do  absolute top-[-2px] right-[-2px]")
+				span(class=`w-auto h-[10px] aspect-[1/1] text-[5px] text-main flex items-center justify-center`) 9
+		div(class=`fa-regular fa-sun-bright hover:text-textHover duration-500 hover:cursor-pointer`)
+		nav(class="flex items-center gap-[5px] cursor-pointer h-[70px] relative z-50 " my-profile)
+			img(src=account.avatar, alt="" class=`aspect-[1/1] h-[25px] rounded-[50%] object-cover object-top`)
+			div(class="text-[12px] flex items-center gap-[5px]")
+				div(class="") #{account.fullName}
+				div(class="fa-solid fa-angle-down")
+			div(class="absolute rounded-[7px] bg-adminColorMain text-adminColorHeadline top-[70px] truncate right-[0px]" box-my-profile)
+				div(class="px-[24px] py-[4px] text-[12px] text-main") Xin chào!
+				a(href=`/${admin}/my-profile` class="px-[24px] py-[6px] text-[12px] flex items-center gap-x-[10px] hover:text-main hover:bg-bgimage")
+					i(class="fa-light fa-user-tie")
+					span(class=`line-clamp-1 `) Tài khoản
+				div(class="px-[24px] py-[6px] text-[12px] flex items-center gap-x-[10px] hover:text-main hover:bg-bgimage")
+					i(class="fa-light fa-gear")
+					span(class=`line-clamp-1 `) Cài đặt
+				div(class="px-[24px] py-[6px] text-[12px] flex items-center gap-x-[10px] hover:text-main hover:bg-bgimage")
+					i(class="fa-light fa-lock")
+					span(class=`line-clamp-1 `) Khóa màn hình
+				div(class="border-[1px] border-adminColorHeadline")
+				div(class="px-[24px] py-[6px] text-[12px] flex items-center gap-x-[10px] hover:text-main hover:bg-bgimage" log-out = `/${admin}/auth/logout`)
+					i(class="fa-light fa-left-from-bracket")
+					span(class=`line-clamp-1 `) Đăng xuất
+		div(class=`fa-duotone fa-solid fa-gear fa-spin fa-spin-reverse hover:text-textHover duration-500 hover:cursor-pointer`)
+

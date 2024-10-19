@@ -1,0 +1,66 @@
+include ../mixins/alear.pug
+include ../mixins/header.pug
+include ../mixins/footer.pug
+include ../mixins/shopping-cart.pug
+
+doctype html
+html(lang=`vi`)
+	head
+		meta(charset=`UTF-8`)
+		meta(name=`viewport`, content=`width=device-width, initial-scale=1.0`)
+		meta(property=`og:image` content=`/media/logo/LOGO.png`)
+		meta(name=`author`, content=`Trần Kim Quang`)
+		meta(name=`twitter:image` content=`/media/logo/LOGO.png`)
+
+		link(rel=`stylesheet`, href=`https://cdn.jsdelivr.net/npm/file-upload-with-preview@6.1.2/dist/style.min.css`)
+		link(rel=`stylesheet`, href=`https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css`)
+		link(rel=`stylesheet` href=`https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css`)
+		link(href=`/media/logo/logo.svg`, rel=`icon`, type=`image/x-icon`)
+		link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css")
+		link(rel=`stylesheet`, href=`https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css`)
+		link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap")
+		script(src="https://www.google.com/recaptcha/enterprise.js" async defer) 
+		link(rel=`stylesheet`, href=`/css/style.css`)
+
+		script(src=`https://cdn.tailwindcss.com/`)
+		script(src=`/tailwind.config.js`)
+
+		title #{pageTitle}
+
+	body(class=`font-KIM_QUANG bg-[#F5F5F5] select-none scrollbarmain`)
+		+alert-success(2000)
+		+alert-error(2000)
+
+		include ../partials/box-login.pug
+		+shopping-cart(shoopings_cart)
+
+		+header(infoWeb)
+
+		block main
+
+		+footer(infoWeb)
+		
+		a(href=`https://zalo.me/${infoWeb.phone}` class=`fixed bottom-[30px] right-[30px] aspect-square`)
+			span(class=`animate-ping absolute inline-flex aspect-square w-full place-content-center rounded-full bg-sky-400 opacity-75`)
+			span(class=`relative inline-flex rounded-full aspect-square place-content-center bg-[#DA0808]`)
+				div(class=`flex flex-col place-content-center justify-center px-[10px] text-[white] gap-[5px]`)
+					i(class=`fa-solid fa-message-dots mx-auto`)
+					div(class=`text-[10px]`) Liên hệ
+
+
+		script(src="https://www.google.com/recaptcha/enterprise.js?render=6LfaGGYqAAAAAAHgirjHFMs5vLPgfnyPPUWmrInw") 
+		script(src=`https://cdn.jsdelivr.net/npm/sweetalert2@11`) 
+		script(src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js") 
+		script(type=`module` src=`https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js`)
+		script(src=`https://cdn.jsdelivr.net/npm/file-upload-with-preview@6.1.2/dist/index.iife.min.js`)
+		script(src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js") 
+		script(src=`https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js`) 
+		script(src="https://cdn.jsdelivr.net/npm/image-zoom-on-hover@1.0.0/index.min.js") 
+		script(src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js") 
+		script(src=`https://cdn.socket.io/4.7.2/socket.io.min.js`)
+		script.
+			var socket = io()
+		script(type=`module` src=`/js/socket.js`)
+		script(type=`module` src=`/js/user.js`)
+		script(src=`/js/animation.js`)
+		script(src=`/js/style.js`)

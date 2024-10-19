@@ -1,0 +1,33 @@
+extends ../../layouts/default.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/setting-box.pug
+include ../../mixins/quay-lai.pug
+
+block main
+	
+	
+	
+	- if(role.permisstion.includes(`trash_view`))
+		- if(role.permisstion.includes(`trash_view_product`))
+			+khung-table("Sản phẩm")
+				div(class="flex grid grid-cols-4")
+					+box-setting('fa-light fa-box-open', `/${admin}/trash/product`, 'Danh sách sản phẩm', 'Xóa sản phẩm')
+					+box-setting('fa-solid fa-objects-column', `/${admin}/trash/product-category`, 'Danh mục sản phẩm', 'Xóa danh mục sản phẩm')
+		
+		- if(role.permisstion.includes(`trash_view_article`))
+			+khung-table("Bài viết")
+				div(class="flex grid grid-cols-4")
+					+box-setting('fa-solid fa-newspaper', `/${admin}/trash/product`, 'Danh sách bài viết', 'Xóa bài viết')
+					+box-setting('fa-solid fa-objects-align-left', `/${admin}/trash/product-category`, 'Danh mục bài viết', 'Xóa danh mục bài viết')
+
+		- if(role.permisstion.includes(`trash_views_account`))
+			+khung-table("Tài khoản quản trị")
+				div(class="flex grid grid-cols-4")
+					+box-setting('fa-solid fa-list-check', `/${admin}/trash/accounts`, 'Danh sách tài khoản', 'Danh sách tài khoản quản trị')
+
+		- if(role.permisstion.includes(`trash_view_role`))
+			+khung-table("Nhóm quyền")
+				div(class="flex grid grid-cols-4")
+					+box-setting('fa-solid fa-user-lock', `/${admin}/trash/roles`, 'Danh sách nhóm quyền', 'Xóa nhóm quyền')
+	- else
+		div(no-view-permission)

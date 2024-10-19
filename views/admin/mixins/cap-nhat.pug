@@ -1,0 +1,5 @@
+mixin cap-nhat(title, attributes)
+	//- div(class="h-[50px] flex items-center justify-end gap-[10px]")
+	div(class="inline-flex gap-[10px] text-[12px] px-[10px] py-[5px] border-[0px] bg-xanh hover:bg-xanhhover text-main rounded-[5px] items-center w-max hover:cursor-pointer ml-auto")&attributes(attributes)
+		i(class=`fa-light fa-arrows-rotate`)
+		span  #{title} (F1)

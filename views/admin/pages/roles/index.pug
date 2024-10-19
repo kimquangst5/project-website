@@ -1,0 +1,76 @@
+extends ../../layouts/default.pug
+include ../../mixins/pagination.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/them-moi.pug
+include ../../mixins/dieu-huong.pug
+
+
+//- block header
+	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
+	+them-moi("+ Thêm mới", `/${admin}/roles/create`)
+
+
+block main
+	- if(role.permisstion.includes(`roles_view`))
+		-
+			let array = [
+				{
+					link: `/${admin}/dashboard`,
+					title: `Cấu hình`
+				}
+			]
+		+dieu-huong(`Nhóm quyền`, array)
+
+		+them-moi("Thêm mới", `/${admin}/roles/create`)
+		
+		+khung-table("Danh sách nhóm quyền")
+			table(class=`w-full text-left mt-[5px] text-adminColorHeadline`)
+				thead(class=`h-[50px]`)
+					tr
+						
+						th(class=`h-full`)
+							input(
+								type="checkbox", 
+								name="checkAll"
+								class=`text-center appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#263238] hover:cursor-pointer`
+							)
+						th(class=`w-full`) Nhóm quyền
+						th Mô tả
+						th Tạo bởi
+					tbody
+						each it, i in roles
+							tr(
+								class=`group hover:cursor-pointer border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20 h-[50px]`
+							)
+								td(class=`relative z-[50] w-max px-[10px] `)
+									input(
+										type="checkbox", 
+										name="checkItem"
+										class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer relative z-[50]`
+										value = it.id
+									)
+								td(
+									class=`text-[14px]`
+									tickItem
+								) #{it.title}
+									div(class="group-hover:flex group-hover:gap-x-[10px] group-hover:items-center hidden group-hover:block") 
+										- if(role.permisstion.includes(`roles_edit`))
+											a(
+												href=`/${admin}/roles/edit/${it.id}`
+												class=` text-[12px] text-xanh hover:text-xanhhover fa-solid fa-pen`
+											)
+										- if(role.permisstion.includes(`roles_deleted`))
+											if(it.title != "Quản trị viên")
+												button(
+													type="button" 
+													class=`text-[12px] text-do hover:text-dohover fa-solid fa-trash-can`
+													button-delete = `/${admin}/roles/delete/${it.id}`
+												)
+								td(class=`text-[12px] px-[10px] w-max`) !{it.description}
+								td(class=`text-[12px] px-[10px] w-max`)
+									div(class="") #{it.createdBy}
+									div(class="") #{it.createdAtFormat}
+	
+	- else
+		div(no-view-permission)

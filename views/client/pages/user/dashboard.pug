@@ -1,0 +1,41 @@
+extends ../../layouts/default.pug
+include ../../mixins/dieu-huong
+
+block main
+	+dieu-huong("Thông tin cá nhân")
+	div(class="py-[30px]")
+		div(class="container")
+			div(class="flex grid grid-cols-3 gap-[20px]")
+				div(class="bg-[white] rounded-[7px] p-[5px] col-span-1")
+					div(class="text-[#333333] font-bold py-[10px]") Tài khoản của tôi
+					a(href='/member/dashboard' class="flex items-center gap-[10px] text-chu bg-[#F5F5F5] py-[10px] rounded-[10px] font-bold")
+						i(class="fa-light fa-user")
+						div(class="") Thông tin cá nhân
+					a(href='/member/address' class="flex items-center gap-[10px] py-[10px] rounded-[10px]")
+						i(class="fa-light fa-location-dot")
+						div(class="") Địa chỉ nhận hàng
+					a(href='/member/order' class="flex items-center gap-[10px] py-[10px] rounded-[10px]")
+						i(class="fa-light fa-cart-shopping")
+						div(class="") Đơn hàng
+
+				div(class="bg-[white] rounded-[7px] p-[20px] col-span-2")
+					div(class="text-[#333333] font-bold") Hồ sơ của tôi
+					div(class="text-[#333333] font-bold py-[10px]") Quản lý thông tin hồ sơ để bảo mật tài khoản
+
+					div(class="flex flex-col gap-y-[10px]") 
+						div(class="grid grid-cols-2 py-[5px] border-b-[#ddd] border-b-[1px] border-dashed")
+							div(class="text-[#707070]") Tên
+							div(class="font-bold text-right text-[#333333]") #{user.fullName}
+						div(class="grid grid-cols-2 py-[5px] border-b-[#ddd] border-b-[1px] border-dashed")
+							div(class="text-[#707070]") Giới tính
+							div(class="font-bold text-right text-[#333333]") #{(user.sex == 'male' ? 'Nam' : 'Nữ') || 'Chưa điền'}
+						div(class="grid grid-cols-2 py-[5px] border-b-[#ddd] border-b-[1px] border-dashed")
+							div(class="text-[#707070]") Email
+							div(class="font-bold text-right text-[#333333]") #{user.email}
+						div(class="grid grid-cols-2 py-[5px] border-b-[#ddd] border-b-[1px] border-dashed")
+							div(class="text-[#707070]") Số điện thoại
+							div(class="font-bold text-right text-[#333333]") #{user.phone}
+
+						div(class="ml-auto flex gap-[10px] mt-[20px]")
+							button(class=`rounded-[8px] bg-chu text-[white] px-[20px] py-[10px]`) Đổi mật khẩu
+							a(href='/member/profile' class=`rounded-[8px] bg-chu text-[white] px-[20px] py-[10px]`) Sửa thông tin

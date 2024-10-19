@@ -1,0 +1,19 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/dieu-huong.pug
+include ../../../mixins/friend-btn.pug
+
+block main
+	+dieu-huong("Danh sách người dùng")
+
+	+friend-btn(infoUser)
+	div(class="")
+		div(class="container")
+			div(class=`grid grid-cols-3 gap-[10px]`)
+				each it in users
+					div(class=`flex gap-[10px]` box-user) 
+						div(class=`h-[50px]`)
+							img(src=it.avatar, alt=it.fullName class=`h-full aspect-square rounded-[100%]`)
+						div(class=``) 
+							div(class=`font-bold text-[#333333] `) #{it.fullName}
+							div(btn-add-friend = it.id class=`text-[12px] text-center cursor-pointer  rounded-[10px] bg-xanh hover:bg-xanhhover px-[10px] py-[4px] text-[white] font-bold`) Kết bạn
+							div(btn-cancel-friend = it.id class=` text-[12px] cursor-pointer hidden rounded-[10px] bg-do hover:bg-dohover px-[10px] py-[4px] text-center text-[white] font-bold`) Hủy

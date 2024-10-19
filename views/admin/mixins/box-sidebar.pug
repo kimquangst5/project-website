@@ -1,0 +1,10 @@
+mixin box-sidebar(title, link, icon1, attributes)
+	div(class="flex items-center gap-x-[10px] py-[10px] pr-[10px] cursor-pointer transition-all hover:bg-adminColorHeadlineHover")
+		if(icon1)
+			i(class=`${icon1} pl-[20px] text-center` title=title)
+		li(class=`grow line-clamp-1 text-wrap text-[13px] duartion-500` link = link title=title)&attributes(attributes) #{title}
+			if(block)
+				ul(class="flex flex-col list-disc transition-all list-disc list-inside flex-wrap") 
+					block
+		if(block)
+			i(class=`fa-solid fa-angle-right text-[10px] duartion-500` mui-ten)

@@ -1,0 +1,64 @@
+extends ../../layouts/default.pug
+include ../../mixins/dieu-huong.pug
+
+
+block main
+	-
+		let array = [
+			{
+				link: `/product/${titleCategory.slug}`,
+				title: `${titleCategory.title}`
+			}
+		]
+	+dieu-huong(product.title, array)
+	div(class="" calculate)
+		div(class="container")
+			div(class="flex grid grid-cols-12 gap-[20px] pt-[20px]")
+				div(class="w-full  truncate bg-[white] col-span-5")
+					div(style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff", class="swiper mySwiper2" swipper-product-detail)
+						div(class="swiper-wrapper")
+							each img in product.thumbnail
+								div(class="swiper-slide image-hover-zoom" scale="2.0")
+									img(src=img class=`w-full h-auto aspect-square object-cover object-top` title="Click vào đây!")
+							
+						div(class="swiper-button-next")
+						div(class="swiper-button-prev")
+					div(thumbsSlider='', class="swiper mySwiper")
+						div(class="swiper-wrapper")
+							each img in product.thumbnail
+								div(class="swiper-slide")
+									img(src=img class=`w-full h-auto aspect-square object-cover object-top`)
+
+				div(class="w-full h-max flex flex-col gap-y-[20px] col-span-7")
+					div(class="w-full rounded-[10px] truncate bg-[white] p-[20px]")
+						div(class=`text-[#333333] font-bold text-[26px]`) #{product.title}
+						div(class=`text-[13px] text-[#333333] flex items-center gap-[5px]`) 
+							div(class=`flex items-center gap-[5px]`) 
+								div(class=``) Mã sản phẩm:
+								div(class=`font-bold uppercase`) #{product.id}
+							div(class=`select-none`) |
+							div(class=`flex items-center gap-[5px]`) 
+								div(class=``) Tình trạng:
+								div(class=`font-bold`) Còn hàng
+						div(class="flex items-center gap-[15px] py-[20px]") 
+							div(class="font-bold") Giá: 
+							div(class="font-bold text-chu text-[20px]") #{product.priceNew}
+								sup đ
+							- if(product.priceNew != product.priceOld)
+								div(class="line-through text-[#9e9e9e] text-[18px]") #{product.priceOld}
+									sup đ
+
+					div(class="w-full rounded-[10px] truncate bg-[white] px-[20px] py-[10px]")
+						div(class="flex items-center gap-[15px]") 
+							div(class="text-[#333333] font-bold") Số lượng:
+							include ../../partials/adddition - subtraction.pug
+
+
+					div(button-gsap add-cart = `/order/cart-add/${product.id}` class="w-full  text-[#333333] flex rounded-[7px] items-center justify-center  font-bold gap-[20px] hover:cursor-pointer py-[10px] border-[1px] border-[#FFC234]" )
+						i(class=`fa-solid  fa-bag-shopping`)
+						div(class="uppercase") mua hàng ngay
+					
+			div(class="bg-[white] rounded-[7px] p-[10px] my-[20px]")
+				div(class="capitalize py-[10px] border-b-[2px] font-bold border-b-chu text-chu w-max") Mô tả sản phẩm
+				div(class="font-bold text-[#333333] text-[20px] mt-[20px]") Giới thiệu #{product.title}
+				div(class="text-[#333333] text-[14px]") !{product.description}

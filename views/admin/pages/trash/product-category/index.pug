@@ -1,0 +1,70 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/khung-table.pug
+include ../../../mixins/quay-lai.pug
+include ../../../mixins/dieu-huong.pug
+
+block main
+	- if(role.permisstion.includes(`trash_view_product`))
+		-
+			let array = [
+				{
+					link: `/${admin}/trash`,
+					title: `Thùng rác`
+				}
+			]
+		+dieu-huong("Danh mục sản phẩm", array)
+		if(categoryProduct.length > 0)
+			+khung-table("Danh mục sản phẩm đã xóa")
+				table(class=`w-full text-center mt-[5px]`)
+					thead(class=`h-[50px]`)
+						tr
+							th(class=`h-full`)
+								input(
+									type="checkbox", 
+									name="checkAll"
+									class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#263238] hover:cursor-pointer`
+								)
+							th(class=`px-[10px]`)
+								div(class="w-max") Hình ảnh
+							th Sản phẩm
+							th Xóa bởi
+					tbody
+						each it, i in categoryProduct
+							tr(class=`border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20`)
+								td(class=``)
+									input(
+										type="checkbox", 
+										name="checkItem"
+										class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer`
+										value = it.id
+									)
+								td(class=``)
+									div(class="w-full") 
+										img(
+											src=it.thumbnail, 
+											alt=it.title 
+											class=`h-[50px] mx-auto`
+											nameImageImg = it.nameImage
+										)
+								td(class=`text-left py-[5px] w-full`) #{it.title}
+									div(class="opacity-[0%] hover:opacity-100 flex gap-[40px]") 
+										button(
+											type="button" class=`fa-solid fa-trash-can-undo rounded-[10px] text-[14px] text-xanh hover:text-xanhhover`
+											restore = it.id
+											linkRestore = `/${admin}/trash/product-category/${it.id}`
+											title="Khôi phục danh mục sản phẩm"
+										)
+										button(
+											type="button" 
+											class=`fa-solid fa-trash-xmark rounded-[10px] text-[14px] text-do hover:text-dohover`
+											nameImage = it.nameImage
+											permanently-delete = `/${admin}/trash/product-category/${it.id}`
+											title="Xóa vĩnh viễn danh mục"
+										)
+								td
+									div(class="text-[10px]") #{it.deletedBy}
+									div(class="text-[10px]") #{it.updatedAtFormat}
+		else
+			+khung-table("Không có danh mục nào đã xóa")
+	- else
+		div(no-view-permission)

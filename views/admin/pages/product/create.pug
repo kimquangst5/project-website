@@ -1,0 +1,182 @@
+extends ../../layouts/default.pug
+include ../../mixins/select-tree.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/cap-nhat.pug
+include ../../mixins/dieu-huong.pug
+
+//- block header
+	+quay-lai("Quay lại danh sách sản phẩm", `/${admin}/product`)
+	+cap-nhat("Thêm mới")(buttonSubmitCreateProduct="")
+
+block main
+
+	- if(role.permisstion.includes('products_create'))
+		-
+			let array = [
+				{
+					link: `/${admin}/product`,
+					title: `Danh sách sản phẩm`
+				}
+			]
+		+dieu-huong(`Thêm mới sản phẩm`, array)
+		+cap-nhat("Thêm mới")(button-submit-form-create="")
+		+khung-table("Thêm mới sản phẩm")
+			form(
+				action=`/${admin}/product/create`
+				method="POST"
+				target=''
+				autocomplete = "on"
+				enctype="multipart/form-data"
+				formsSubmitCreateProduct
+			)
+				div(class=`flex flex-col gap-y-[10px] text-adminColorHeadline`)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="title"
+							class=`text-[12px]`
+						) Tiêu đề
+							span(class="text-[red]")  *
+						input(
+							type="text", name="title" id="title"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Nhập tiêu đề sản phẩm..."
+							required
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4 text-[12px]`)
+						label(
+							for="status"
+							class=``
+						) Sản phẩm nổi bật
+							span(class="text-[red]")  *
+						div(class=`flex flex-row gap-[10px]`)
+							input(
+								type="radio", name='featured' value="active" id="active"
+								class=``
+							)
+							label(
+								for="active"
+							) Có
+						div(class=`flex flex-row gap-[10px]`)
+							input(
+								type="radio", name='featured' value="inactive" checked id="inactive"
+							)
+							label(
+								for="inactive"
+							) Không
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="product_category_id"
+							class=`text-[12px]`
+						) Danh mục
+							span(class="text-[red]")  *
+						select(id='product_category_id' name='product_category_id' 
+						class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`)
+							option(value='') --- Chọn danh mục ---
+							+select-tree(category, '')
+					
+					div(class=`flex flex-col items-left gap-y-[10px] w-full`)
+						label(
+							for="description_ifr"
+							class=`text-[12px]`
+						) Mô tả
+						textarea(
+							id="description" name="description" cols="3" rows="3"
+							class=`p-[10px] rounded-[10px] border-[1px] border-[black]/30 flex-1`
+							placeholder="Nhập mô tả sản phẩm..."
+							textarea-mce
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="price"
+							class=`text-[12px]`
+						) Giá
+							span(class="text-[red]")  *
+						input(
+							type="number", name="price" id="price"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							min='0'
+							placeholder="Nhập giá sản phẩm..."
+							required
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="discountPercentage"
+							class=`text-[12px]`
+						) % Giảm giá
+							span(class="text-[red]")  *
+						input(
+							type="number", name="discountPercentage" id="discountPercentage"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							min='0'
+							max='100'
+							placeholder="Nhập phần trăm giảm giá..."
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="stock"
+							class=`text-[12px]`
+						) Số lượng
+							span(class="text-[red]")  *
+						input(
+							type="number", name="stock" id="stock"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							min='1'
+							placeholder="Nhập số lượng sản phẩm..."
+							required
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4` upload-image)
+						label(
+							for="thumbnail"
+							class=`text-[12px]`
+						) Ảnh
+						input(
+							type="file", name="thumbnail" id="thumbnail"
+							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2 file:bg-[#06BC84] file:border-[0] file:rounded-[10px] file:px-[10px] file:py-[5px] file:hover:cursor-pointer hover:cursor-pointer file:hover:rounded-[20px] file:text-[white]`
+							placeholder="Nhập ảnh sản phẩm..."
+							accept='image/*'
+							upload-image-input
+							multiple
+						)
+						img(src="", alt=""
+							class=`w-[25%] h-auto rounded-[10px] cursor-pointer`
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="position"
+							class=`text-[12px]`
+						) Vị trí
+							span(class="text-[red]")  *
+						input(
+							type="number", name="position" id="position"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Tự động tăng..."
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4 text-[12px]`)
+						label(
+							for="status"
+							class=``
+						) Trạng thái
+							span(class="text-[red]")  *
+						div(class=`flex flex-row gap-[10px]`)
+							input(
+								type="radio", name='status' value="active" id="active"
+								class=``
+								checked
+							)
+							label(
+								for="active"
+							) Hoạt động
+						div(class=`flex flex-row gap-[10px]`)
+							input(
+								type="radio", name='status' value="inactive" id="inactive"
+							)
+							label(
+								for="inactive"
+							) Dừng hoạt động
+				button(type="submit"
+					class=`transition duration-700 ease-in-out text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto hidden`
+				) Tạo mới
+			
+	- else
+		div(class="" no-view-permission) 

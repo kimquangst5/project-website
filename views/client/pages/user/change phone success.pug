@@ -1,0 +1,22 @@
+extends ../../layouts/default.pug
+include ../../mixins/dieu-huong.pug
+
+block main
+	+dieu-huong("Thay đổi số điện thoại")
+	div(class="container mt-[50px]") 
+		div(class="flex justify-center items-center")
+			form(action="/member/change-phone-success" method="POST" class="bg-[white] p-[30px] rounded-[5px] w-1/2 flex flex-col gap-[15px]")
+					div(class="flex flex-col gap-y-[10px]") 
+						label(for="phoneOld" class=`text-chu`) Số điện thoại cũ
+							span(class=`text-[red] text-[18px]`)  *
+						div(class="border-[1px] border-[black]/30 rounded-[5px] flex gap-[10px] items-center px-[5px] py-[10px]")
+							i(class=" fa-light fa-phone text-[black]/80 icon px-[10px]")
+							input(type="text", id="phoneOld" name="phoneOld" class=`outline-none w-full` placeholder="Ví dụ: 0859.615.254" readonly value=`${phoneUser || 'Chưa có'}`)
+					div(class="flex flex-col gap-y-[10px]") 
+						label(for="phone" class=`text-chu`) Số điện thoại mới
+							span(class=`text-[red] text-[18px]`)  *
+						div(class="border-[1px] border-[black]/30 rounded-[5px] flex gap-[10px] items-center px-[5px] py-[10px]")
+							i(class="fa-light fa-phone-volume text-[black]/80 icon px-[10px]")
+							input(type="number", id="phone" name="phone" class=`outline-none w-full` placeholder="Nhập số điện thoại mới")
+					
+					button(type="submit" class="bg-chu text-[white] p-[15px] text-center rounded-[6px]") Cập nhật

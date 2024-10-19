@@ -1,0 +1,21 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/dieu-huong.pug
+include ../../../mixins/friend-btn.pug
+include ../../../mixins/box-message.pug
+
+block main
+	+dieu-huong(`Lời mời đã nhận`)
+
+	- if(users)
+		+friend-btn(infoUser)
+
+
+		div(class=``)
+			div(class=`container`)
+				each it in users
+					div(class=`` box-user)
+						div(class=``) #{it.fullName}
+						button(btn-accept-friend = it.id) Chấp nhận
+						button(btn-refuse-friend = it.id) Xóa
+						button(btn-refused-friend = it.id class=`hidden`) Đã Xóa
+						button(btn-message-friend = it.id class=`hidden`) Nhắn tin

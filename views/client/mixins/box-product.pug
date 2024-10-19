@@ -1,0 +1,39 @@
+
+mixin box-product(array, swiper)
+	each it, i in array
+		div(class=(`rounded-[${BOX ? BOX.boGoc : 7}px] bg-[${BOX ? BOX.mauNen : 'white'}] hover:shadow-2xl hover:shadow-[#ffc234] p-[5px] group relative truncate ${swiper} `) calculate carts-choose)
+			div(class=`absolute hidden mt-[-50px] opacity-0 duration-1000 bg-[#F9F9F9]  rounded-[7px] w-[95%] flex justify-center items-center z-[99] flex flex-col gap-[20px] h-[70%] ` box-cart)
+				div(class="absolute top-0 right-0 text-chu px-[10px] cursor-pointer" exit) x
+				include ../partials/adddition - subtraction.pug
+				div(class="flex justify-center items-center bg-chu text-[white] p-[10px] fa-solid fa-cart-plus rounded-full hover:cursor-pointer hover:drop-shadow-2xl hover:shadow-chu" add-cart = `/order/cart-add/${it.id}`)
+
+
+			a(href=`/product/detail/${it.slug}` class=`relative truncate ]`)
+				img(
+					src=it.thumbnail[0]
+					alt=it.title
+					class=`aspect-square object-cover rounded-[7px] object-top`
+				)
+				div(class="absolute bottom-[20px] mx-auto w-full flex justify-center  group-hover:bottom-[30px] [&>*]:duration-200 duration-500 opacity-0 group-hover:opacity-100 gap-[10px] z-[50]" link-cart)
+					i(class=`fa-thin fa-heart p-[10px] rounded-[5px] bg-[white] group hover:bg-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}] hover:text-[white] bg-[red]` title="Yêu thích"
+						link = '/yeu-thich'
+					)
+					i(class=`fa-thin fa-cart-shopping p-[10px] rounded-[5px] bg-[white] hover:text-[white] group hover:bg-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}]` title="Thêm vào giỏ"
+						choose-attribute
+					)
+					i(class=`fa-thin fa-eye p-[10px] rounded-[5px] bg-[white] group hover:bg-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}] hover:text-[white]` title="Xem nhanh" link = '')
+				
+				
+
+			
+			
+			div(class="text-center relative pt-[20px]")
+				- if(it.discountPercentage != 0)
+					div(class=`absolute top-0 left-0 bg-[red] px-[7px] py-[3px] rounded-l-[3px] rounded-r-[10px] text-left bg-[${BOX ? BOX.mauNenGiamGia : ''}] w-max font-[800] flex gap-[5px] items-center justify-center`)
+						i(class=`${BOX ? BOX.iconGiamGia : ''} text-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}]`)
+						div(class=`line-clamp-1 text-[${BOX ? BOX.mauChuGiamGia : ''}] text-[11px]`) GIẢM -#{it.discountPercentage}%
+				a(href=`/product/detail/${it.slug}` class=`text-[${BOX ? BOX.mauChuSanPham : ''}] text-[${BOX ? BOX.kichCoChuSanPham : ''}px] hover:text-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}] line-clamp-1 my-[10px] lg:text-[13px] text-wrap` title=it.title) #{it.title}
+				div(class="flex w-full place-content-center gap-[10px] auto-rows-max")
+					div(class=`text-[${BOX ? BOX.mauGiaSanPham : ''}] font-[700] shrink shrink text-[${BOX ? BOX.kichCoGiaSp : ''}px] lg:text-[12px]` priceTotal = it.newPrice) #{it.priceNew}đ
+					- if(it.priceOld != it.priceNew)
+						div(class=`text-[${BOX ? BOX.mauGiaGoc : ''}] line-through shrink text-[${BOX ? BOX.kichCoGiaGoc : ''}px] lg:text-[12px]`) #{it.priceOld}đ

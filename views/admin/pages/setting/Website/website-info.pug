@@ -1,0 +1,114 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/dieu-huong.pug
+include ../../../mixins/cap-nhat.pug
+include ../../../mixins/khung-table.pug
+include ../../../mixins/option-input.pug
+include ../../../mixins/option-input-image.pug
+
+block main
+	-
+		let array = [
+			{
+				link: `/${admin}/dashboard`,
+				title: "Cấu hình"
+			}
+		]
+	+dieu-huong("Thông tin Website", array)
+	+cap-nhat("Cập nhật")(button-submit-form = "")
+
+	+khung-table("Thông tin chính")
+		form(
+			action=`/${admin}/dashboard/website-info?_method=PATCH`
+			method="POST"
+			target=''
+			autocomplete = "on"
+			class="py-[20px]"
+			enctype="multipart/form-data"
+		)
+			div(class=`flex flex-col gap-y-[10px]`)
+				+option-input(
+					
+					'Tên Website',
+					'nameWeb',
+					'yes',
+					'fa-light fa-globe',
+					'Nhập tên website...',
+					"text",
+					infoWebsite.nameWeb
+					
+				)
+				+option-input(
+					'Tên Công ty',
+					'nameCompany',
+					'no',
+					'fa-solid fa-building-circle-check',
+					'Nhập tên công ty...',
+					"text",
+					infoWebsite.nameCompany
+				)
+				+option-input(
+					'Hotline',
+					'hotline',
+					'no',
+					'fa-solid fa-headset',
+					'Nhập hotline...',
+					"text",
+					infoWebsite.hotline
+				)
+				+option-input(
+					'Số điện thoại',
+					'phone',
+					'yes',
+					'fa-solid fa-phone',
+					'Nhập số điện thoại...',
+					"text",
+					infoWebsite.phone
+				)
+				+option-input(
+					'Email',
+					'email',
+					'no',
+					'fa-solid fa-envelope',
+					'Nhập email...',
+					"text",
+					infoWebsite.email
+				)
+				+option-input(
+					'Địa chỉ',
+					'address',
+					'no',
+					'fa-solid fa-location-dot',
+					'Nhập địa chỉ...',
+					"text",
+					infoWebsite.address
+				)
+				+option-input(
+					'Bản đồ (Nhúng iframe)',
+					'map',
+					'no',
+					'fa-solid fa-map-location-dot',
+					'Nhúng iframe bản đồ...',
+					"text",
+					infoWebsite.map
+				)
+				+option-input(
+					'Copyright',
+					'copyRight',
+					'no',
+					'fa-solid fa-copyright',
+					'Copyright...',
+					"text",
+					infoWebsite.copyRight
+				)
+
+				+option-input-image(
+					'Ảnh Website',
+					'logo',
+					'no',
+					'fa-solid fa-image',
+					'Nhập tên công ty...',
+					"file",
+					infoWebsite.logo
+				)
+			button(type="submit" class=`hidden`) Cập nhật
+					

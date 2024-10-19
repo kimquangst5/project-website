@@ -1,0 +1,31 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/dieu-huong.pug
+include ../../../mixins/cap-nhat.pug
+include ../../../mixins/khung-table.pug
+include ../../../mixins/option-input.pug
+include ../../../mixins/option-input-image.pug
+
+block main
+	-
+		let array = [
+			{
+				link: `/${admin}/dashboard`,
+				title: "Cài đặt chung"
+			}
+		]
+	+dieu-huong("Các đầu số điện thoại", array)
+	+cap-nhat("Cập nhật")(button-submit-form = "")
+
+	+khung-table(`Các đầu số điện thoại (${listPhoneLength})`)
+		div(class="")
+			div(class="italic text-xanh text-right") Quản lí các đầu số điện thoại để ngăn ngừa đăng nhập - đăng ký, người dùng nhập sai số điện thoại
+			form(
+				action=`/${admin}/dashboard/phone?_method=PATCH`
+				method="POST"
+				target=''
+				autocomplete = "on"
+				class="py-[20px] w-full"
+			)
+				textarea(name="phone" required placeholder="Các đầu số điện thoại..." class=`w-full bg-transparent text-chu border-text outline-none border-[1px] rounded-[10px] p-[10px] text-center` rows="15") #{listPhones}
+				button(type="submit" class=`hidden`) Cập nhật
+					

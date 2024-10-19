@@ -1,0 +1,114 @@
+extends ../../layouts/default.pug
+include ../../mixins/select-tree.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/them-moi.pug
+include ../../mixins/cap-nhat.pug
+include ../../mixins/dieu-huong.pug
+
+//- block header
+	+quay-lai("Quay lại danh sách danh mục", `/${admin}/product-category`)
+	+cap-nhat("Thêm mới")(buttonSubmitCreateProductCategory="")
+
+block main
+	- if(role.permisstion.includes(`product-category_create`))
+		-
+			let array = [
+				{
+					link: `/${admin}/product-category`,
+					title: `Danh mục sản phẩm`
+				}
+			]
+		+dieu-huong('Thêm danh mục', array)
+		+cap-nhat("Thêm mới")(button-submit-form-create=``)
+		+khung-table("Thêm mới danh mục sản phẩm")
+			form(
+				action=`/${admin}/product-category/create`
+				method="POST"
+				target=''
+				autocomplete = "on"
+				enctype="multipart/form-data"
+			)
+				div(class=`flex flex-col gap-y-[10px]`)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="title"
+							class=`text-[12px]`
+						) Tên danh mục
+						input(
+							type="text", name="title" id="title"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Nhập tên danh mục..."
+							required
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="parent_id"
+							class=`text-[12px]`
+						) Danh mục cha
+						select(id='parent_id' name='parent_id' 
+						class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`)
+							option(value='') --- Chọn danh mục cha ---
+							+select-tree(category, '')
+					//- div(class=`flex flex-col items-left gap-y-[10px] w-full`)
+						label(
+							for="description"
+							class=`text-[12px]`
+						) Mô tả
+						textarea(
+							id="description" name="description" cols="3" rows="3"
+							class=`px-[10px] py-[5px] text-[12px] rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2`
+							placeholder="Nhập mô tả sản phẩm..."
+							textarea-mce
+						)
+					div(class=`flex flex-col gap-y-[10px]` upload-image)
+						label(
+							for="thumbnail"
+							class=`text-[12px]`
+						) Ảnh
+						input(
+							type="file", name="thumbnail" id="thumbnail"
+							class=`rounded-[5px] border-[1px] border-[black]/10 outline-[black]/20 col-span-2 file:bg-[#06BC84] file:border-[0] file:rounded-[10px] file:px-[10px] file:py-[5px] file:hover:cursor-pointer hover:cursor-pointer file:hover:rounded-[20px] file:text-[white]`
+							placeholder="Nhập ảnh sản phẩm..."
+							accept='image/*'
+							upload-image-input
+						)
+						img(src="", alt=""
+							class=`w-[25%] h-auto rounded-[10px] cursor-pointer`
+							)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="position"
+							class=`text-[14px]`
+						) Vị trí
+						input(
+							type="number", name="position" id="position"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Tự động tăng..."
+						)
+					div(class=`flex justify-center gap-[20px] text-[12px]`)
+						div(class=`flex flex-row gap-[10px]`)
+							input(
+								type="radio", name='status' value="active" id="active"
+								class=``
+								required
+								checked
+							)
+							label(
+								for="active"
+								class=`capitalize`
+							) Hoạt động
+						div(class=`flex flex-row gap-[10px]`)
+							input(
+								type="radio", name='status' value="inactive" id="inactive"
+								required
+							)
+							label(
+								for="inactive"
+								class=`capitalize`
+							) dừng Hoạt động
+				button(type="submit"
+					class=`hidden text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto`
+				) Tạo mới
+	- else
+		div(no-view-permission)

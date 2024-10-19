@@ -1,0 +1,96 @@
+extends ../../layouts/default.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/dieu-huong.pug
+include ../../mixins/select-tree.pug
+block main
+	- if(role.permisstion.includes(`product-category_view`))
+		-
+			let array = [
+				{
+					link: `/${admin}/product-category`,
+					title: `Danh mục sản phẩm`
+				}
+			]
+		+dieu-huong(product_category.title, array)
+		+khung-table("Chi tiết danh mục sản phẩm")
+			form(
+				autocomplete = "on"
+			)
+				div(class=`flex flex-col gap-y-[10px]`)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="title"
+							class=`text-[14px]`
+						) Tên danh mục
+						div(
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+						) #{product_category.title}
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="parent_id"
+							class=`text-[14px]`
+						) Danh mục cha
+						select(id='parent_id' name='parent_id' 
+						class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`)
+							//- if(product_category.parent_id == category.id) #{category.title}
+							option(value='') -- Chọn danh mục cha---
+							
+							if(category)
+								+select-tree(category, '', product_category.parent_id)
+					div(class=`flex flex-col gap-y-[10px]`)
+						label(
+							for="description"
+							class=`text-[14px]`
+						) Mô tả
+						div(
+							id="description" name="description" cols="3" rows="3"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Nhập mô tả sản phẩm..."
+						) !{product_category.description || "Chưa Có"}
+					div(class=`flex flex-col gap-y-[10px]`)
+						label(
+							for="thumbnail"
+							class=`text-[14px]`
+						) Ảnh
+						
+						img(
+							src=product_category.thumbnail,
+							alt=product_category.title
+							class=`max-h-[90px] w-max rounded-[10px] cursor-pointer`
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="position"
+							class=`text-[14px]`
+						) Vị trí
+						div(
+							type="number", name="position" id="position"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+						) #{product_category.position}
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="position"
+							class=`text-[14px]`
+						) Trạng thái
+						- if(product_category.status == 'active')
+							span(class=`bg-xanh hover:bg-xanhhover text-main px-[10px] w-max py-[5px] text-[12px] rounded-[10px]`) Đang hoạt động
+						- else
+							span(class=`bg-do hover:bg-dohover text-main px-[10px] w-max py-[5px] text-[12px] rounded-[10px]`) Đã dừng hoạt động
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="position"
+							class=`text-[14px]`
+						) Tạo bởi
+						div(class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2 flex justify-between`) 
+							div #{product_category.createdBy || "Chưa có"}
+							div #{product_category.createdAtFormat}
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="position"
+							class=`text-[14px]`
+						) Cập nhật
+						div(class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2 flex justify-between`) 
+							div #{product_category.updatedBy || "Chưa ai chỉnh sửa"}
+							div #{product_category.updatedAtFormat || ""}
+	- else
+		div(no-view-permission)

@@ -1,0 +1,6 @@
+mixin box-setting(icon, link, title, desc = 'Không có mô tả')
+	div(class="flex items-center py-[20px] group") 
+		a(href=link class=`${icon} text-[25px] text-adminColorHeadline group-hover:text-main`)
+		div(class="ml-[20px] flex flex-col")
+			a(href=link class="text-adminColorHeadline group-hover:text-textHover text-[12px] group text-wrap") #{title}
+			div(class="text-[10px] text-adminColorHeadline text-wrap") #{desc}

@@ -1,0 +1,91 @@
+extends ../../layouts/default.pug
+include ../../mixins/dieu-huong.pug
+include ../../mixins/adddition - subtraction.pug
+include ../../mixins/khung-table.pug
+
+block main
+	-
+		let array = [
+			{
+				link: `/order/cart-info`,
+				title: 'Giỏ hàng'
+			}
+		]
+	+dieu-huong("Thanh toán", array)
+	div(class="my-[40px]") 
+		div(class="container")
+			- if(carts.length == 0)
+				div(class="bg-[white] rounded-[7px] p-[10px] capitalize font-bold") Chưa Có sản phẩm nào trong giỏ hàng, hãy thêm sản phẩm vào giỏ hàng nhé!
+			- else
+				div(class="flex grid grid-cols-7 gap-x-[20px]" )
+					div(class="col-span-4 ")
+						div(class="flex flex-col gap-[20px]")
+							div(class="bg-[white] roundeld-[7px] p-[10px] h-max") 
+								div(class="text-[20px] text-[#222222] font-bold py-[10px]") Thông tin khách hàng
+								form(action="/payment/order", method="post" class=`flex flex-col text-[#333333] gap-[10px]`)
+									div(class="") Khách hàng:
+										span(class="font-bold")  #{inforUser.fullName}
+										input(class=`hidden` type="text" name="fullName" value=inforUser.fullName)
+									div(class="") Số điện thoại:
+										span(class="font-bold")  #{inforUser.phone}
+										input(class=`hidden` type="text" name="phone" value=inforUser.phone)
+									div(class="") Địa chỉ: 
+										span(class="font-bold")  #{inforUser.address}
+										input(class=`hidden` type="text" name="address" value=inforUser.address)
+
+									input(class=`hidden` type="text" name="methodPay" input-method-pay value="cash")
+
+									div(class="") Ghi chú: 
+										span(class="font-bold")  #{inforUser.note || 'Không có'}
+									input(class=`hidden` type="text" name="note" value=inforUser.note )
+									button(type="submit" button-submit-form class="hidden w-full ml-auto bg-chu text-center p-[10px] rounded-[10px] text-[white] capitalize mt-[30px]") thanh toán
+							div(class="bg-[white] rounded-[7px] p-[10px] h-max flex flex-col gap-[15px]")
+								button(class="flex items-center gap-[20px] rounded-[6px] border-chu border-[1px] px-[20px] py-[10px] w-full font-bold text-chu hover:text-chu duration-500")
+									img(src="/images/money.svg", alt="" class=`h-[30px]`)
+									div Thanh toán tiền mặt khi nhận hàng
+								button(class="flex items-center gap-[20px] rounded-[6px] border-[black]/30 hover:border-chu border-[1px] px-[20px] py-[10px] w-full font-bold text-[#333333] hover:text-chu duration-500 group" button-method-pay-bank)
+									img(src="/images/money.png", alt="" class=`h-[30px] text-[black]`)
+									div(class=``) Chuyển khoản ngân hàng
+								div(class="mb-[30px] opacity-0 hidden mt-[-30px] duration-1000" box-method-pay-bank)
+									div(class="font-bold text-[20px]") Tài khoản ngân hàng
+									div(class="pl-[15px]") 
+										div(class="flex grid grid-cols-2 py-[20px] border-b-[1px] border-b-[black]/20") 
+											div(class="") Tên ngân hàng
+											div(class="font-bold") Vietinbank
+										div(class="flex grid grid-cols-2 py-[20px] border-b-[1px] border-b-[black]/20") 
+											div(class="") Chủ tài khoản
+											div(class="font-bold") Trần Kim Quang
+										div(class="flex grid grid-cols-2 py-[20px]") 
+											div(class="") Số tài khoản
+											div(class="font-bold") Chưa
+										div(class="flex grid grid-cols-2 py-[20px]") 
+											div(class="") Nội dung chuyển khoản: 
+											div(class="font-bold text-do") #{inforUser.phone}
+								button(type="submit"  class="w-full ml-auto bg-chu text-center p-[10px] rounded-[10px] text-[white] capitalize" button-payment) thanh toán
+					div(class="col-span-3")
+						div(class="flex grid grid-rows-2 gap-[20px]")
+							div(class="row-span-1 bg-[white] rounded-[7px] p-[10px]") 
+								div(class="font-bold text-[20px] py-[15px] text-[#222222]") Giỏ hàng 
+									span(class=`font-normal capitalize`) (#{shoopings_cart.length})
+								each it in carts
+									div(class="flex items-center gap-[15px]")
+										div(class="w-[70px] ") 
+											img(src=it.thumbnail[0], alt=it.title class=`w-full h-auto object-cover object-top`)
+										div(class="flex flex-col justify-between h-full gap-y-[9px] text-left grow w-full")
+											div(class="font-bold text-[#333333] text-[15px]") #{it.title}
+											div(class="flex items-center gap-[5px] text-[15px]")
+												//- div(class="text-[#333333]")  Số lượng:
+												div(class="font-bold text-[#333333]") #{it.quanlityProduct}
+												div(class="text-[12px]") x
+												div(class="font-bold text-xanh")  #{it.priceOrigin}
+											div(class="font-bold text-[16px] text-[#da0808]" priceTotal = it.newPrice) #{it.priceItem}
+												span đ
+							div(class="row-span-1 bg-[white] rounded-[7px] p-[10px] h-max")
+								div(class="flex justify-between items-center pb-[20px] border-b-[2px] border-b-[#333333] border-dashed")
+									div(class="text-[15px] text-[#333333]") Đơn giá
+									div(class="text-[16px] text-[#da0808] font-bold") #{carts.totalPrice}đ
+								div(class="flex justify-between items-center mt-[20px]")
+									div(class="text-[15px] text-[#333333]") Thành tiền
+									div(class="text-[16px] text-[#da0808] font-bold") #{carts.totalPrice}đ
+								
+				

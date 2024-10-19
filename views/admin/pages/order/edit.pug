@@ -1,0 +1,61 @@
+extends ../../layouts/default.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/setting-box.pug
+include ../../mixins/dieu-huong.pug
+
+
+block main
+	-
+		let array = [
+			{
+				link: `/${admin}/order/`,
+				title: "Đơn hàng"
+			}
+		]
+	+dieu-huong("Chỉnh sửa đơn hàng", array)
+	+khung-table("Các mặt hàng")
+		table(class=`border-collapse border-[1px] border-text p-[10px] w-full`)
+			thead(class=`font-normal`)
+				tr(class=`[&>*]:font-normal h-[50px] bg-[#3E4954]`)
+					th Tên sản phẩm
+					th
+						i(class="fa-solid fa-image")
+					th Số lượng
+					th
+						i(class="fa-solid fa-money-bill-wave")
+					th Tổng cộng
+			tbody
+				each it in order.products
+					tr(class=`text-center h-[60px] border-collapse border-[1px] border-text `)
+						td(class=`text-left w-1/2 text-wrap border-collapse border-[1px] border-text`)
+							div(class="pl-[10px]")  #{it.title}
+						td(class=`flex justify-center items-center h-[60px]`)
+							div(class="flex items-center justify-center") 
+								img(src=it.image, alt=it.title class=`rounded-[7px] aspect-square object-top object-cover h-[50px]`)
+						td(class=`border-collapse border-[1px] border-text w-max`) #{it.quantity}
+						td(class=`border-collapse border-[1px] border-text`) #{it.priceNew}đ
+						td(class=`border-collapse border-[1px] border-text`) #{it.totalPrice}đ
+				tr(class=`h-[50px]`)
+					td(colspan="4" class=`border-collapse border-[1px] border-text text-center font-bold text-xanh`) TỔNG CỘNG
+					td(colspan="1" class=`text-center font-bold text-chu`) #{order.totalPrice}đ
+	div(class="flex grid grid-cols-3 gap-[10px]")
+		+khung-table("Thông tin vận chuyển (Shipping Information)")
+			div(class="flex flex-col gap-[10px]")
+				div(class="font-bold text-xanh") #{order.userInfo.fullName}
+				div(class="grid grid-cols-2")
+					div(class="") Địa chỉ:
+					div(class="font-bold text-do text-right")  #{(order ? (order.userInfo.address ? order.userInfo.address : 'Chưa có') : 'Chưa có')}
+				div(class="grid grid-cols-2")
+					div(class="") Số điện thoại:
+					div(class="font-bold text-do text-right")  #{(order ? (order.userInfo.phone ? order.userInfo.phone : 'Chưa có') : 'Chưa có')}
+		+khung-table("Thông tin thanh toán (Billing Information)")
+			div(class="flex flex-col gap-[10px]")
+				div(class="grid grid-cols-2")
+					div(class="") Hình thức thanh toán:
+					div(class="font-bold text-do text-right")  #{(order ? (order.methodPay ? (order.methodPay == 'transfer' ? 'Chuyển khoản' : 'Tiền mặt') : 'Chưa có') : 'Chưa có')}
+		+khung-table("Thông tin giao hàng (Delivery Info)")
+			div(class="flex flex-col gap-[10px]")
+				div(class="grid grid-cols-2")
+					//- div(class="") Hình thức thanh toán:
+					//- div(class="font-bold text-do text-right")  #{(order ? (order.methodPay ? (order.methodPay == 'transfer' ? 'Chuyển khoản' : 'Tiền mặt') : 'Chưa có') : 'Chưa có')}
+					

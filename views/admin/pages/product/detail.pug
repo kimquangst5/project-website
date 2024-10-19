@@ -1,0 +1,69 @@
+extends ../../layouts/default.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/them-moi.pug
+include ../../mixins/dieu-huong.pug
+
+//- block header
+	+quay-lai("Quay lại danh sách sản phẩm", `/${admin}/product`)
+
+block main
+	-
+		let array = [
+			{
+				link: `/${admin}/product`,
+				title: `Danh sách sản phẩm`
+			}
+		]
+	+dieu-huong(`${product.title}`, array)
+	+khung-table("Chi tiết sản phẩm")
+		div(class="") 
+			table(class="mx-auto w-full [&>th]:py-[20px] text-adminColorHeadline")
+				tr(class="border-b-[1px] border-b-[black]/30")
+					th(class="text-left font-normal text-[12px] pr-[100px] h-auto aligh-center py-[10px]") Tên sản phẩm:
+					td(class="font-bold text-[12px] text-[#CD4F41]") #{product.title}
+				tr(class="border-b-[1px] border-b-[black]/30")
+					th(class="text-left font-normal text-[12px] pr-[100px] h-auto aligh-center py-[10px]") Giá
+					td(class="font-bold text-[12px] text-[#F77F00]") #{product.price}
+				tr(class="border-b-[1px] border-b-[black]/30")
+					th(class="text-left font-normal text-[12px] pr-[100px] h-auto aligh-center py-[10px]") Giảm giá
+					td(class="font-bold text-[12px] text-[#66C2A5]") -#{product.discountPercentage}%
+				tr(class="border-b-[1px] border-b-[black]/30")
+					th(class="text-left font-normal text-[12px] pr-[100px] h-auto aligh-center py-[10px]") Còn lại
+					td(class="font-bold text-[12px]") #{product.stock}
+				tr(class="border-b-[1px] border-b-[black]/30")
+					th(class="text-left font-normal text-[12px] pr-[100px] h-auto aligh-center py-[10px]") Hình Ảnh
+					td(class="font-bold text-[30px]")
+						if(product.thumbnail)
+							img(src=product.thumbnail, alt="" class="max-h-auto w-auto rounded-[10px] max-h-[100px]")
+						else
+							div(class="text-[12px]") Chưa có
+				tr(class="border-b-[1px] border-b-[black]/30")
+					th(class="text-left font-normal text-[12px] pr-[100px] h-auto aligh-center py-[10px]") Trạng thái
+					td(class="font-bold text-[30px]")
+						if(product.status == 'active')
+							div(class="text-[#3288BD] text-[12px]") Hoạt động
+						else
+							div(class="text-[#EF233C] text-[12px]") Dừng hoạt động
+
+				tr(class="border-b-[1px] border-b-[black]/30")
+					th(class="text-left font-normal text-[12px] pr-[100px] h-auto aligh-center py-[10px]") Vị trí
+					td(class="font-bold text-[12px]") #{product.position}
+				tr(class="border-b-[1px] border-b-[black]/30")
+					th(class="text-left font-normal text-[12px] pr-[100px] h-auto aligh-center py-[10px]") Tạo bởi
+					td(class="font-bold text-[12px]") #{product.createdBy}
+				tr(class="border-b-[1px] border-b-[black]/30")
+					th(class="text-left font-normal text-[12px] pr-[100px] h-auto aligh-center py-[10px]") Tạo vào lúc
+					td(class="font-bold text-[12px]") #{product.createdAtFormat}
+				tr(class="border-b-[1px] border-b-[black]/30")
+					th(class="text-left font-normal text-[12px] pr-[100px] h-auto aligh-center py-[10px]") Chỉnh sửa bởi
+					td(class="font-bold text-[12px]") #{product.updatedBy}
+				tr(class="border-b-[1px] border-b-[black]/30")
+					th(class="text-left font-normal text-[12px] pr-[100px] h-auto aligh-center py-[10px]") Chỉnh sửa vào lúc
+					td(class="font-bold text-[12px]") #{product.updatedAtFormat}
+				tr(class="")
+					th(class="text-left font-normal text-[12px] pr-[100px] h-auto aligh-center py-[10px]") Mô tả sản phẩm:
+			if(product.description)
+				div(class="italic ") !{product.description}
+			else
+				div(class="text-adminColorHeadline") Chưa nhập mô tả

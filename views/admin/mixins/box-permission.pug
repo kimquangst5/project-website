@@ -1,0 +1,9 @@
+mixin box-permission(title, name, CRUD)
+	tr(class="text-[14px]" data-name = `${name}_${CRUD}` )
+		td(class="text-left px-[15px] py-[10px]" ) #{title + '|||' + name + "_" + CRUD}
+		each it in records
+			td
+				input(
+					type="checkbox", class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer relative z-[50]` data-id = it.id
+					checked = (it.permisstion.includes(`${name}_${CRUD}`)  ? true : false)
+				)

@@ -1,0 +1,21 @@
+extends ../../layouts/default_login.pug
+block main
+		//- div(class="relative") 
+			
+		//- div(class="h-screen w-screen z-0")
+		//- 	div(class="") 
+		//- 		//- img(src="/admin/images/bg.svg" class=`w-full h-full object-cover `)
+		//- 	div(class="absolute") 
+		//- 		div(class="") dfgfdg
+			
+		//- //- 		div(class="") dfsdfsdf
+		div(class=" h-screen w-screen") 
+			div(class="absolute flex justify-center items-center w-full h-screen shadow-2xl") 
+				form(class="shadow-2xl shadow-[pink] m-auto px-[10px] py-[5px] rounded-[7.21px] text-[20px] text-center" login-admin)
+					div(class="py-[20px] ") ĐĂNG NHẬP QUẢN TRỊ
+					div(class="")
+						input(type="text", name="usename" class="bg-transparent outline-none py-[5px]" placeholder="Tài khoản" required)
+					div(class="")
+						input(type="password", name="password" class="bg-transparent outline-none py-[5px]" placeholder="Mật khẩu" required)
+					div(class="py-[10px]") 
+						button(type="submit" class="px-[15px] py-[5px] bg-[black] rounded-[10px] text-[white]" button-login-admin) Đăng nhập

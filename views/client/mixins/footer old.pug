@@ -1,0 +1,36 @@
+mixin footer(infoWeb)
+	div(class=`py-[30px]`)
+		div(class=`container`)
+			div(class=`flex`) 
+				div(class=``)
+					a(href=`/`)
+						- if(infoWeb)
+							-if(infoWeb.logo)
+								img(src=infoWeb.logo, alt=infoWeb.title class=`h-[50px] w-auto`)
+				div(class=`flex gap-[20px]`) 
+					div(class=`px-[10px]`)
+						div(class=`font-bold line-clamp-1 text-[#333333] mb-[16px]`) THÔNG TIN
+						nav
+							div(class=``) Về chúng tôi
+							div(class=``) Track Order
+							div(class=``) Reviews
+							div(class=``) Blog
+							div(class=``) Blog
+							div(class=``) Blog
+							div(class=``) Blog
+							div(class=``) Blog
+							div(class=``) Blog
+							div(class=``) Blog
+							div(class=``) Blog
+							div(class=``) Blog
+							div(class=``) Blog
+							div(class=``) Blog
+							div(class=``) Blog
+							div(class=``) Blog
+					div(class=`px-[10px]`)
+						div(class=`font-bold line-clamp-1 text-[#333333] mb-[16px] uppercase`) chăm sóc khách hàng
+						nav
+							div(class=``) Về chúng tôi
+							div(class=``) Track Order
+							div(class=``) Reviews
+							div(class=``) Blog

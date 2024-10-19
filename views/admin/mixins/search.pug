@@ -1,0 +1,15 @@
+mixin search(key)
+	form(
+		form-search
+		class=`rounded-[10px] text-[12px] h-[30px] border-[1px] border-do truncate`
+	)
+		i(class="fa-light fa-magnifying-glass px-[10px] opacity-0 duration-700 text-do")
+		input(type="search", name=""
+			class=`h-full outline-none px-[10px] bg-transparent text-do`
+			placeholder='Tìm kiếm......'
+			value=key
+		)
+		button(
+			type="submit"
+			class=`bg-do hover:bg-dohover text-main h-full px-[10px]`
+		) Tìm kiếm

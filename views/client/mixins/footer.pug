@@ -1,0 +1,59 @@
+mixin footer()
+	footer(class=`footer relative`)
+		div(class=`container`)
+			div(class=`pt-[50px] lg:pt-[40px]`)
+				div(class=`flex lg:flex-wrap max-gap-x-[103px] justify-between pb-[48px] lg:gap-y-[32px]`)
+					div(class=`w-[20%] lg:w-full flex flex-col mb-[8px]`)
+						a(class=`text-color1 text-[33.45px] font-[700] leading-[42.32px]`, href=``)
+							- if(infoWeb.logo)
+								img(src=infoWeb.logo, alt=infoWeb.title)
+						div(class=`text-[#00000099] mb-[35px] mt-[25px] lg:my-[20px]`) Chúng tôi có những bộ quần áo phù hợp với phong cách của bạn và bạn có thể tự hào khi mặc.
+						div(class=`flex items-center gap-x-[12px]`)
+							a(class=`h-[28px] aspect-[28/28] bg-[white] rounded-full flex items-center justify-center border-[1px] border-color1/20`, href=``)
+								i(class=`fa-brands fa-twitter text-[12px] my-auto`)
+							a(class=`w-[28px] h-[28px] bg-black rounded-full flex items-center justify-center`, href=``)
+								i(class=`fa-brands fa-facebook-f text-[white] text-[12px]`)
+							a(class=`w-[28px] h-[28px] bg-[white] rounded-full flex items-center justify-center border-[1px] border-color1/20`, href=``)
+								i(class=`fa-brands fa-instagram text-[black] text-[14px]`)
+					div(class=`flex flex-col gap-[26px] lg:w-[50%] `)
+						div(class=`uppercase font-[500] text-[16px] leading-[18px] text-color1 tracking-[3px]`) công ty
+						div(class=`flex flex-col justify-between gap-[19px]`)
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) giới thiệu
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) sản phẩm
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) công việc
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) việc làm
+					div(class=`flex flex-col gap-[26px] lg:w-[50%] `)
+						div(class=`uppercase font-[500] text-[16px] leading-[18px] text-color1 tracking-[3px]`) trợ giúp
+						div(class=`flex flex-col justify-between gap-[19px]`)
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) hỗ trợ khách hàng
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) thông tin đơn hàng
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) điều khoản và điều kiện
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) chính sách
+					div(class=`flex flex-col gap-[26px] lg:w-[50%] `)
+						div(class=`uppercase font-[500] text-[16px] leading-[18px] text-color1 tracking-[3px]`) faq
+						div(class=`flex flex-col justify-between gap-[19px]`)
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) tài khoản
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) quản lý đơn hàng
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) đơn hàng
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) thanh toán
+					div(class=`flex flex-col gap-[26px] lg:w-[50%] `)
+						div(class=`uppercase font-[500] text-[16px] leading-[18px] text-color1 tracking-[3px]`) tài nguyên
+						div(class=`flex flex-col justify-between gap-[19px]`)
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) sách miễn phí
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) bài viết
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) kiến thức
+							a(class=`font-[400] text-[16px] leading-[19px] text-color1/60 capitalize hover:text-[#E76B6E] empty:hidden`, href=`#`) youtube
+				div(class=`border-[1px] border-color1/10`)
+				div(class=`pt-[30px] pb-[84px] sm:pb-[30.26px] flex justify-between md:flex-col items-center gap-[20px]`)
+					div(class=`font-[400] text-[14px] text-color1/60`) #{infoWeb.nameCompany} © 2024 #{infoWeb.copyRight}, All Rights Reserved
+					div(class=`flex gap-[12px] h-[30px]`)
+						div(class=`bg-[#FFFFFF] rounded-[5.38px] h-full shadow-[0px 0.45px 4.48px 0px] shadow-[#B7B7B714] flex items-center justify-center w-[46.61px] border-[0.22px] border-[#D6DCE5]`)
+							img(src=`/project-3/assets/images/Visa.svg`, alt=``)
+						div(class=`bg-[#FFFFFF] rounded-[5.38px] h-full shadow-[0px 0.45px 4.48px 0px] shadow-[#B7B7B714] flex items-center justify-center w-[46.61px] border-[0.22px] border-[#D6DCE5]`)
+							img(src=`/project-3/assets/images/Mastercard.svg`, alt=``)
+						div(class=`bg-[#FFFFFF] rounded-[5.38px] h-full shadow-[0px 0.45px 4.48px 0px] shadow-[#B7B7B714] flex items-center justify-center w-[46.61px] border-[0.22px] border-[#D6DCE5]`)
+							img(src=`/project-3/assets/images/Paypal.svg`, alt=``)
+						div(class=`bg-[#FFFFFF] rounded-[5.38px] h-full shadow-[0px 0.45px 4.48px 0px] shadow-[#B7B7B714] flex items-center justify-center w-[46.61px]  border-[0.22px] border-[#D6DCE5]`)
+							img(src=`/project-3/assets/images/ Pay.svg`, alt=``)
+						div(class=`bg-[#FFFFFF] rounded-[5.38px] h-full shadow-[0px 0.45px 4.48px 0px] shadow-[#B7B7B714] flex items-center justify-center w-[46.61px] border-[0.22px] border-[#D6DCE5]`)
+							img(src=`/project-3/assets/images/G Pay.svg`, alt=``)

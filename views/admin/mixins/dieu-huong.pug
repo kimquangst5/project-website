@@ -1,0 +1,11 @@
+mixin dieu-huong(title, navigation)
+	div(class="h-[40px] text-main flex items-center justify-between select-none max-w-1/2")
+		div(class="text-[20px]") #{title}
+		nav(class="text-[14px] flex gap-[10px] items-center")
+			a(href=`/${admin}/my-profile`) Kim Quang
+			i(class=`fa-solid fa-angle-right text-[7px]`)
+			if(navigation && navigation.length > 0)
+				each it in navigation
+					a(href=it.link) #{it.title}
+					i(class=`fa-solid fa-angle-right text-[7px]`)
+			p(class=`text-adminColorHeadline line-clamp-1`) #{title}

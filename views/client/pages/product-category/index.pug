@@ -1,0 +1,36 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-product.pug
+
+block main
+	div(class=`select-none py-[40px]`)
+		div(class=`container`)
+			div(class=`p-[28px] bg-[white] rounded-[7px]`)
+
+				div(class=`text-[${BOX ? BOX.mauGiaGoc : ''}] `)
+					
+					- if(productsCategory)
+						div(class=`flex items-center grid grid-cols-2 justify-between pb-[20px] `) 
+							div(class=`flex items-center gap-[10px]`) 
+								div(class=`text-[25px] font-[700] w-max flex flex-col justify-center `) #{titleCategory.title}
+								div(class=``) 
+									span(class=`font-bold`) (  #{productsCategory.length}  
+									span sản phẩm)
+							div(class=`ml-auto flex gap-[10px] items-center h-full` ) 
+								div(class=``) Sắp xếp theo
+								select(name=`sort` class=`px-[15px] outline-none border-[1px] rounded-[10px] text-[#333333] h-full border-[#dde1ef] rounded-[7px] relative outline-0` option-fillter)
+									option(value=`position-desc`) Mới nhất
+									option(value=`position-asc`) Cũ nhất
+									option(value=`price-asc`) Giá: Tăng dần
+									option(value=`price-desc`) Giá: Giảm dần
+									option(value=`title-asc`) Tên: A-Z
+									option(value=`title-desc`) Tên: Z-A
+									//- option(value=`featured`) Bán chạy nhất
+							
+				
+				div(class=`grid grid-cols-4 flex gap-[20px] flex-gap`)
+					- if(productsCategory)
+						+box-product(productsCategory)
+						
+
+
+	

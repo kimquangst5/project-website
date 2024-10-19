@@ -1,0 +1,83 @@
+extends ../../layouts/default.pug
+include ../../mixins/pagination.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/permission-mixin.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/cap-nhat.pug
+include ../../mixins/box-permission.pug
+include ../../mixins/dieu-huong.pug
+
+
+block main
+	- if(role.permisstion.includes(`permissions_views`))
+		-
+			let array = [
+				{
+					link: `/${admin}/dashboard`,
+					title: `Cấu hình`
+				},
+				{
+					link: `/${admin}/roles`,
+					title: `Nhóm quyền`
+				}
+			]
+		+dieu-huong(`Phân quyền`, array)
+
+		+cap-nhat("Cập nhật", ``)(roles = "")
+
+		+khung-table("Danh sách phân quyền")
+			table(class="w-full text-center" table-permissions = `/${admin}/roles/permissions`)
+				thead
+					tr()
+						th(class="py-[15px]") Tính năng
+						each it in records
+							th(class="font-normal" role-id = it.id) #{it.title}
+					tr 
+						th Tất cả
+						each it in records
+							th
+								input(
+									type="checkbox"
+									class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#FA6B04] checked:border-[0px] hover:cursor-pointer relative z-[50]`
+									value = it.id
+									checked = (permisstionMax == it.permisstion.length ? true : false)
+								)
+								
+				tbody
+					+permission("Cài đặt chung")
+						+box-permission("Xem", "dashboard", "view")
+					
+					+permission("Nhóm quyền")
+					+box-permission("Xem", "roles", "view")
+					+box-permission("Sửa", "roles", "edit")
+					+box-permission("Xóa", "roles", "deleted")
+					+box-permission("Xem phân quyền", "permissions", "views")
+					+box-permission("Cập nhật phân quyền", "permissions", "update")
+
+					+permission("Quản lí sản phẩm")
+					+box-permission("Xem", "products", "view")
+					+box-permission("Thêm", "products", "create")
+					+box-permission("Sửa", "products", "edit")
+					+box-permission("Xóa", "products", "delete")
+					
+					+permission("Danh mục sản phẩm")
+					+box-permission("Xem", "product-category", "view")
+					+box-permission("Thêm", "product-category", "create")
+					+box-permission("Sửa", "product-category", "edit")
+					+box-permission("Xóa", "product-category", "delete")
+
+
+					+permission("Thùng rác")
+					+box-permission("Xem tất cả", "trash", "view")
+					+box-permission("Xem phần sản phẩm", "trash", "view_product")
+					+box-permission("Xem phần bài viết", "trash", "view_article")
+					+box-permission("Xem phần tài khoản quản trị", "trash", "views_account")
+					+box-permission("Xem phần nhóm quyền", "trash", "view_role")
+
+					+permission("Tài khoản quản trị")
+					+box-permission("Xem", "account", "view")
+					+box-permission("Sửa", "account", "edit")
+					+box-permission("Xóa", "account", "delete")
+					+box-permission("Tạo", "account", "create")
+	- else
+		div(no-view-permission)

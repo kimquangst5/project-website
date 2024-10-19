@@ -1,0 +1,144 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/dieu-huong.pug
+include ../../../mixins/cap-nhat.pug
+include ../../../mixins/khung-table.pug
+include ../../../mixins/option-input.pug
+include ../../../mixins/option-input-image.pug
+
+block main
+	-
+		let array = [
+			{
+				link: `/${admin}/interface`,
+				title: "Giao diện"
+			},
+			{
+				link: `/${admin}/interface/edit`,
+				title: "Chỉnh sửa giao diện"
+			}
+		]
+	+dieu-huong("Hộp sản phẩm", array)
+	+cap-nhat("Cập nhật")(button-submit-form = "")
+
+	+khung-table("Thông tin chính")
+		form(
+			action=`/${admin}/interface/edit/box-product?_method=PATCH`
+			method="POST"
+			target=''
+			autocomplete = "on"
+			class="py-[20px]"
+		)
+			div(class=`flex flex-col gap-y-[10px]`)
+				+option-input(
+					'Bo góc (px)',
+					'boGoc',
+					'yes',
+					'fa-solid fa-brackets-round',
+					'Nhập tên website...',
+					"text",
+					box.boGoc
+				)
+				+option-input(
+					
+					'Màu nền',
+					'mauNen',
+					'yes',
+					'fa-light fa-palette',
+					'Nhập tên website...',
+					"text",
+					box.mauNen
+					
+				)
+				+option-input(
+					'Màu chữ sản phẩm',
+					'mauChuSanPham',
+					'yes',
+					'fa-light fa-palette',
+					'Nhập tên công ty...',
+					"text",
+					box.mauChuSanPham
+				)
+				+option-input(
+					'Kích cỡ chữ sản phẩm',
+					'kichCoChuSanPham',
+					'no',
+					'fa-light fa-maximize',
+					'Nhập hotline...',
+					"text",
+					box.kichCoChuSanPham
+				)
+				+option-input(
+					'Màu chữ Sp khi di chuột vào',
+					'mauChuSpKhiDiChuot',
+					'no',
+					'fa-light fa-palette',
+					'Nhập hotline...',
+					"text",
+					box.mauChuSpKhiDiChuot
+				)
+				+option-input(
+					'Màu giá sản phẩm',
+					'mauGiaSanPham',
+					'yes',
+					'fa-light fa-palette',
+					'Nhập số điện thoại...',
+					"text",
+					box.mauGiaSanPham
+				)
+				+option-input(
+					'Kích cỡ giá sản phẩm',
+					'kichCoGiaSp',
+					'no',
+					'fa-light fa-maximize',
+					'Nhập email...',
+					"text",
+					box.kichCoGiaSp
+				)
+				+option-input(
+					'Màu giá gốc',
+					'mauGiaGoc',
+					'yes',
+					'fa-light fa-palette',
+					'Nhập số điện thoại...',
+					"text",
+					box.mauGiaGoc
+				)
+				+option-input(
+					'Kích cỡ giá gốc',
+					'kichCoGiaGoc',
+					'no',
+					'fa-light fa-maximize',
+					'Nhập email...',
+					"text",
+					box.kichCoGiaGoc
+				)
+				+option-input(
+					'Màu nền giảm giá',
+					'mauNenGiamGia',
+					'no',
+					'fa-light fa-palette',
+					'Nhúng iframe bản đồ...',
+					"text",
+					box.mauNenGiamGia
+				)
+				+option-input(
+					'Màu chữ giảm giá',
+					'mauChuGiamGia',
+					'no',
+					'fa-light fa-palette',
+					'Copyright...',
+					"text",
+					box.mauChuGiamGia
+				)
+
+				+option-input(
+					'Icon giảm giá',
+					'iconGiamGia',
+					'no',
+					'fa-light fa-arrow-down-to-line',
+					'Copyright...',
+					"text",
+					box.iconGiamGia
+				)
+			button(type="submit" class=`hidden`) Cập nhật
+					

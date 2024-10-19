@@ -1,0 +1,15 @@
+mixin box-actions(link, list)
+	div(
+		class=`flex justify-center py-[10px]`
+		box-actions = link
+	)
+		select(
+			name=""
+			class=`flex-1 outline-none pl-[10px] text-adminColorHeadline bg-transparent`
+		)
+			each it in list
+				option(value=it.value class=`text-adminColorHeadline`) #{it.lable}
+		button(
+			type="button"
+			class=`bg-xanh hover:bg-xanhhover text-main text-[14px] rounded-[10px] px-[10px] py-[5px]`
+		) Cập nhật

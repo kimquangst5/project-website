@@ -1,0 +1,71 @@
+include ../mixins/box-sidebar.pug
+
+aside(
+	class=`w-1/4 h-screen overflow-y-auto invisible scoll-auto bg-adminColorMain text-adminColorMain flex flex-col gap-[10px] scrollbar  select-none` 
+)
+	div(class=`sticky top-[0] bg-adminColorMain select-none flex justify-between items-center text-center h-[70px]`)
+		a(href=`` class=`flex items-center justify-center w-full text-[25px] font-[800]  h-[70px] select-none`)
+			img(src=`/${admin}/images/logo 2.svg`, alt="" class=`h-[40px] w-auto`)
+	ul(class="flex gap-[10px] flex-col text-adminColorHeadline duartion-1000") 
+		//- <i class="fa-solid fa-objects-column"></i> //trang 12
+		+box-sidebar(`Tổng quan`, `/${admin}/main`, `fa-solid fa-grid-round-2`)
+
+		+box-sidebar(`Bài viết`, '',  `fa-solid fa-file-lines`)
+			+box-sidebar(`Thêm bài viết`, `/${admin}/article/create`)
+			+box-sidebar(`Danh sách`, `/${admin}/articles`)
+			+box-sidebar(`Danh mục`, `/${admin}/article-category`)
+			+box-sidebar(`Thẻ tag`, `/${admin}/article-category`)
+
+		+box-sidebar(`Media`, '',  `fa-solid fa-images`)
+
+		- if(role.permisstion.includes(`products_create`) || role.permisstion.includes(`products_view`) || role.permisstion.includes(`product-category_view`))
+			+box-sidebar(`Sản phẩm`, '',  `fa-solid fa-box-open`)
+				- if(role.permisstion.includes("products_create"))
+					+box-sidebar(`Thêm sản phẩm`, `/${admin}/product/create`)
+				- if(role.permisstion.includes("products_view"))
+					+box-sidebar(`Danh sách`, `/${admin}/product`)
+				- if(role.permisstion.includes("product-category_view"))
+					+box-sidebar(`Danh mục`, `/${admin}/product-category`)
+		
+		+box-sidebar(`Đơn hàng`, '',  `fa-solid fa-file-lines`)
+			+box-sidebar(`Đơn mới`, `/${admin}/article/create`)
+			+box-sidebar(`Danh sách`, `/${admin}/order`)
+			+box-sidebar(`Trạng thái`, `/${admin}/article-category`)
+			+box-sidebar(`Hoàn tiền/Đổi trả`, `/${admin}/article-category`)
+
+		+box-sidebar(`Báo cáo`, '',  `fa-solid fa-chart-pie-simple`)
+			+box-sidebar(`Doanh thu`, `/${admin}/reports/revenue`)
+			+box-sidebar(`Bán hàng`, `/${admin}/reports/sales`)
+			+box-sidebar(`Tồn kho`, `/${admin}/reports/inventory`)
+			+box-sidebar(`Khách hàng`, `/${admin}/reports/customers`)
+
+		+box-sidebar(`Khách hàng`, '',  `fa-solid fa-users`)
+			+box-sidebar(`Danh sách`, `/${admin}/customers`)
+			+box-sidebar(`Nhóm khách hàng`, `/${admin}/customers/group`)
+			+box-sidebar(`Khách hàng tiềm năng`, `/${admin}/customers/potential`)
+			+box-sidebar(`Phản hồi/Đánh giá`, `/${admin}/customers/feedback `)
+
+		+box-sidebar(`SEO`, '',  `fi fi-rr-discover`)
+			+box-sidebar(`Thẻ tiêu đề`, `/${admin}/customers`)
+			+box-sidebar(`Mô tả`, `/${admin}/customers/group`)
+			+box-sidebar(`Mục lục`, `/${admin}/customers/potential`)
+			+box-sidebar(`Heading và nội dung`, `/${admin}/customers/feedback `)
+
+		- if(role.permisstion.includes("dashboard_view"))
+			+box-sidebar(`Cấu hình chung`, `/${admin}/dashboard`, `fa-solid fa-screwdriver-wrench`)
+
+		+box-sidebar(`Giao diện`, `/${admin}/interface`, `fa-light fa-computer`)
+		
+		- if(role.permisstion.includes(`trash_view`))
+			+box-sidebar(`Thùng rác`, ``,  `fa-solid fa-trash-can`)
+				+box-sidebar(`Chung`, `/${admin}/trash`)
+				- if(role.permisstion.includes(`trash_view_product`))
+					+box-sidebar(`Sản phẩm`, `/${admin}/trash/product`)
+				+box-sidebar(`Bài viết`, ``)
+				+box-sidebar(`Tài khoản`, `/${admin}/trash/accounts`)
+				+box-sidebar(`Nhóm quyền`, `/${admin}/trash/roles`)
+
+		//- +box-sidebar(`Thùng rác`, `/${admin}/trash`, 'fa-solid fa-trash-can')
+		//- 	+box-sidebar(`Sản phẩm`, `/${admin}/trash/product`, '')
+
+		+box-sidebar(`Đăng xuất`, ``, 'fa-solid fa-arrow-left-from-bracket')(log-out = `/${admin}/auth/logout`)

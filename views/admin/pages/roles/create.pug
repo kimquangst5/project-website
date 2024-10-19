@@ -1,0 +1,64 @@
+extends ../../layouts/default.pug
+include ../../mixins/pagination.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/setting-box.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/cap-nhat.pug
+include ../../mixins/dieu-huong.pug
+
+
+//- block header
+	+quay-lai("Quay lại danh sách nhóm quyền", `/${admin}/roles`)
+	+cap-nhat("Tạo mới")(button-role-create = "")
+
+block main
+	-
+		let array = [
+			{
+				link: `/${admin}/dashboard`,
+				title: `Cấu hình`
+			},
+			{
+				link: `/${admin}/roles`,
+				title: `Nhóm quyền`
+			}
+		]
+	+dieu-huong(`Thêm mới nhóm quyền`, array)
+	+cap-nhat("Thêm mới")(button-submit-form-create = "")
+	+khung-table('Thêm mới nhóm quyền')
+		form(
+			action=`/${admin}/roles/create`
+			method="POST"
+			target=''
+			autocomplete = "on"
+			class="py-[20px]"
+			form-role-create
+		)
+			div(class=`flex flex-col gap-y-[10px] text-adminColorHeadline`)
+				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+					label(
+						for="title"
+						class=`text-[12px]`
+					) Nhóm quyền
+						span(class="text-[red]")  *
+					input(
+						type="text", name="title" id="title"
+						class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+						placeholder="Nhập tên nhóm quyền..."
+						required
+					)
+				div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+					label(
+						for="description"
+						class=`text-[12px]`
+					) Mô tả
+					textarea(
+						id="description" name="description" cols="1" rows="1"
+						class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+						placeholder="Nhập mô tả nhóm quyền..."
+					)
+			button(type="submit"
+				class=`hidden text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto`
+			) Tạo mới
+		
+						

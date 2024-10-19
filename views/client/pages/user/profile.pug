@@ -1,0 +1,60 @@
+extends ../../layouts/default
+include ../../mixins/dieu-huong
+include ../../mixins/khung-table
+
+block main
+	-
+		let array = [
+			{
+				link: '/member/dashboard',
+				title: "Thông tin cá nhân"
+			}
+		]
+	+dieu-huong("Sửa thông tin", array)
+	div(class="py-[30px]")
+		div(class="container")
+			div(class="flex grid grid-cols-3 gap-[20px]")
+				div(class="bg-[white] rounded-[7px] p-[5px] col-span-1")
+					div(class="text-[#333333] font-bold py-[10px]") Tài khoản của tôi
+					a(href='/member/dashboard' class="flex items-center gap-[10px] text-chu bg-[#F5F5F5] py-[10px] rounded-[10px] font-bold")
+						i(class="fa-light fa-user")
+						div(class="") Thông tin cá nhân
+					a(href='/member/address' class="flex items-center gap-[10px] py-[10px] rounded-[10px]")
+						i(class="fa-light fa-location-dot")
+						div(class="") Địa chỉ nhận hàng
+					a(href='/member/order' class="flex items-center gap-[10px] py-[10px] rounded-[10px]")
+						i(class="fa-light fa-cart-shopping")
+						div(class="") Đơn hàng
+
+				div(class="bg-[white] rounded-[7px] p-[20px] col-span-2")
+					div(class="text-[#333333] font-bold py-[20px]") Sửa thông tin
+					form(class="flex flex-col gap-y-[10px]" action="/member/profile?_method=PATCH" method="post") 
+						div(class="flex flex-col gap-y-[10px]") 
+							div(class="text-[#333333] font-bold text-[14px]") Họ và tên:
+								span(class="text-[red]")  *
+							input(type="text" class=`w-full rounded-[8px] hover:border-chu border-[1px] border-[#ddd] outline-chu outline-[1px] p-[10px] text-[14px]` value=user.fullName name="fullName")
+
+						div(class="grid grid-cols-2 gap-[20px]") 
+							div(class="flex flex-col gap-y-[10px]") 
+								div(class="text-[#333333] font-bold text-[14px]") Ngày sinh
+								input(type="date" class=`w-full rounded-[8px] hover:border-chu border-[1px] border-[#ddd] outline-chu outline-[1px] p-[10px] text-[14px]`  name="birthday" value=user.birthdayFormat )
+
+							div(class="flex flex-col gap-y-[10px]") 
+								div(class="text-[#333333] font-bold text-[14px]") Giới tính:
+								select(class=`w-full rounded-[8px] hover:border-chu border-[1px] border-[#ddd] outline-chu outline-[1px] p-[10px] text-[14px] hover:cursor-pointer appearance-none` value=(user.sex || 'Chưa chọn') name="sex" readonly)
+									option ---Chưa chọn---
+									option(name="sex" value="male" selected=(user.sex == "male" ? true : false)) Nam
+									option(name="sex" value="female" selected=(user.sex == "female" ? true : false)) Nữ
+						
+						div(class="grid grid-cols-2 gap-[20px]") 	
+							div(class="flex flex-col gap-y-[10px]") 
+								div(class="text-[#333333] font-bold text-[14px]") Email:
+								div(class=`w-full rounded-[8px] hover:border-chu border-[1px] border-[#ddd] outline-chu outline-[1px] p-[10px] text-[14px]`) #{user.email || 'Chưa có'}
+								a(href="/member/change-email" class="text-[12px] text-[red] ml-auto") (Chỉnh sửa)
+
+							div(class="flex flex-col gap-y-[10px]") 
+								div(class="text-[#333333] font-bold text-[14px]") Số điện thoại
+								div(class=`w-full rounded-[8px] hover:border-chu border-[1px] border-[#ddd] outline-chu outline-[1px] p-[10px] text-[14px]`) #{user.phone || 'Chưa có'}
+								a(href="/member/change-phone" class="text-[12px] text-[red] ml-auto") (Chỉnh sửa)
+						div(class="ml-auto") 	
+							button(type="submit" class=`bg-chu text-[white] rounded-[8px] p-[10px]`) Cập nhật

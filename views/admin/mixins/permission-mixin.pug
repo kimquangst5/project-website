@@ -1,0 +1,5 @@
+mixin permission(title)
+	tr(class="text-left text-adminColorHeadline border-b-[1px] border-b-main")
+		td(colspan=records.length + 1 class="px-[10px] py-[5px] font-bold rounded-[10px] text-[14px] text-xanh") #{title}
+		if(block)
+			block

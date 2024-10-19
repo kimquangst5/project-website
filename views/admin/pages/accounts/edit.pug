@@ -1,0 +1,103 @@
+extends ../../layouts/default.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/cap-nhat.pug
+include ../../mixins/dieu-huong.pug
+
+block main
+	- if(account)
+		-
+			let array = [
+				{
+					link: `/${admin}/accounts`,
+					title: `Tài khoản`
+				}
+			]
+		+dieu-huong(account.useName, array)
+		+cap-nhat('Cập nhật')(button-submit-form = "")
+		+khung-table('Thông tin tài khoản')
+			form(
+				action=`/${admin}/accounts/edit/${account.id}?_method=PATCH`
+				method="POST"
+				target=''
+				autocomplete = "on"
+				class="py-[20px]"
+			)
+				div(class=`flex flex-col gap-y-[10px]`)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="useName"
+							class=`text-[14px]`
+						) Tên đăng nhập
+							span(class="text-[red]")  *
+						input(
+							type="text", name="useName" id="useName"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Nhập tên tài khoản..."
+							required
+							value = account.useName
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="email"
+							class=`text-[14px]`
+						) Email
+							span(class="text-[red]")  *
+						input(
+							type="email", name="email" id="email"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Nhập email của bạn..."
+							required
+							value = account.email
+
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="email"
+							class=`text-[14px]`
+						) Nhóm quyền
+							span(class="text-[red]")  *
+						select(name="role_id" id="role_id" class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`)
+							option(value="") ---Chọn nhóm quyền---
+							- if(roles)
+								each it in roles
+									option(value=it.id selected = (it.id == account.role_id ? true : false) class=`bg-adminColorHeadline text-textHover hover:bg-adminColorHeadline`) #{it.title}
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="fullName"
+							class=`text-[14px]`
+						) Họ và tên:
+							span(class="text-[red]")  *
+						input(
+							type="text", name="fullName" id="fullName"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Họ và tên đầy đủ ..."
+							required
+							value = account.fullName
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="phone"
+							class=`text-[14px]`
+						) Số điện thoại
+							span(class="text-[red]")  *
+						input(
+							type="number", name="phone" id="phone"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Nhập số điện thoại..."
+							required
+							value = account.phone
+						)
+					div(class=`flex flex-row items-center gap-y-[10px] grid grid-cols-4`)
+						label(
+							for="birthday"
+							class=`text-[14px]`
+						) Ngày sinh
+						input(
+							type="date", name="birthday" id="birthday"
+							class=`p-[5px] rounded-[5px] border-[1px] text-[12px] bg-transparent border-text outline-none col-span-2`
+							placeholder="Ngày sinh: dd/mm/yyyy"
+							value = account.birthday
+						)
+				button(type="submit"
+					class=`hidden text-[15px] px-[10px] border-[1px] hover:border-[0px] border-[#FA6B04] bg-[#FA6B04] text-[white] rounded-[10px] py-[10px] block ml-auto`
+				) Cập nhật

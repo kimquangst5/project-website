@@ -1,0 +1,16 @@
+/* html{
+	background-image: url('https://res.cloudinary.com/djp6njpi7/image/upload/c_thumb,w_200,g_face/v1726033402/bg_punp7q.svg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+}
+
+html{
+	margin: 0;
+} */
+
+#myChart{
+	aspect-ratio: 1/1;
+}

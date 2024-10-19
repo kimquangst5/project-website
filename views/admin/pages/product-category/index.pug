@@ -1,0 +1,116 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-actions.pug
+include ../../mixins/fillter-status.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/khung-table.pug
+include ../../mixins/quay-lai.pug
+include ../../mixins/them-moi.pug
+include ../../mixins/cap-nhat.pug
+include ../../mixins/checkItem.pug
+include ../../mixins/dieu-huong.pug
+
+//- block header
+	+quay-lai("Quay lại tổng quan", `/${admin}/main`)
+	if(role.permisstion.includes('product-category_create'))
+		+them-moi("Thêm danh mục", `/${admin}/product-category/create`)
+
+
+block main
+	if(role.permisstion.includes('product-category_view'))
+		+dieu-huong('Danh mục sản phẩm')
+		- if(role.permisstion.includes(`product-category_create`))
+			+them-moi("Thêm danh mục", `/${admin}/product-category/create`)
+		+khung-table("Danh mục sản phẩm")
+			table(class=`text-center mt-[5px] text-[14px]`)
+					thead(class=`h-[50px]`)
+						tr
+							th(class=`h-full`)
+								input(
+									type="checkbox", 
+									name="checkAll"
+									class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#263238] hover:cursor-pointer`
+								)
+							th STT
+							th(class="px-[20px]") Hình ảnh
+							th(class="w-full") Sản phẩm
+							th Vị trí
+							th Trạng thái
+							th Tạo bởi
+					tbody
+						each it, i in records
+							tr(
+								class=`group hover:rounded-[10px] hover:cursor-pointer border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/20`
+								title=`Danh mục ${it.title}`
+							)
+								td(class=`relative z-[50] px-[10px]`)
+									+checkItem(it.id)
+								td(class=`relative z-[5]`) #{i + 1}
+								td(class=`px-[20px]`)
+									img(
+										src=it.thumbnail, 
+										alt=it.title 
+										class=`h-[50px] mx-auto rounded-[10px]`
+										nameImageImg = it.nameImage
+									)
+								td(
+									class=`text-left px-[20px]`
+									tickItem
+								)
+									div(class="flex justify-between") 
+										div(class="flex flex-col") 
+											div(class="") #{it.title}
+											div(class="group-hover:flex group-hover:items-center hidden group-hover:block gap-[10px]")
+												- if(role.permisstion.includes("product-category_edit"))
+													a(
+														href=`/${admin}/product-category/edit/${it.id}`
+														type="button" class=` text-[12px] text-xanh hover:text-xanhhover fa-solid fa-pen`
+														title="Chỉnh sửa danh mục"
+													)
+												- if(role.permisstion.includes("product-category_delete"))
+													button(
+														type="button" 
+														class=`text-[12px] text-do hover:text-dohover fa-solid fa-trash-can`
+														button-delete = `/${admin}/product-category/delete/${it.id}`
+														title="Xóa danh mục"
+													)
+										div(class="flex items-center") 
+											a(href=`/${admin}/product-category/detail/${it.id}` class="mr-[10px] text-[15px] fa-solid fa-eye flex hidden text-text group-hover:flex z-[50] " title="Xem chi tiết sản phẩm")
+								td(class=`w-min`)
+									input(
+										link=`/${admin}/product/change-position/${it.id}`
+										type="number"
+										name="position"
+										value=it.position
+										class=`w-full mx-auto outline-none bg-transparent`
+										min='1'
+									)
+								td(class=`px-[10px]`)
+									- if(role.permisstion.includes(`product-category_edit`))
+										- if(it.status == 'active')
+											button(
+												button-change-status=`/${admin}/product-category/change-status/inactive/${it.id}`
+												type="button"
+												class=`bg-[#06BC84] w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành dừng hoạt động") Hoạt động
+										- else
+											button(
+												button-change-status=`/${admin}/product-category/change-status/active/${it.id}`
+												type="button"
+												class=`bg-do hover:bg-dohover w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành hoạt động"
+											) Dừng hoạt động
+									- else 
+										- if(it.status == 'active')
+											button(
+												type="button"
+												class=`bg-[#06BC84] w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành dừng hoạt động") Hoạt động
+										- else
+											button(
+												type="button"
+												class=`bg-do hover:bg-dohover w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành hoạt động"
+											) Dừng hoạt động
+								td(class=`text-[12px]`)
+									div(class="") #{it.createdBy}
+									div(class="") #{it.createdAtFormat}
+		//- +pagination(records)
+	else
+		div(class="" no-view-permission) 

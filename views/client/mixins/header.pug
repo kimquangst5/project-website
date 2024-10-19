@@ -1,0 +1,101 @@
+include ../mixins/select-tree.pug
+
+mixin header(infoWeb)
+	div(class="bg-[#F5F6F8]")
+		div(class="container")
+			div(class=`text-[${BOX ? BOX.mauGiaGoc : ''}] flex justify-between py-[10px] text-[12px]`)
+				div(class="uppercase font-bold") #{infoWeb.nameWeb}
+				div(class="flex justify-between items-center gap-[20px]")
+					div(class="flex justify-center items-center gap-[10px]")
+						i(class=`fa-solid fa-phone text-chu`)
+						div(class="font-bold") #{infoWeb.phone}
+					div(class="flex justify-center items-center gap-[10px]")
+						i(class=`fa-solid fa-location-dot text-chu`)
+						div(class="capitalize") #{infoWeb.address}
+
+
+	div(class="bg-[white] py-[30px]")
+		div(class="container")
+			div(class="flex items-center justify-between gap-[25px]")
+				div(class="h-[50px] w-auto")
+					a(href="/") 
+						img(
+							src=infoWeb.logo
+							alt=""
+							class=`h-full w-auto`
+							logo-website
+						)
+				form(method="get" class=`grow flex border-[2px] border-[${BOX ? BOX.mauGiaGoc : ''}] rounded-[8px] relative`
+					form-search = `/tim-kiem/result`
+				)
+					input(
+						type="text"
+						name=""
+						placeholder = "Bạn tìm kiếm sản phẩm gì..."
+						class=`w-full outline-none p-[10px] bg-transparent`
+						value = key
+					)
+					button(
+						type="submit"
+						class=`px-[20px] bg-[${BOX ? BOX.mauGiaGoc : ''}] text-main flex items-center justify-center flex-end fa-solid fa-magnifying-glass hover:bg-[${BOX ? BOX.mauChuSpKhiDiChuot : ''}] hover:text-[${BOX ? BOX.mauGiaGoc : ''}] duration-500`
+					)
+					div(class=`absolute top-[70px] bg-[white] rounded-[10px] z-[99] w-full flex flex-col px-[10px] gap-y-[10px]` form-search-quick)
+				div(class="h-full")
+					div(view-carts class="h-full relative w-auto hover:text-chu duration-500") 
+						i(class=`fa-thin fa-bag-shopping text-[25px] h-full`)
+						- if(shoopings_cart)
+							- if(shoopings_cart.length != 0)
+								div(class="absolute top-[-13px] right-[-13px] bg-chu text-[white] rounded-[100%] w-[18px] h-[18px] text-[12px] flex items-center justify-center font-bold") #{shoopings_cart.length}
+				- if(!infoUser)
+					i(class=`fa-thin fa-user text-[25px] cursor-pointer hover:text-chu duration-500` icon-user)
+				- else
+					div(class="relative") 
+						div(class="cursor-pointer  hover:text-chu duration-500" box-show-menu-profile) #{infoUser.fullName}
+						div(class="absolute right-0 duration-1000 hidden opacity-0 rounded-[10px] p-[5px] truncate bg-[white] z-[100] w-max" )
+							a(href="/member/dashboard" class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+								div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
+									i(class="fa-light fa-user-tie")
+									div(class="") Thông tin cá nhân
+							a(href="/member/order" class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+								div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
+									i(class="fa-light fa-cart-shopping-fast")
+									div(class="") Quản lí đơn hàng
+							a(href="/member/friend" class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+								div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
+									i(class="fa-light fa-users")
+									div(class="") Danh sách bạn bè
+							a(href="/roomchat" class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+								div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
+									i(class="fa-light fa-user-group")
+									div(class="") Danh sách phòng chát
+							a(href="/member/reset-password" class="border-b-[1px] border-b-[black]/20 hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer")
+								div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
+									i(class="fa-light fa-lock-keyhole-open")
+									div(class="") Thay đổi mật khẩu
+							a(href="/member/log-out" class="hover:bg-[#F6F6F6] hover:text-chu duration-500 hover:cursor-pointer flex")
+								div(class="px-[10px] py-[10px] flex items-center gap-[10px]")
+									i(class="fa-thin fa-left-to-bracket")
+									div(class="") Thoát
+
+	header(class=`z-[90] sticky top-0 duration-1000`)
+		div(class=`container`)
+			div(class=`gap-[10px] bg-[#EEEEEE] flex items-center justify-left h-[70px]`)
+				div(class="flex items-center justify-between text-main bg-[#333333] hover:cursor-pointer gap-x-[30px] h-full px-[10px]" list-category)
+					div(class="") DANH MỤC SẢN PHẨM
+					i(class="fa-solid fa-angle-left duration-1000")
+				div(class="absolute top-[70px] rounded-[10px] w-max h-max truncate shadow-[pink] shadow-2xl px-[10px] bg-[white]") 
+					- if(categogyProduct)
+						+select-tree(categogyProduct)
+				div(class="flex items-center justify-start flex-1  [&>div]:hover:cursor-pointer [&>div]:px-[10px] [&>div]:text-center [&>div]:h-[70px] [&>a]:h-[70px] [&>*]:px-[20px] [&>*]:duration-700")
+					a(href=`/` class=" place-content-center block relative group truncate" animation) TRANG CHỦ
+						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
+					a(href=`/product` class="place-content-center relative group truncate" animation) SẢN PHẨM
+						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
+					div(class=" place-content-center relative group truncate" animation) GIỚI THIỆU
+						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000" animation)
+					div(class=" place-content-center xl:hidden  relative group truncate" animation) TƯ VẤN CHỌN
+						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
+					div(class=" place-content-center xl:hidden relative group truncate" animation) TẠP CHÍ
+						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
+					div(class=" place-content-center relative group truncate" animation) LIÊN HỆ
+						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")

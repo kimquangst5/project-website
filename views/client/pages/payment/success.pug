@@ -1,0 +1,62 @@
+extends ../../layouts/default.pug
+include ../../mixins/dieu-huong.pug
+include ../../mixins/adddition - subtraction.pug
+include ../../mixins/khung-table.pug
+
+block main
+	+dieu-huong("Thanh toán thành công")
+	div(class="my-[40px]") 
+		div(class="container")
+			- if(order.length == 0)
+				div(class="bg-[white] rounded-[7px] p-[10px] capitalize font-bold") Chưa Có sản phẩm nào trong giỏ hàng, hãy thêm sản phẩm vào giỏ hàng nhé!
+			- else
+				div(class="bg-do rounded-[8px] text-[white] p-[20px] text-center mb-[20px]") Bạn đã đặt hàng thành công! Chúng tôi cảm ơn bạn đã đặt hàng của chúng tôi, chúng tôi sẽ sớm xử lí đơn hàng của bạn trong thời gian sớm nhất!
+					div(class="font-bold") Mã đơn hàng:  
+						span(class="uppercase") #{order.id}
+				div(class="flex grid grid-cols-7 gap-x-[20px]" )
+					div(class="col-span-4 ")
+						div(class="flex flex-col gap-[20px]")
+							div(class="bg-[white] roundeld-[7px] p-[10px] h-max") 
+								div(class="text-[20px] text-[#222222] font-bold py-[10px]") Thông tin khách hàng
+								form(action="/payment/order", method="post" class=`flex flex-col text-[#333333] gap-[10px]`)
+									div(class="") Khách hàng:
+										span(class="font-bold")  #{order.userInfo.fullName}
+									div(class="") Số điện thoại: 
+										span(class="font-bold")  #{order.userInfo.phone}
+									div(class="") Địa chỉ: 
+										span(class="font-bold")  #{order.userInfo.address}
+									- if(order.methodPay == 'transfer')
+										div(class="") Phương thức thanh toán:
+											span(class="font-bold")  Chuyển khoản
+									- if(order.methodPay == 'cash')
+										div(class="") Phương thức thanh toán:
+											span(class="font-bold")  Tiền mặt
+									div(class="") Ghi chú: 
+										span(class="font-bold")  #{order.note || 'Không có'}
+									button(type="submit" class="hidden w-full ml-auto bg-chu text-center p-[10px] rounded-[10px] text-[white] capitalize mt-[30px]") thanh toán
+							
+					div(class="col-span-3")
+						div(class="flex grid grid-rows-2 gap-[20px]")
+							div(class="row-span-1 bg-[white] rounded-[7px] p-[10px]") 
+								div(class="font-bold text-[20px] py-[15px] text-[#222222]") Giỏ hàng 
+									span(class=`font-normal capitalize`) (#{order.products.length})
+								each it in order.products
+									div(class="flex items-center gap-[15px]")
+										div(class="w-[70px] ") 
+											img(src=it.thumbnail[0], alt=it.title class=`w-full h-auto object-cover object-top`)
+										div(class="flex flex-col justify-between h-full gap-y-[9px] text-left grow w-full")
+											div(class="font-bold text-[#333333] text-[15px]") #{it.title}
+											div(class="flex items-center gap-[5px] text-[15px]")
+												div(class="text-[#333333]")  Số lượng:
+												div(class="font-bold text-[#333333]") #{it.quantity}
+											div(class="font-bold text-[16px] text-[#da0808]" priceTotal = it.newPrice) #{it.priceNew}
+												span đ
+							div(class="row-span-1 bg-[white] rounded-[7px] p-[10px] h-max")
+								div(class="flex justify-between items-center pb-[20px] border-b-[2px] border-b-[#333333] border-dashed")
+									div(class="text-[15px] text-[#333333]") Đơn giá
+									div(class="text-[16px] text-[#da0808] font-bold") #{order.total_price}đ
+								div(class="flex justify-between items-center mt-[20px]")
+									div(class="text-[15px] text-[#333333]") Thành tiền
+									div(class="text-[16px] text-[#da0808] font-bold") #{order.total_price}đ
+								
+				
