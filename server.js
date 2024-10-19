@@ -63,62 +63,63 @@ app.use(express.static(`${__dirname}/public`))
 // process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(__dirname, 'json', 'kim-quang.json');
 // process.env.GOOGLE_APPLICATION_CREDENTIALS = `${__dirname}/serviceAccountKeyKimQuang.json`
 
-const admin = require('firebase-admin');
+// const admin = require('firebase-admin');
 
 // Kiểm tra xem Firebase đã được khởi tạo chưa
 // console.log(admin.apps.length)
-if (!admin.apps.length) {
-	const serviceAccount = require('./json/kim-quang.json');
-	admin.initializeApp({
-		credential: admin.credential.cert(serviceAccount),
-		storageBucket: 'project-backend-quangtk2005.appspot.com' // Thay 'your-project-id' bằng project ID của bạn
-	});
-}
+
+// if (!admin.apps.length) {
+// 	const serviceAccount = require('./json/kim-quang.json');
+// 	admin.initializeApp({
+// 		credential: admin.credential.cert(serviceAccount),
+// 		storageBucket: 'project-backend-quangtk2005.appspot.com' // Thay 'your-project-id' bằng project ID của bạn
+// 	});
+// }
 
 
-const axios = require('axios');
-const fs = require('fs'); // Thêm dòng này để sử dụng fs
+// const axios = require('axios');
+// const fs = require('fs'); // Thêm dòng này để sử dụng fs
 
 
-const bucket = admin.storage().bucket();
+// const bucket = admin.storage().bucket();
 
-const getURL = async () => {
-	const getFilePublicUrl = async () => {
-		const file = bucket.file('json/kim-quang.json');
-		const [url] = await file.getSignedUrl({
-			action: 'read',
-			expires: Date.now() + 24 * 60 * 60 * 1000, // Link sẽ hết hạn sau 24 giờ
-		});
-		return url;
-	}
-	const url = await getFilePublicUrl();
+// const getURL = async () => {
+// 	const getFilePublicUrl = async () => {
+// 		const file = bucket.file('json/kim-quang.json');
+// 		const [url] = await file.getSignedUrl({
+// 			action: 'read',
+// 			expires: Date.now() + 24 * 60 * 60 * 1000, // Link sẽ hết hạn sau 24 giờ
+// 		});
+// 		return url;
+// 	}
+// 	const url = await getFilePublicUrl();
 
 
 	
-	const filePath = path.join(__dirname, 'serviceAccountKeyKimQuang.json');
-	if (fs.existsSync(filePath)) {
-		process.env.GOOGLE_APPLICATION_CREDENTIALS = filePath
-		const reCapcha = require("./utils/reCapcha.util")
-		reCapcha();
-	} else {
-		console.log("ok")
-		const downloadServiceAccountFile = async () => {
-			console.log(url)
-			const response = await axios.get(url, {
-				responseType: 'stream'
-			});
-			console.log(url)
-			const writer = fs.createWriteStream(filePath);
-			response.data.pipe(writer);
+// 	const filePath = path.join(__dirname, 'serviceAccountKeyKimQuang.json');
+// 	if (fs.existsSync(filePath)) {
+// 		process.env.GOOGLE_APPLICATION_CREDENTIALS = filePath
+// 		const reCapcha = require("./utils/reCapcha.util")
+// 		reCapcha();
+// 	} else {
+// 		console.log("ok")
+// 		const downloadServiceAccountFile = async () => {
+// 			console.log(url)
+// 			const response = await axios.get(url, {
+// 				responseType: 'stream'
+// 			});
+// 			console.log(url)
+// 			const writer = fs.createWriteStream(filePath);
+// 			response.data.pipe(writer);
 	
-			return new Promise((resolve, reject) => {
-				writer.on('finish', () => resolve(filePath));
-				writer.on('error', reject);
-			});
-		};
-		downloadServiceAccountFile();
-	}
-}
+// 			return new Promise((resolve, reject) => {
+// 				writer.on('finish', () => resolve(filePath));
+// 				writer.on('error', reject);
+// 			});
+// 		};
+// 		downloadServiceAccountFile();
+// 	}
+// }
 // getURL();
 
 // App Locals Variable
