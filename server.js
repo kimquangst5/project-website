@@ -61,7 +61,7 @@ app.use(express.static(`${__dirname}/public`))
 
 // ReCapCha
 // process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(__dirname, 'json', 'kim-quang.json');
-process.env.GOOGLE_APPLICATION_CREDENTIALS = `${__dirname}/serviceAccountKeyKimQuang.json`
+// process.env.GOOGLE_APPLICATION_CREDENTIALS = `${__dirname}/serviceAccountKeyKimQuang.json`
 
 const admin = require('firebase-admin');
 
