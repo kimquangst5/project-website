@@ -118,47 +118,8 @@ const getURL = async () => {
 		};
 		downloadServiceAccountFile();
 	}
-
-	// const filePath = await downloadServiceAccountFile();
-	// console.log(filePath)
-	// const filePath = await downloadServiceAccountFile();
-	// console.log(filePath)
-
-	// process.env.GOOGLE_APPLICATION_CREDENTIALS = filePath;
-	// console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
-	
 }
-getURL();
-
-
-
-// const downloadServiceAccountFile = async () => {
-// 	const response = await axios.get(url, {
-// 		responseType: 'stream'
-// 	});
-
-// 	// Lưu file JSON vào một thư mục tạm thời
-// 	const filePath = path.join(__dirname, 'serviceAccountKeyKimQuang.json');
-// 	const writer = fs.createWriteStream(filePath);
-
-// 	response.data.pipe(writer);
-
-// 	return new Promise((resolve, reject) => {
-// 		writer.on('finish', () => resolve(filePath));
-// 		writer.on('error', reject);
-// 	});
-// };
-// const filePath = await downloadServiceAccountFile();
-// console.log(filePath)
-
-// process.env.GOOGLE_APPLICATION_CREDENTIALS = filePath;
-// console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
-// const reCapcha = require("./utils/reCapcha.util")
-// reCapcha();
-
-
-
-
+// getURL();
 
 // App Locals Variable
 app.locals.admin = process.env.admin
