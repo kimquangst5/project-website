@@ -1,5 +1,4 @@
 include ../mixins/alear.pug
-
 doctype html
 html(lang="vi")
 	head
@@ -18,11 +17,18 @@ html(lang="vi")
 		link(rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.5.1/uicons-thin-rounded/css/uicons-thin-rounded.css")
 		link(rel="stylesheet", href="https://cdn-uicons.flaticon.com/2.5.1/uicons-regular-rounded/css/uicons-regular-rounded.css")
 		link(rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.5.1/uicons-thin-straight/css/uicons-thin-straight.css')
+		link(rel="stylesheet", href="/admin/css/style.css")
 		title #{pageTitle}
 	body(class=`font-THAI_CONG`)
 
 		+alert-success(2000)
 		+alert-error(2000)
+
+
+		// Latest compiled and minified CSS
+		//- link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css")
+		// Latest Sortable
+
 
 		div(class=`flex bg-adminColorTertiary` )
 			include ../partials/sibar.pug
@@ -32,6 +38,7 @@ html(lang="vi")
 				div(class="py-[30px] bg-adminColorTertiary flex flex-col gap-[20px] mx-[20px]") 
 					block main
 
+	//- script(src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js")
 	
 	script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11") 
 	script(src="https://unpkg.com/aos@2.3.1/dist/aos.js")
@@ -39,5 +46,7 @@ html(lang="vi")
 		AOS.init();
 	script(src="/tinymce/tinymce.min.js") 
 	script(src="/admin/js/tinymce-config.js")
-	script(src="https://cdn.jsdelivr.net/npm/chart.js") 
+	script(src="https://cdn.jsdelivr.net/npm/chart.js")
+	script(src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")
+	script(src="/admin/js/sortable.js")
 	script(src="/admin/js/style.js")

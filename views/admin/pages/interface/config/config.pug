@@ -1,0 +1,23 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/khung-table.pug
+include ../../../mixins/setting-box.pug
+include ../../../mixins/dieu-huong.pug
+
+
+block main
+	-
+		let array = [
+			{
+				title: "Giao diện",
+				link: `/${admin}/interface/dashboard`
+			}
+		]
+	+dieu-huong("Cài đặt giao diện", array)
+	+khung-table("Đầu trang")
+		div(class="flex grid grid-cols-4 gap-x-[20px]")
+			div(class=`flex gap-[10px] items-center`)
+				div(class=`fa-regular fa-file-invoice`)
+				a(href=`/${admin}/interface/config/menu`) Menu
+	+khung-table("Cuối trang")
+		div(class="flex grid grid-cols-4 gap-x-[20px]")
+			

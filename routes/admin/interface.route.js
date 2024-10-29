@@ -1,17 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../../controller/admin/interface.controller');
+const configRoute = require("./interface/config/config.route")
+const customizeRoute = require("./interface/customize/customize.route")
 
-router.get('/', controller.index);
+router.get('/dashboard', controller.index);
 
-router.get('/edit', controller.edit);
+router.use('/config', configRoute);
 
-router.get('/edit/box-product', controller.editBoxProduct);
-
-router.patch('/edit/box-product', controller.editBoxProductPatch);
-
-
+router.use('/customize', customizeRoute);
 
 
+// router.get('/customize', controller.edit);
+
+// router.get('/css', controller.editBoxProduct);
+
+// router.patch('/javascript', controller.editBoxProductPatch);
 
 module.exports = router;

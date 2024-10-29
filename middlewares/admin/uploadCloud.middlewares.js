@@ -19,7 +19,7 @@ module.exports.uploadSingle = (req, res, next) => {
 		const uploadToCloudinary = async (buffer) => {
 			let result = await streamUpload(buffer);
 			req.body[req.file.fieldname] = result.url;
-			req.body.nameImage = result.public_id;
+			// req.body.nameImage = result.public_id;
 
 			next();
 		};

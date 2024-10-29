@@ -1,6 +1,9 @@
 const User = require("../../models/user.model");
+const HeaderMenu = require('../../models/header-menu.model.js')
 
 module.exports.user = async (req, res, next) => {
+	const headerMenu = await HeaderMenu.find({});
+	res.locals.headerMenu = headerMenu
 	if (req.cookies.tokenUser) {
 		const user = await User.findOne({
 			tokenUser: req.cookies.tokenUser

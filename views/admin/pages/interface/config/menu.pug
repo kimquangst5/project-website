@@ -1,0 +1,57 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/khung-table.pug
+include ../../../mixins/setting-box.pug
+include ../../../mixins/dieu-huong.pug
+include ../../../mixins/option-input.pug
+
+
+block main
+	-
+		let array = [
+			{
+				title: "Giao diện",
+				link: `/${admin}/interface/dashboard`
+			},
+			{
+				title: "Cài đặt giao diện",
+				link: `/${admin}/interface/config`
+			}
+		]
+	+dieu-huong("Cài đặt Menu", array)
+	+khung-table("Danh sách menu")
+		form(class=`` form-header-menu = `/${admin}/interface/config/menu`) 
+			span(class=`text-right text-[white]` button-create) Thêm ngay
+
+			- if(listmenu && listmenu.length > 0)
+				each it in listmenu
+					div(class=`` list-items = it.id) 
+						div(class=`flex justify-between py-[10px] items-center`) 
+							div(class=`font-bold text-xanh`) #{it.title}
+							div(class=`flex gap-[10px] items-center`)
+								div(class=`fa-regular fa-trash-can border-[1px] p-[10px] rounded-[8px]` button-delete-item-menu = it.id)
+								div(class=`fa-solid fa-angle-up border-[1px] p-[10px]  rounded-[8px]` button-up)
+						div(class=`` content) 
+							div(class=`flex grid grid-cols-2 gap-[20px]` ) 
+								div(class=`flex flex-col gap-[8px]`)
+									div(class=`flex gap-[10px]`)
+										label(class=`` for=it.link) Tiêu đề
+										div(class=`text-[red]`) *
+									div(class=`flex gap-[10px] items-center`)
+										div(class=`fa-regular fa-align-left`)
+										input(type="text", name="title" id=it.link class=`outline-none bg-transparent border-[1px] border-text w-full rounded-[7px] px-[10px] py-[5px]` value=it.title required)
+								div(class=`flex flex-col gap-[8px]`)
+									div(class=`flex gap-[10px]`)
+										label(class=`` ) Đường dẫn
+										div(class=`text-[red]`) *
+									div(class=`flex gap-[10px] items-center`)
+										div(class=`fa-regular fa-link`)
+										input(type="text", name="link"  class=`outline-none bg-transparent border-[1px] border-text w-full rounded-[7px] px-[10px] py-[5px]` required value=it.link)
+							div(class=`flex gap-[10px]`) 
+								input(type="checkbox", name="target" id=it.id value="_blank" checked = (it.target == '_blank' ? true : false))
+								label(for=it.id) Mở trong tab mới
+
+
+
+			div(class=`` parent) 
+				
+			button(type="submit" class=`bg-do hover:bg-dohover rounded-[8px] text-[white] w-1/2 my-[25px] py-[10px]`) Lưu cấu hình

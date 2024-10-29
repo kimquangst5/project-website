@@ -1,0 +1,33 @@
+extends ../../../layouts/default.pug
+include ../../../mixins/khung-table.pug
+include ../../../mixins/setting-box.pug
+include ../../../mixins/dieu-huong.pug
+
+
+block main
+	-
+		let array = [
+			{
+				title: "Giao diện",
+				link: `/${admin}/interface/dashboard`
+			},
+			{
+				title: "Chỉnh sửa giao diện",
+				link: `/${admin}/interface/customize`
+			}
+		]
+	+dieu-huong("Tùy chỉnh giao diện header", array)
+	+khung-table("Đầu trang")
+		div(class="")
+			div#list(class="list-group")
+				div(class="list-group-item bg-[pink]") Item 1
+				div(class="list-group-item bg-[pink]") Item 2
+				div(class="list-group-item bg-[pink]") Item 3
+				div(class="list-group-item bg-[pink]") Item 4
+				div(class="list-group-item bg-[pink]") Item 5
+			//- div#list2(class="list-group")
+			//- 	div(class="list-group-item tinted bg-[orange]") Item 1
+			//- 	div(class="list-group-item tinted bg-[orange]") Item 2
+			//- 	div(class="list-group-item tinted bg-[orange]") Item 3
+			//- 	div(class="list-group-item tinted bg-[orange]") Item 4
+			//- 	div(class="list-group-item tinted bg-[orange]") Item 5

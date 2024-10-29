@@ -1,4 +1,6 @@
+AOS.init();
 const header = document.querySelector('header');
+const listCategory = header.querySelector("[list-category]");
 let last = 0;
 if (header) {
 	const height = header.clientHeight
@@ -33,160 +35,134 @@ if (header) {
 	});
 }
 
-
-const listCategory = header.querySelector("[list-category]");
-if (listCategory) {
+const arrowFunctionListCategory = () => {
+	
+	if (!listCategory) return;
 	const width = listCategory.clientWidth
 	const menu = listCategory.nextElementSibling;
 	menu.classList.add(`w-[${width}px]`)
 	const listLi = menu.querySelectorAll('li');
-	if (listLi.length > 0) {
-		listLi.forEach(it => {
-			const height = it.scrollHeight
-			it.classList.toggle(`mt-[-${height}px]`)
-			it.addEventListener("dblclick", () => {
+	if (listLi.length == 0) return;
+	listLi.forEach(it => {
+		const height = it.scrollHeight
+		it.classList.toggle(`mt-[-${height}px]`)
+		it.addEventListener("dblclick", () => {
 
-				const link = it.querySelector('a')
-				link.click();
-			});
+			const link = it.querySelector('a')
+			link.click();
 		});
-	}
+	});
 
 
 	listCategory.addEventListener('click', () => {
-		if (menu) {
-			const icon = listCategory.querySelector('i');
-			if (icon) {
-				icon.classList.toggle('-rotate-90')
-			}
-			menu.style.display = "block"
-			const lii = menu.querySelector('li');
-			if (lii) {
-				const h = lii.clientHeight
-				if (lii.className.includes(`mt-[-${h}px]`)) {
-					const allIcon = menu.querySelectorAll('i');
-					if (allIcon.length > 0) {
-						allIcon.forEach(icon => {
-							if (icon.className.includes('-rotate-90')) {
-								icon.classList.toggle('-rotate-90')
-							}
-						});
-					}
-				}
+		if (!menu) return;
+		const icon = listCategory.querySelector('i');
+		if (!icon) return;
+		icon.classList.toggle('-rotate-90')
+		menu.style.display = "block"
+		const lii = menu.querySelector('li');
+		if (!lii) return;
 
+		const allIcon = menu.querySelectorAll('i');
+		if (allIcon.length == 0) return;
+		allIcon.forEach(icon => {
+			if (!icon.className.includes('-rotate-90')) return;
+			icon.classList.toggle('-rotate-90')
+
+		});
+
+		console.log("QUANG")
+
+		let bool = false
+		const listLevel1 = menu.querySelectorAll(`li[level='1']`);
+		if (listLevel1.length == 0) return;
+		listLevel1.forEach(it => {
+			console.log(it)
+			const height = it.scrollHeight
+			if (it.className.includes(`mt-[-${height}px]`)){
+				console.log("ok")
+				bool = true
 			}
-			let bool = false
-			const listLevel1 = menu.querySelectorAll(`li[level='1']`);
-			if (listLevel1.length > 0) {
-				listLevel1.forEach(it => {
-					const height = it.scrollHeight
-					if (it.className.includes(`mt-[-${height}px]`)) {
-						bool = true
-					}
+			it.classList.toggle(`mt-[-${height}px]`)
+			it.classList.add(`duration-1000`)
+		});
+		if (!bool) {
+			const allLi = menu.querySelectorAll(`li`);
+			allLi.forEach(it => {
+				const height = it.scrollHeight
+				if (!it.className.includes(`mt-[-${height}px]`))
 					it.classList.toggle(`mt-[-${height}px]`)
-					it.classList.add(`duration-1000`)
-				});
-			}
-			if (bool == false) {
-				const allLi = menu.querySelectorAll(`li`);
-				allLi.forEach(it => {
-					const height = it.scrollHeight
-					if (!it.className.includes(`mt-[-${height}px]`)) {
-						it.classList.toggle(`mt-[-${height}px]`)
-					}
-					it.classList.add(`duration-1000`)
-				});
-			}
-			const listli = menu.querySelectorAll(`li[level]`);
-			if (listli.length > 0) {
-				listli.forEach(async (item) => {
-					item.addEventListener('click', () => {
-						const icon = item.querySelector('i');
-						if (icon) {
-							icon.classList.toggle('-rotate-90')
-						}
-						const level = item.getAttribute('level');
-						const con = item.parentElement.querySelectorAll(`li[level='${level}']`);
-						if (con.length > 0) {
-							con.forEach(iy => {
-								if (iy != item) {
-									const next = iy.nextElementSibling;
-									if (next) {
-										const allLI = next.querySelectorAll('li');
-
-										if (allLI.length > 0) {
-											allLI.forEach(element => {
-												const h = element.clientHeight
-												if (!element.className.includes(`mt-[-${h}px]`)) {
-													element.classList.toggle(`mt-[-${h}px]`)
-												}
-											});
-											const iconn = iy.querySelector('i');
-											if (iconn) {
-												if (iconn.className.includes(`-rotate-90`)) {
-													iconn.classList.toggle(`-rotate-90`)
-
-												}
-
-											}
-										}
-									}
-
-								}
-							});
-						}
-
-
-						const ul = item.nextElementSibling
-						if (ul) {
-							if (ul.tagName.toLowerCase() == 'ul') {
-								const valueul = ul.getAttribute('level')
-								const listLI = ul.querySelectorAll('li');
-								if (listLI.length > 0) {
-									let check = false
-									listLI.forEach(li => {
-										const valueli = li.getAttribute('level')
-										if (valueli === valueul) {
-											const h = li.scrollHeight;
-											li.classList.toggle(`mt-[-${h}px]`)
-											li.classList.add(`duration-1000`)
-											if (!li.className.includes(`mt-[-${h}px]`)) {
-												check = true
-
-											}
-										}
-									});
-									if (check == false) {
-										let liCHA;
-										listLI.forEach(li => {
-											const h = li.scrollHeight;
-											if (!li.className.includes(`mt-[-${h}px]`)) {
-												li.classList.toggle(`mt-[-${h}px]`)
-												li.classList.add(`duration-1000`)
-												liCHA = li.parentElement.previousElementSibling
-											}
-										});
-										if (liCHA) {
-											const icon = liCHA.querySelector('i');
-											if (icon) {
-												if (icon.className.includes('-rotate-90')) {
-													icon.classList.toggle(`-rotate-90`)
-												}
-											}
-										}
-									}
-
-
-								}
-							}
-						}
-					});
-				});
-			}
-
+				it.classList.add(`duration-1000`)
+			});
 		}
 	});
+	const listli = menu.querySelectorAll(`li[level]`);
+	if (listli.length == 0) return;
+	listli.forEach(async (item) => {
+		item.addEventListener('click', () => {
+			const icon = item.querySelector('i');
+			if (!icon) return;
+			icon.classList.toggle('-rotate-90')
+			const level = item.getAttribute('level');
+			const con = item.parentElement.querySelectorAll(`li[level='${level}']`);
+			if (con.length == 0) return;
+			con.forEach(iy => {
+				if (iy == item) return;
+				const next = iy.nextElementSibling;
+				if (!next) return;
+				const allLI = next.querySelectorAll('li');
+
+				if (allLI.length == 0) return;
+				allLI.forEach(element => {
+					const h = element.clientHeight
+					if (!element.className.includes(`mt-[-${h}px]`)) {
+						element.classList.toggle(`mt-[-${h}px]`)
+					}
+				});
+				const iconn = iy.querySelector('i');
+				if (!iconn) return;
+				if (iconn.className.includes(`-rotate-90`))
+					iconn.classList.toggle(`-rotate-90`)
+			});
+
+
+			const ul = item.nextElementSibling
+			if (!ul) return;
+			if (!(ul.tagName.toLowerCase() == 'ul')) return;
+			const valueul = ul.getAttribute('level')
+			const listLI = ul.querySelectorAll('li');
+			if (listLI.length == 0) return;
+			let check = false
+			listLI.forEach(li => {
+				const valueli = li.getAttribute('level')
+				if (valueli != valueul) return;
+				const h = li.scrollHeight;
+				li.classList.toggle(`mt-[-${h}px]`)
+				li.classList.add(`duration-1000`)
+				if (!li.className.includes(`mt-[-${h}px]`))
+					check = true
+
+			});
+			if (check == false) {
+				let liCHA;
+				listLI.forEach(li => {
+					const h = li.scrollHeight;
+					if (li.className.includes(`mt-[-${h}px]`)) return;
+					li.classList.toggle(`mt-[-${h}px]`)
+					li.classList.add(`duration-1000`)
+					liCHA = li.parentElement.previousElementSibling
+				});
+				if (!liCHA) return;
+				const icon = liCHA.querySelector('i');
+				if (!icon) return;
+				if (!(icon.className.includes('-rotate-90'))) return;
+				icon.classList.toggle(`-rotate-90`)
+			}
+		});
+	});
 }
+arrowFunctionListCategory();
+
 
 const formSearch = document.querySelector('[form-search]');
 if (formSearch) {
@@ -655,13 +631,13 @@ if (iconUser) {
 
 	}
 	const buttonSubmitBoxLogin = boxLogin.querySelector('[button-submit-box-login]')
-	if(buttonSubmitBoxLogin){
+	if (buttonSubmitBoxLogin) {
 		buttonSubmitBoxLogin.addEventListener('click', () => {
 			grecaptcha.enterprise.ready(async () => {
-				const token = await grecaptcha.enterprise.execute('6LfaGGYqAAAAAAHgirjHFMs5vLPgfnyPPUWmrInw', {
+				const token = await grecaptcha.enterprise.execute('6LdHk2kqAAAAAE89jQYnLGcsL5N86qiFvj1KBAy1', {
 					action: 'submit'
 				});
-				
+
 				const input = document.createElement('input');
 				input.setAttribute('type', 'hidden');
 				input.setAttribute('name', 'recaptchaToken');
@@ -669,9 +645,9 @@ if (iconUser) {
 				const form = boxLogin.querySelector('form');
 				form.appendChild(input);
 				console.log(boxLogin);
-				
+
 				const submit = boxLogin.querySelector(`button[type='submit']`)
-				if(submit){
+				if (submit) {
 					submit.click();
 				}
 			})
@@ -1022,32 +998,29 @@ if (sort) {
 	}
 }
 
-// const buttonGsap = document.querySelector("[button-gsap]");
-// if (buttonGsap) {
-// 	buttonGsap.addEventListener("mouseenter", () => {
-// 		gsap.to(buttonGsap, {
-// 			backgroundColor: "#ff7b54",
-// 			duration: 0.5,
-// 			ease: "power2.out",
-// 			backgroundPosition: "right top", // Di chuyển nền từ dưới trái đến trên phải
-// 		});
-// 	});
+const confirmCart = document.querySelector('[confirm-cart]');
+if (confirmCart) {
+	confirmCart.addEventListener('click', () => {
+		const body = confirmCart.closest('body');
+		const saveCart = body.querySelector('[save-cart]');
+		localStorage.setItem("savecart", "ok")
+		saveCart.click();
+	})
+	if (localStorage.getItem('savecart')) {
+		const link = confirmCart.getAttribute("confirm-cart")
+		if (link) {
+			localStorage.removeItem('savecart')
+			window.location.href = link
 
-// 	buttonGsap.addEventListener("mouseleave", () => {
-// 		gsap.to(buttonGsap, {
-// 			backgroundColor: "#FFC234",
-// 			duration: 0.5,
-// 			backgroundPosition: "left bottom", // Di chuyển nền từ dưới trái đến trên phải
-// 			ease: "power2.out"
-// 		});
-// 	});
-// }
+		}
+	}
+}
 
 
 
-console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
+// console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');
 
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
-console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
+// console.warn('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');

@@ -54,7 +54,7 @@ aside(
 		- if(role.permisstion.includes("dashboard_view"))
 			+box-sidebar(`Cấu hình chung`, `/${admin}/dashboard`, `fa-solid fa-screwdriver-wrench`)
 
-		+box-sidebar(`Giao diện`, `/${admin}/interface`, `fa-light fa-computer`)
+		+box-sidebar(`Giao diện`, `/${admin}/interface/dashboard`, `fa-light fa-computer`)
 		
 		- if(role.permisstion.includes(`trash_view`))
 			+box-sidebar(`Thùng rác`, ``,  `fa-solid fa-trash-can`)

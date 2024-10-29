@@ -39,7 +39,7 @@ block main
 						div(class="w-1/2 ml-auto font-bold flex justify-between py-[10px]")
 							div(class="") Tổng tiền
 							div(class="text-chu" all-price = carts.priceTotalAll) #{carts.totalPrice}đ
-						a(href="/payment" class="text-[18px] w-1/2 ml-auto flex justify-center text-[white] capitalize text-center bg-chu p-[10px] rounded-[10px]") Xác nhận giỏ hàng
+						div(class="text-[18px] w-1/2 ml-auto flex justify-center text-[white] capitalize text-center bg-chu p-[10px] rounded-[10px]" confirm-cart = "/payment" ) Xác nhận giỏ hàng
 						//- tbody(class=`relative`)
 						//- 		tr(class=`my-[30px] relative h-auto`)
 						//- 			td(class=`w-max relative`)

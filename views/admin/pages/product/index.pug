@@ -24,16 +24,16 @@ block main
 		- if(product.length == 0)
 			+khung-table("Chưa có sản phẩm nào!!")
 		- else
-			- if(role.permisstion.includes('products_edit'))
-				div(class="w-max flex items-center text-[white] mr-[20px]")
-					div(class="w-max") Hiển thị
-					div(class="w-[80px]") 
-						input(type="number" class=`w-full bg-transparent outline-none text-center` value=(displayProduct ? displayProduct : 1) min="1" input-change-quantity-product = (pagination ? (pagination.totalProduct ? pagination.totalProduct : '') : ''))
-					div(class="") sản phẩm
-				+khung-table("Lọc theo trạng thái và tìm sản phẩm")
-					div(class=`flex flex-wrap gap-[10px] justify-between p-[10px] items-center`)
-						+fillter-status(fillerStatus)
-						+search(key)
+		- if(role.permisstion.includes('products_edit'))
+			div(class="w-max flex items-center text-[white] mr-[20px]")
+				div(class="w-max") Hiển thị
+				div(class="w-[80px]") 
+					input(type="number" class=`w-full bg-transparent outline-none text-center` value=(displayProduct ? displayProduct : 1) min="1" link = `/${admin}/product/display-product` input-change-quantity-product = (pagination ? (pagination.totalProduct ? pagination.totalProduct : '') : ''))
+				div(class="") sản phẩm
+			+khung-table("Lọc theo trạng thái và tìm sản phẩm")
+				div(class=`flex flex-wrap gap-[10px] justify-between p-[10px] items-center`)
+					+fillter-status(fillerStatus)
+					+search(key)
 			- if(role.permisstion.includes('products_edit'))
 				+khung-table("hành động")
 					+box-actions(`/${admin}/product/change-multi`, statusOption)
@@ -46,8 +46,8 @@ block main
 							option(value="position-asc")  Vị trí tăng dần
 							option(value="title-asc")  Tên sản phẩm tăng dần
 							option(value="title-desc")  Tên sản phẩm giảm dần
-							option(value="price-asc")  Giá tăng dần
-							option(value="price-desc")  Giá giảm dần
+							option(value="price-asc")  Giá: Tăng dần
+							option(value="price-desc")  Giá: Giảm dần
 							option(value="updatedAt-asc")  Ngày sửa đổi tăng dần
 							option(value="updatedAt-desc")  Ngày sửa đổi giảm dần
 							option(value="stock-asc")  Số lượng tăng dần
@@ -140,118 +140,3 @@ block main
 			+pagination(pagination)
 	- else
 		div(no-view-permission)
-
-
-
-
-		//- +khung-table("Danh sách sản phẩm")
-		//- 	- if(product.length > 0)
-		//- 		table(class=`text-center text-[14px] h-auto`)
-		//- 			thead(class=``)
-		//- 				tr(class="")
-		//- 					if(pagination.totalProduct > 1)
-		//- 						th(class=``)
-		//- 							input(
-		//- 								type="checkbox", 
-		//- 								name="checkAll"
-		//- 								class=`appearance-none w-[20px] h-[20px] border-[1px] border-[black]/20 rounded-[10px] checked:bg-[#263238] hover:cursor-pointer`
-		//- 							)
-		//- 					th STT
-		//- 					th(class=``) Hình ảnh
-		//- 					th(class="w-full") Sản phẩm
-		//- 					th Giá
-		//- 					th(class=`w-max`)
-		//- 						div(class="w-max") Vị trí
-		//- 					th(class="") Trạng thái
-		//- 					th(class="") Tạo bởi
-		//- 			tbody
-		//- 				each it, i in product
-		//- 					tr(
-		//- 						class=`transition-all rounded-[10px] group hover:cursor-pointer border-b-[1px] last:border-[0px] border-b-[black]/40 hover:bg-[black]/10`
-		//- 						title=`Sản phẩm ${it.title}`
-		//- 					)
-		//- 						if(pagination.totalProduct > 1)
-		//- 							td(class=``)
-		//- 								+checkItem(it.id)
-		//- 						td(class=``) #{pagination.limit * (pagination.current - 1) + i + 1}
-		//- 						td(class=`w-1/6 px-[20px]`)
-		//- 							img(
-		//- 								src=it.thumbnail, 
-		//- 								onerror="this.src='/admin/images/photo.png'"
-		//- 								alt=it.title 
-		//- 								class=`rounded-[10px] w-full`
-		//- 								nameImageImg = it.nameImage
-		//- 							)
-		//- 						td(
-		//- 							class=`text-left px-[20px] grow`
-		//- 							tickItem
-		//- 						)
-		//- 							div(class="flex justify-between") 
-		//- 								div(class="flex flex-col") 
-		//- 									div(class="") #{it.title}
-		//- 									- if(role.permisstion.includes("products_edit") || role.permisstion.includes("products_delete"))
-		//- 										div(class="flex items-center opacity-0 group-hover:opacity-100 gap-[10px]")
-		//- 											- if(role.permisstion.includes("products_edit"))
-		//- 												a(
-		//- 													href=`/${admin}/product/edit/${it.id}`
-		//- 													type="button" class=`text-[#00712D] text-[10px]`
-		//- 													title="Chỉnh sửa sản phẩm"
-		//- 												) Sửa
-		//- 											- if(role.permisstion.includes("products_delete"))
-		//- 												button(
-		//- 													type="button" 
-		//- 													class=`text-[red]/80 text-[10px]`
-		//- 													button-delete = `/${admin}/product/delete/${it.id}
-		//- 													`
-		//- 													title="Xóa sản phẩm"
-		//- 												) Xóa
-		//- 								div(class="flex items-center") 
-		//- 									a(href=`/${admin}/product/detail/${it.id}` class="mr-[10px] text-[15px] fa-solid fa-eye flex opacity-0 group-hover:opacity-100 text-[#4C30A5] " title="Xem chi tiết sản phẩm")
-
-		//- 						td(class=" px-[5px]") #{it.priceNew}.000đ
-		//- 						td(class=`w-min`)
-		//- 							- if(role.permisstion.includes('products_edit'))
-		//- 								input(
-		//- 									link=`/${admin}/product/change-position/${it.id}`
-		//- 									type="number"
-		//- 									name="position"
-		//- 									value=it.position
-		//- 									class=`bg-transparent max-w-[70px] mx-auto outline-adminColorTertiary`
-		//- 									min='1'
-		//- 								)
-		//- 							- else
-		//- 								div(class="") #{it.position}
-		//- 						td(class="px-[10px] w-max")
-		//- 							- if(role.permisstion.includes('products_changeProductStatus'))
-		//- 								- if(it.status == 'active')
-		//- 									button(
-		//- 										link=(`/${admin}/product/change-status/inactive/${it.id}`)
-		//- 										type="button"
-		//- 										class=`bg-[#06BC84] w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành dừng hoạt động") Đang hoạt động
-		//- 								- else
-		//- 									button(
-		//- 										link=`/${admin}/product/change-status/active/${it.id}`
-		//- 										type="button"
-		//- 										class=`bg-[red]/80 w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]` title="Click vào để đổi thành hoạt động"
-		//- 									) Dừng hoạt động
-		//- 							- else
-		//- 								- if(it.status == 'active')
-		//- 									button(
-		//- 										type="button"
-		//- 										class=`bg-[#06BC84] w-max text-[white] text-[10px] rounded-[10px] px-[10px] py-[2px]`) Hoạt động
-		//- 								- else
-		//- 									button(
-		//- 										type="button"
-		//- 										class=`bg-[red]/80 text-[white] w-max text-[10px] rounded-[10px] px-[10px] py-[2px]`
-		//- 									) Dừng hoạt động
-		//- 						td(class=`w-max`)
-		//- 							div(class="w-max text-[blue/40] text-[10px]")  #{it.createdBy}
-		//- 							div(class="w-max text-[10px]")  #{it.createdAtFormat}
-		//- 	- else
-		//- 		div(class="text-center text-[20px]") Không có sản phẩm nào
-									
-
-		//- 	+pagination(pagination)
-	
-	//- - else
-	//- 	div(class="" no-view-permission)

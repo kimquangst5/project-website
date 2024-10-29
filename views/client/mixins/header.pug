@@ -80,22 +80,15 @@ mixin header(infoWeb)
 	header(class=`z-[90] sticky top-0 duration-1000`)
 		div(class=`container`)
 			div(class=`gap-[10px] bg-[#EEEEEE] flex items-center justify-left h-[70px]`)
-				div(class="flex items-center justify-between text-main bg-[#333333] hover:cursor-pointer gap-x-[30px] h-full px-[10px]" list-category)
+				div(class="  flex items-center justify-between text-main bg-[#333333] hover:cursor-pointer gap-x-[30px] h-full px-[10px]" list-category)
 					div(class="") DANH MỤC SẢN PHẨM
 					i(class="fa-solid fa-angle-left duration-1000")
 				div(class="absolute top-[70px] rounded-[10px] w-max h-max truncate shadow-[pink] shadow-2xl px-[10px] bg-[white]") 
 					- if(categogyProduct)
 						+select-tree(categogyProduct)
-				div(class="flex items-center justify-start flex-1  [&>div]:hover:cursor-pointer [&>div]:px-[10px] [&>div]:text-center [&>div]:h-[70px] [&>a]:h-[70px] [&>*]:px-[20px] [&>*]:duration-700")
-					a(href=`/` class=" place-content-center block relative group truncate" animation) TRANG CHỦ
-						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
-					a(href=`/product` class="place-content-center relative group truncate" animation) SẢN PHẨM
-						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
-					div(class=" place-content-center relative group truncate" animation) GIỚI THIỆU
-						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000" animation)
-					div(class=" place-content-center xl:hidden  relative group truncate" animation) TƯ VẤN CHỌN
-						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
-					div(class=" place-content-center xl:hidden relative group truncate" animation) TẠP CHÍ
-						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
-					div(class=" place-content-center relative group truncate" animation) LIÊN HỆ
-						div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")
+				- if(headerMenu)
+					- if(headerMenu.length > 0)
+						div(class="flex items-center justify-start flex-1  [&>div]:hover:cursor-pointer [&>div]:px-[10px] [&>div]:text-center [&>div]:h-[70px] [&>a]:h-[70px] [&>*]:px-[20px] [&>*]:duration-700")
+							each it in headerMenu
+								a(href=it.link class=" place-content-center block relative group truncate" animation target=it.target) #{it.title}
+									div(class="bg-chu h-[2px] absolute bottom-0 left-0 w-full duration-1000")

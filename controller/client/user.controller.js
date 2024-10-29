@@ -22,7 +22,23 @@ const userSocket = require('../../sockets/client/user.socket')
 const {
 	RecaptchaEnterpriseServiceClient
 } = require('@google-cloud/recaptcha-enterprise');
+const path = require('path'); // TinyMCE
 const sendMail = require("../../utils/sendEmail.util")
+const Storage = require('@google-cloud/storage');
+module.exports.readFile = (req, res) => {
+	console.log('Reading File');
+	var archivo = Storage.bucket('project-backend-quangtk2005').file('request.json').createReadStream();
+	console.log('Concat Data');
+	var buf = '';
+	archivo.on('data', function (d) {
+		buf += d;
+	}).on('end', function () {
+		console.log(buf);
+		console.log("End");
+		res.send(buf);
+	});
+
+};
 
 // [GET] /member/register
 module.exports.register = async (req, res) => {
@@ -147,47 +163,53 @@ module.exports.login = async (req, res) => {
 	})
 }
 
-const RECAPTCHA_SECRET_KEY = 'project-backend-quangtk2005'; // Thay bằng project ID của bạn
-const recaptchaSiteKey = '6LfaGGYqAAAAAAHgirjHFMs5vLPgfnyPPUWmrInw'; // Site key từ reCAPTCHA Enterprise
-
-// Hàm để tạo đánh giá reCAPTCHA
+const itemsRecapcha = {
+	projectID: 'project-backend-quangtk2005',
+	recaptchaKey: "6LdHk2kqAAAAAE89jQYnLGcsL5N86qiFvj1KBAy1",
+	recaptchaAction: "submit",
+}
 async function createAssessment(token) {
-
 	const client = new RecaptchaEnterpriseServiceClient();
-	const projectPath = client.projectPath(RECAPTCHA_SECRET_KEY);
-
-	const request = {
+	const projectPath = client.projectPath(itemsRecapcha.projectID);
+	const request = ({
 		assessment: {
 			event: {
 				token: token,
-				siteKey: recaptchaSiteKey,
+				siteKey: itemsRecapcha.recaptchaKey,
 			},
 		},
 		parent: projectPath,
-	};
-
+	});
 	const [response] = await client.createAssessment(request);
-
 	if (!response.tokenProperties.valid) {
-		console.log(`Token không hợp lệ: ${response.tokenProperties.invalidReason}`);
+		console.log(`The CreateAssessment call failed because the token was: ${response.tokenProperties.invalidReason}`);
 		return null;
 	}
-
-	console.log(`Điểm đánh giá rủi ro là: ${response.riskAnalysis.score}`);
-	response.riskAnalysis.reasons.forEach((reason) => {
-		console.log(reason);
-	});
-
-	return response.riskAnalysis.score;
+	if (response.tokenProperties.action === itemsRecapcha.recaptchaAction) {
+		console.log(`The reCAPTCHA score is: ${response.riskAnalysis.score}`);
+		response.riskAnalysis.reasons.forEach((reason) => {
+			console.log(reason);
+		});
+		return response.riskAnalysis.score;
+	} else {
+		console.log("The action attribute in your reCAPTCHA tag does not match the action you are expecting to score");
+		return null;
+	}
 }
+
 
 // [POST] /member/login
 module.exports.loginPost = async (req, res) => {
 	try {
 		const token = req.body.recaptchaToken;
-
 		try {
+			const Recapcha_V3 = require("../../models/reCapcha.model")
+			const recapcha = await Recapcha_V3.find({})
+
+			// process.env.GOOGLE_APPLICATION_CREDENTIALS = recapcha[0]
+			// console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
 			const score = await createAssessment(token);
+			console.log(score)
 			if (score && score > 0.5) {
 				const user = await User.findOne({
 					email: req.body.email,

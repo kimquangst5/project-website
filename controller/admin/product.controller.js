@@ -374,11 +374,8 @@ module.exports.edit = async (req, res) => {
 
 		res.render('admin/pages/product/edit.pug', {
 			pageTitle: 'Trang chỉnh sửa sản phẩm',
-			header: 'Chỉnh sửa sản phẩm',
 			product: product,
 			category: newCategories,
-			buttonTitle: "Quay lại danh sách",
-			buttonLink: `/${process.env.admin}/product`
 		})
 	} catch (error) {
 		res.redirect(`/${process.env.admin}/product`)

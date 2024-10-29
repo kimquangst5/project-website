@@ -6,25 +6,34 @@ mixin shopping-cart(shoopings_cart)
 					div(class=`uppercase font-bold text-[#333333]`) Giỏ hàng của bạn
 					//- div(class=`bg-chu text-[white] rounded-[100%] w-[30px] h-[30px] text-[15px] cursor-pointer flex items-center justify-center` exsit)
 					//- 	div(class=``) x
-				div(class=`flex flex-col gap-y-[10px] h-3/5 overflow-y-auto scroll-auto scrollbar`) 
-					each it in shoopings_cart
-						div(class=`flex p-[10px] items-center gap-x-[15px] grid grid-cols-5 bg-[white] rounded-[8px]`)
-							a(href=`/product/detail/${it.slug}` class=`col-span-1`) 
-								img(src=it.thumbnail[0], alt=it.title class=`w-full h-auto object-cover object-top aspect-square rounded-[7px]`)
-							div(class=`col-span-4 flex flex-col justify-between h-full text-left grow w-full`)
-								a(href=`/product/detail/${it.slug}` class=`hover:text-chu line-clamp-1 duration-500 font-bold text-[#333333] text-[15px] text-wrap`) #{it.title}
-								div(class=`flex items-center gap-[5px] text-[15px]`)
-									//- div(class=`text-[#333333]`)  Số lượng:
-									div(class=`font-bold text-[#333333]`) #{it.quanlityProduct}
-									div(class=`text-[12px]`) x
-									div(class=`font-bold text-xanh`)  #{it.priceOrigin}
-								div(class=`font-bold text-[16px] text-do` priceTotal = it.newPrice) #{it.priceItem}
-									span đ
-				div(class=`flex justify-between items-center py-[20px]`)
-					div(class=`text-[#333333] font-bold`) Giá tạm tính:
-					div(class=`text-do font-bold text-[20px]`) #{shoopings_cart.totalPrice}
-						sup đ
-				div(class=`flex items-center justify-center flex-col gap-[10px]`)
-					a(href=`/order/cart-info` class=`border-[1px] text-chu border-chu rounded-[7px] text-[18px] font-bold text-center text-[#333333] px-[15px] w-1/2 py-[20px]`) Xem giỏ hàng
+				- if(shoopings_cart.length > 0)
+					div(class=`flex flex-col gap-y-[10px] h-3/5 overflow-y-auto scroll-auto scrollbar`)
+						each it in shoopings_cart
+							div(class=`flex p-[10px] items-center gap-x-[15px] grid grid-cols-5 bg-[white] rounded-[8px]`)
+								a(href=`/product/detail/${it.slug}` class=`col-span-1`) 
+									img(src=it.thumbnail[0], alt=it.title class=`w-full h-auto object-cover object-top aspect-square rounded-[7px]`)
+								div(class=`col-span-4 flex flex-col justify-between h-full text-left grow w-full`)
+									a(href=`/product/detail/${it.slug}` class=`hover:text-chu line-clamp-1 duration-500 font-bold text-[#333333] text-[15px] text-wrap`) #{it.title}
+									div(class=`flex items-center gap-[5px] text-[15px]`)
+										//- div(class=`text-[#333333]`)  Số lượng:
+										div(class=`font-bold text-[#333333]`) #{it.quanlityProduct}
+										div(class=`text-[12px]`) x
+										div(class=`font-bold text-xanh`)  #{it.priceOrigin}
+									div(class=`font-bold text-[16px] text-do` priceTotal = it.newPrice) #{it.priceItem}
+										span đ
+					
+					div(class=`flex justify-between items-center py-[20px]`)
+						div(class=`text-[#333333] font-bold`) Giá tạm tính:
+						div(class=`text-do font-bold text-[20px]`) #{shoopings_cart.totalPrice}
+							sup đ
+					div(class=`flex items-center justify-center flex-col gap-[10px]`)
+						a(href=`/order/cart-info` class=`border-[1px] text-chu border-chu rounded-[7px] text-[18px] font-bold text-center text-[#333333] px-[15px] w-1/2 py-[20px]`) Xem giỏ hàng
 
-					a(href=`/payment` class=`bg-chu rounded-[7px] text-[18px] font-bold text-center text-[white] px-[15px] w-1/2 py-[20px]`) Thanh toán ngay
+						a(href=`/payment` class=`bg-chu rounded-[7px] text-[18px] font-bold text-center text-[white] px-[15px] w-1/2 py-[20px]`) Thanh toán ngay
+				- else
+
+					div(class=`font-bold text-center py-[100px]`)
+						div(class=`fa-regular fa-cart-circle-plus text-[30px]`)
+						div(class=``) Chưa có sản phẩm nào trong giỏ hàng
+
+

@@ -638,45 +638,51 @@ if (loginAdmin) {
 				usename: usename,
 				password: password
 			}
-			fetch('/admin/auth/login', {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(dataLogin),
-				})
-				.then(res => res.json())
-				.then((data) => {
-					if (data.code == 200) {
-						Swal.fire({
-							position: "top-end",
-							icon: "success",
-							title: "Đăng nhập thành công!",
-							showConfirmButton: false,
-							timer: 1500
-						});
-						setTimeout(() => {
-							location.href = "/admin/main"
-						}, 1000);
+			const link = loginAdmin.getAttribute('login-admin')
+			const main = loginAdmin.getAttribute('main')
+			if (link) {
+				fetch(link, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(dataLogin),
+					})
+					.then(res => res.json())
+					.then((data) => {
+						if (data.code == 200) {
+							Swal.fire({
+								position: "top-end",
+								icon: "success",
+								title: "Đăng nhập thành công!",
+								showConfirmButton: false,
+								timer: 1500
+							});
+							setTimeout(() => {
+								location.href = main
+							}, 1000);
 
 
-					}
-					if (data.code == 400) {
-						Swal.fire({
-							position: "top-end",
-							icon: "error",
-							title: "Đăng nhập thất bại!",
-							showConfirmButton: false,
-							timer: 1500
-						});
-						setTimeout(() => {
-							location.href = "/admin/main"
-						}, 500);
-					}
-					if (data.code == 403) {
-						window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
-					}
-				})
+						}
+						if (data.code == 400) {
+							Swal.fire({
+								position: "top-end",
+								icon: "error",
+								title: "Đăng nhập thất bại!",
+								showConfirmButton: false,
+								timer: 1500
+							});
+
+							setTimeout(() => {
+								location.href = main
+							}, 500);
+						}
+						if (data.code == 403) {
+							window.location.href = `https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Luat-an-ninh-mang-2018-351416.aspx`
+						}
+					})
+			}
+
 		});
 
 	}
@@ -1170,8 +1176,8 @@ if (myProfile) {
 const buttonCreate = document.querySelector('[button-create]');
 if (buttonCreate) {
 	document.addEventListener('keydown', (event) => {
-		event.preventDefault();
 		if (event.code == "F1") {
+			event.preventDefault();
 			buttonCreate.click();
 		}
 	}, true);
@@ -1242,29 +1248,33 @@ if (inputChangeQuantityProduct) {
 			if (parseInt(value) < 1) {
 				value = 1
 			}
-			fetch(`/admin/product/display-product`, {
-					method: "PATCH",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						total: parseInt(total),
-						limit: parseInt(value)
-					}),
-				})
-				.then(res => res.json())
-				.then(data => {
-					if (data.code == 200) {
-						Swal.fire({
-							position: "top-end",
-							icon: "success",
-							title: "Cập nhật thành công!",
-							showConfirmButton: false,
-							timer: 1000
-						});
-						window.location.reload()
-					}
-				})
+			const link = inputChangeQuantityProduct.getAttribute('link');
+			if (link) {
+				fetch(link, {
+						method: "PATCH",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							total: parseInt(total),
+							limit: parseInt(value)
+						}),
+					})
+					.then(res => res.json())
+					.then(data => {
+						if (data.code == 200) {
+							Swal.fire({
+								position: "top-end",
+								icon: "success",
+								title: "Cập nhật thành công!",
+								showConfirmButton: false,
+								timer: 1000
+							});
+							window.location.reload()
+						}
+					})
+			}
+
 		}
 	});
 }
@@ -1332,6 +1342,255 @@ if (resize) {
 		check = false;
 	});
 }
+
+const formMenuHeader = document.querySelector('[form-header-menu]');
+if (formMenuHeader) {
+	const listItems = formMenuHeader.querySelectorAll('[list-items]')
+	formMenuHeader.addEventListener('submit', (event) => {
+		event.preventDefault();
+		Swal.fire({
+			title: "Lưu các bản ghi!",
+			text: "Bạn có chắc muốn lưu tất cả bản ghi này?",
+			icon: "warning",
+
+			showCancelButton: true,
+			confirmButtonText: `<i class="fa-regular fa-trash"></i> Đồng ý`,
+			cancelButtonText: `Hủy bỏ`,
+			confirmButtonColor: "#E42C69",
+			cancelButtonColor: "#6E7881",
+
+		}).then((result) => {
+			if (result.isConfirmed) {
+				const listItems = formMenuHeader.querySelectorAll('[list-items]')
+				if (listItems.length > 0) {
+					let array = [];
+					listItems.forEach(it => {
+						console.log(it)
+						const id = it.getAttribute('list-items');
+						const title = it.querySelector(`input[name='title']`)
+						const link = it.querySelector(`input[name='link']`)
+						const checkbox = it.querySelector(`input[type='checkbox']`)
+						let items = {
+							title: title.value,
+							link: link.value,
+							target: (checkbox.checked == true ? '_blank' : '_self')
+						};
+						if (id) {
+							items.id = id
+						}
+						array.push(items)
+					})
+					console.log(array)
+					const link = formMenuHeader.getAttribute('form-header-menu')
+					if (link) {
+						fetch(link, {
+								method: "POST",
+								headers: {
+									'Content-Type': 'application/json'
+								},
+								body: JSON.stringify(array)
+							})
+							.then(res => res.json())
+							.then(data => {
+								if (data.code == 200) {
+									const Toast = Swal.mixin({
+										toast: true,
+										position: "top-end",
+										showConfirmButton: false,
+										timer: 3000,
+										timerProgressBar: true,
+										didOpen: (toast) => {
+											toast.onmouseenter = Swal.stopTimer;
+											toast.onmouseleave = Swal.resumeTimer;
+										}
+									});
+									Toast.fire({
+										icon: "success",
+										title: "Đã lưu các bản ghi!"
+									});
+									location.reload();
+								}
+							})
+					}
+				}
+			} else if (result.isDenied) {
+				Swal.fire("Đã hủy", "", "info");
+			}
+		});
+
+	})
+	const buttonCreate = formMenuHeader.querySelector('[button-create]');
+	if (buttonCreate) {
+		let number = 1;
+		buttonCreate.addEventListener('click', () => {
+			const div = document.createElement('div');
+			div.setAttribute("list-items", "")
+			div.innerHTML = `
+				<div class="flex justify-between py-[10px] items-center">
+					<div class="font-bold">Menu mới</div>
+					<div class="flex gap-[10px] items-center">
+						<div button-delete-item-menu class="fa-regular fa-trash-can border-[1px] p-[10px] rounded-[8px]">
+						</div>
+						<div button-up class="fa-solid fa-angle-up border-[1px] p-[10px] rounded-[8px]">
+						</div>
+					</div>
+				</div>
+				<div content>
+					<div class="flex grid grid-cols-2 gap-[20px]">
+						<div class="flex flex-col gap-[8px]">
+							<div class="flex gap-[10px]">
+								<label for='title_${number}'>Tiêu đề</label>
+								<div class="text-[red]">*</div>
+							</div>
+							<div class="flex gap-[10px] items-center">
+								<div class="fa-regular fa-align-left"></div>
+								<input
+									class="outline-none bg-transparent border-[1px] border-text w-full rounded-[7px] px-[10px] py-[5px]"
+									type="text" name="title" id='title_${number}' required="" />
+							</div>
+						</div>
+						<div class="flex flex-col gap-[8px]">
+							<div class="flex gap-[10px]">
+								<label for='link_${number}'>Đường dẫn</label>
+								<div class="text-[red]">*</div>
+							</div>
+							<div class="flex gap-[10px] items-center">
+								<div class="fa-regular fa-link"></div>
+								<input
+									class="outline-none bg-transparent border-[1px] border-text w-full rounded-[7px] px-[10px] py-[5px]"
+									type="text" name="link" id='link_${number}' required="" />
+							</div>
+						</div>
+					</div>
+					<div class="flex gap-[10px]">
+						<input type="checkbox" name="target" id="target${number}" value="_blank" /><label for="target${number}">Mở
+							trong tab mới</label>
+					</div>
+				</div>
+			`
+			number++;
+			const parent = formMenuHeader.querySelector('[parent]');
+			if (parent) {
+				parent.appendChild(div)
+				const buttonDelete = div.querySelector('[button-delete-item-menu]')
+				buttonDelete.addEventListener('click', () => {
+					Swal.fire({
+						title: "Xóa bản ghi",
+						text: "Bạn có chắc muốn xóa bản ghi này?",
+						icon: "warning",
+
+						showCancelButton: true,
+						confirmButtonText: `<i class="fa-regular fa-trash"></i> Đồng ý`,
+						cancelButtonText: `Hủy bỏ`,
+						confirmButtonColor: "#E42C69",
+						cancelButtonColor: "#6E7881",
+
+					}).then((result) => {
+						/* Read more about isConfirmed, isDenied below */
+						if (result.isConfirmed) {
+							parent.removeChild(div)
+							const Toast = Swal.mixin({
+								toast: true,
+								position: "top-end",
+								showConfirmButton: false,
+								timer: 3000,
+								timerProgressBar: true,
+								didOpen: (toast) => {
+									toast.onmouseenter = Swal.stopTimer;
+									toast.onmouseleave = Swal.resumeTimer;
+								}
+							});
+							Toast.fire({
+								icon: "success",
+								title: "Đã xóa bản ghi!"
+							});
+						}
+					});
+
+				})
+				const buttonUp = div.querySelector('[button-up]')
+				const content = div.querySelector('[content]')
+				buttonUp.addEventListener('click', () => {
+					content.classList.toggle('hidden')
+					buttonUp.classList.toggle('fa-angle-up')
+					buttonUp.classList.toggle('fa-angle-down')
+				})
+			}
+		})
+	}
+
+	if (listItems.length > 0) {
+		listItems.forEach(it => {
+			const buttonDelete = it.querySelector('[button-delete-item-menu]')
+			buttonDelete.addEventListener('click', () => {
+				Swal.fire({
+					title: "Xóa các bản ghi!",
+					text: "Bạn có chắc muốn xóa bản ghi này?",
+					icon: "warning",
+		
+					showCancelButton: true,
+					confirmButtonText: `<i class="fa-regular fa-trash"></i> Đồng ý`,
+					cancelButtonText: `Hủy bỏ`,
+					confirmButtonColor: "#E42C69",
+					cancelButtonColor: "#6E7881",
+		
+				}).then((result) => {
+					if (result.isConfirmed) {
+						const Toast = Swal.mixin({
+							toast: true,
+							position: "top-end",
+							showConfirmButton: false,
+							timer: 3000,
+							timerProgressBar: true,
+							didOpen: (toast) => {
+								toast.onmouseenter = Swal.stopTimer;
+								toast.onmouseleave = Swal.resumeTimer;
+							}
+						});
+						Toast.fire({
+							icon: "success",
+							title: "Đã xóa bản ghi!"
+						});
+						const id = buttonDelete.getAttribute('button-delete-item-menu')
+						if (id) {
+							formMenuHeader.removeChild(it)
+						}
+					}
+				})
+				
+			})
+			const buttonUp = it.querySelector('[button-up]')
+			const content = it.querySelector('[content]')
+			buttonUp.addEventListener('click', () => {
+				content.classList.toggle('hidden')
+				buttonUp.classList.toggle('fa-angle-up')
+				buttonUp.classList.toggle('fa-angle-down')
+			})
+		})
+	}
+}
+
+// [{
+// 		id: 'xczxczxczxc',
+// 		title: 'jhjh',
+// 		link: 'jkhjkh',
+// 		target: '_blank'
+// 	},
+// 	{
+// 		id: 'xczxczxczxc',
+// 		title: 'khkjh',
+// 		link: 'ihjhjk',
+// 		target: '_blank'
+// 	},
+// 	{
+// 		id: 'xczxczxczxc',
+// 		title: [],
+// 		link: [],
+// 		target: '_blank'
+// 	},
+
+// ]
+
 
 // console.log('%cDừng lại! ', 'color: red; font-size: 50px; font-weight: bold;');
 // console.log('%cĐây là một tính năng của trình duyệt dành cho các nhà phát triển. Nếu ai đó bảo bạn sao chép-dán nội dung nào đó vào đây để bật một tính năng của Web hoặc có mục đích "hack" Web của người khác, thì đó là hành vi lừa đảo và sẽ khiến họ có thể truy cập vào Web của bạn.! \nWeb này được xây dựng bởi Trần Kim Quang', 'color: white; font-size: 20px; font-weight: ;');

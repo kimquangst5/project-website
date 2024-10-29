@@ -1,3 +1,5 @@
+const header = document.querySelector('header');
+const variable_admin = header.getAttribute('variable')
 tinymce.init({
 	selector: 'textarea[textarea-mce]',
 	plugins: [
@@ -11,6 +13,6 @@ tinymce.init({
 	max_height: 500,
 
 	// skin: 'oxide-dark',
-	images_upload_url: '/admin/upload',
+	images_upload_url: `/${variable_admin}/upload`,
 	skin: "oxide-dark",
 });

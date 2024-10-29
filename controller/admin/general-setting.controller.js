@@ -26,6 +26,7 @@ module.exports.infoWebsite = async (req, res) => {
 
 // [PATCH] /dashboard/website-info
 module.exports.infoWebsitePatch = async (req, res) => {
+	// console.log(req.body)
 	try {
 		const infoWeb = await InfoWebsite.find({});
 		if (infoWeb.length == 0) {

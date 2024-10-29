@@ -14,3 +14,8 @@ html{
 #myChart{
 	aspect-ratio: 1/1;
 }
+
+.selected{
+	background-color: red !important;
+	z-index: 1 !important;
+}
